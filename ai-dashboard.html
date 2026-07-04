@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 پنل تحلیل هوشمند پیشرفته</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="admin-auth.js"></script>
+    <script src="ai-analytics.js"></script>
+    <script src="notification-system.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1a202c;
+            --text: #2d3748;
+            --border: #e2e8f0;
+            --light: #f7fafc;
+            --harvard-crimson: #A51C30;
+            --harvard-dark: #1E3A5F;
+            --gold: #FFD700;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, var(--harvard-dark) 0%, var(--harvard-crimson) 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(30, 58, 95, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* ===== LOGIN ===== */
+        .login-screen {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: block;
+        }
+        .login-screen.hidden {
+            display: none;
+        }
+        
+        .login-screen h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        .login-screen p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--harvard-crimson);
+            box-shadow: 0 0 0 3px rgba(165, 28, 48, 0.1);
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        .message.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+        }
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== DASHBOARD ===== */
+        #dashboard {
+            display: none;
+        }
+        #dashboard.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== TABS ===== */
+        .ai-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .ai-tab {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            color: var(--text);
+        }
+        
+        .ai-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .ai-tab.active {
+            background: linear-gradient(135deg, var(--harvard-dark), var(--harvard-crimson));
+            color: white;
+            border-color: var(--harvard-crimson);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        /* ===== STUDENT SELECTOR ===== */
+        .student-selector {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .student-selector label {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .student-selector select {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+        }
+        .student-selector select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .student-selector .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        /* ===== CARDS ===== */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .card h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+        .badge-gold { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
+        
+        /* ===== GRIDS ===== */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+        
+        /* ===== NOTIFICATION SECTION ===== */
+        .notif-section {
+            background: linear-gradient(135deg, #f0f4ff, #e0e7ff);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px dashed var(--primary);
+        }
+        
+        .notif-section .notif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .notif-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .notif-tag.urgent { background: #fee2e2; color: #991b1b; }
+        .notif-tag.important { background: #fef3c7; color: #92400e; }
+        .notif-tag.normal { background: #dbeafe; color: #1e40af; }
+        
+        /* ===== SCHOOL STATS ===== */
+        .school-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .school-stat-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border-top: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .school-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .school-stat-card .ss-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        
+        .school-stat-card .ss-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .school-stat-card .ss-icon {
+            font-size: 30px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        /* ===== CLASS REPORT ===== */
+        .class-report-item {
+            background: var(--light);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-right: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .class-report-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .class-report-item .cr-name {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 16px;
+        }
+        
+        .class-report-item .cr-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .class-report-item .cr-stats span strong {
+            color: var(--dark);
+        }
+        
+        .class-report-item .cr-progress {
+            width: 120px;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .class-report-item .cr-progress .cr-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+        
+        .cr-fill.green { background: var(--success); }
+        .cr-fill.yellow { background: var(--warning); }
+        .cr-fill.red { background: var(--danger); }
+        
+        /* ===== SUGGESTIONS ===== */
+        .suggestion-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-right: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        .suggestion-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        .suggestion-item .s-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .suggestion-item .s-desc {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .suggestion-item .s-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .suggestion-item .s-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* ===== RISK ITEMS ===== */
+        .risk-item {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        .risk-item:hover {
+            transform: translateX(-5px);
+        }
+        .risk-item.high { background: #fee2e2; border-right: 4px solid #ef4444; }
+        .risk-item.medium { background: #fef3c7; border-right: 4px solid #f59e0b; }
+        .risk-item.low { background: #dbeafe; border-right: 4px solid #3b82f6; }
+        
+        .risk-item .r-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .risk-item .r-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        .risk-item .r-desc {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+        .risk-item .r-risks {
+            margin-top: 8px;
+            padding-right: 15px;
+        }
+        .risk-item .r-risks li {
+            font-size: 13px;
+            color: #666;
+            list-style: none;
+            padding: 3px 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.05);
+        }
+        .risk-item .r-risks li:last-child { border-bottom: none; }
+        .risk-item .r-actions { margin-top: 10px; }
+        
+        /* ===== PROGRESS INDICATOR ===== */
+        .progress-indicator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+        .progress-indicator .pi-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .progress-indicator .pi-label {
+            font-size: 14px;
+            color: #666;
+        }
+        .progress-indicator .pi-bar {
+            flex: 1;
+            height: 10px;
+            background: var(--border);
+            border-radius: 5px;
+            overflow: hidden;
+            min-width: 100px;
+        }
+        .progress-indicator .pi-bar .pi-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+        .pi-fill.green { background: var(--success); }
+        .pi-fill.yellow { background: var(--warning); }
+        .pi-fill.red { background: var(--danger); }
+        .pi-fill.gradient { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+        
+        .trend-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .trend-badge.up { background: #d1fae5; color: #065f46; }
+        .trend-badge.down { background: #fee2e2; color: #991b1b; }
+        .trend-badge.stable { background: #dbeafe; color: #1e40af; }
+        
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: #999;
+        }
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        /* ===== MINI STATS ===== */
+        .mini-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .mini-stat {
+            text-align: center;
+            padding: 12px;
+            background: var(--light);
+            border-radius: 10px;
+        }
+        .mini-stat .ms-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        .mini-stat .ms-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* ===== CHART ===== */
+        .chart-container {
+            position: relative;
+            height: 280px;
+            margin-top: 15px;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .grid-4 { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 992px) {
+            .grid-3 { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .header { flex-direction: column; text-align: center; }
+            .header-right { justify-content: center; width: 100%; }
+            .student-selector { flex-direction: column; }
+            .student-selector select { width: 100%; }
+            .student-selector .btn-group { width: 100%; justify-content: center; }
+            .mini-stats { grid-template-columns: repeat(2, 1fr); }
+            .ai-tabs { justify-content: center; }
+            .ai-tab { font-size: 12px; padding: 8px 14px; }
+            .class-report-item { flex-direction: column; align-items: stretch; }
+        }
+        @media (max-width: 480px) {
+            .mini-stats { grid-template-columns: 1fr; }
+            .risk-item .r-header { flex-direction: column; align-items: flex-start; }
+            .card { padding: 15px; }
+            .school-stats-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <div class="header" id="appHeader" style="display: none;">
+            <div>
+                <h1>🤖 پنل تحلیل هوشمند پیشرفته</h1>
+                <p>تحلیل پیشرفته، پیشنهادات هوشمند و گزارش‌های کلی</p>
+            </div>
+            <div class="header-right">
+                <span id="userDisplay" style="font-size: 14px; opacity: 0.8;">👤 مدیر</span>
+                <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+            </div>
+        </div>
+        
+        <!-- ===== LOGIN ===== -->
+        <div class="login-screen" id="loginScreen">
+            <h2>🤖 ورود به پنل تحلیل هوشمند</h2>
+            <p>برای دسترسی به تحلیل‌ها و پیشنهادات، وارد شوید</p>
+            
+            <div class="form-group">
+                <label>نام کاربری:</label>
+                <input type="text" id="loginUsername" placeholder="نام کاربری" value="admin">
+            </div>
+            <div class="form-group">
+                <label>رمز عبور:</label>
+                <input type="password" id="loginPassword" placeholder="رمز عبور" value="admin123">
+            </div>
+            
+            <button class="btn btn-primary btn-full" onclick="doLogin()">🔓 ورود</button>
+            <div id="loginMessage"></div>
+        </div>
+        
+        <!-- ===== DASHBOARD ===== -->
+        <div id="dashboard">
+            <!-- Tabs -->
+            <div class="ai-tabs">
+                <button class="ai-tab active" onclick="showTab('student', this)">👤 تحلیل دانش‌آموز</button>
+                <button class="ai-tab" onclick="showTab('notifications', this)">🔔 نوتیفیکیشن‌های هوشمند</button>
+                <button class="ai-tab" onclick="showTab('school', this)">🏫 گزارش مدرسه</button>
+                <button class="ai-tab" onclick="showTab('classes', this)">📚 گزارش کلاس‌ها</button>
+                <button class="ai-tab" onclick="showTab('atrisk', this)">⚠️ دانش‌آموزان در معرض خطر</button>
+            </div>
+            
+            <!-- ===== TAB 1: STUDENT ANALYSIS ===== -->
+            <div class="tab-content active" id="tab-student">
+                <div class="student-selector">
+                    <label>👤 انتخاب دانش‌آموز:</label>
+                    <select id="studentSelect" onchange="loadStudentAnalysis()">
+                        <option value="">-- انتخاب کنید --</option>
+                    </select>
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-sm" onclick="loadStudentAnalysis()">📊 تحلیل</button>
+                        <button class="btn btn-success btn-sm" onclick="sendSmartNotification()">🔔 ارسال نوتیفیکیشن هوشمند</button>
+                        <button class="btn btn-secondary btn-sm" onclick="refreshData()">🔄 بروزرسانی</button>
+                    </div>
+                </div>
+                
+                <div class="card" id="summaryCard">
+                    <h3>📊 خلاصه تحلیل</h3>
+                    <div id="summaryContent">
+                        <div class="empty-state">
+                            <span class="empty-icon">👆</span>
+                            <p>یک دانش‌آموز را انتخاب کنید تا تحلیل نمایش داده شود</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>📈 پیش‌بینی پیشرفت</h3>
+                        <div id="progressContent">
+                            <div class="empty-state"><span class="empty-icon">📊</span><p>منتظر انتخاب دانش‌آموز...</p></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>📝 تحلیل خودارزیابی</h3>
+                        <div id="analysisContent">
+                            <div class="empty-state"><span class="empty-icon">🔍</span><p>منتظر انتخاب دانش‌آموز...</p></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>🎯 الگوهای رفتاری</h3>
+                        <div id="patternsContent">
+                            <div class="empty-state"><span class="empty-icon">🔄</span><p>منتظر انتخاب دانش‌آموز...</p></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>💡 پیشنهادات هوشمند <span id="suggestionCount" class="badge badge-info">0</span></h3>
+                    <div id="suggestionsContent">
+                        <div class="empty-state"><span class="empty-icon">💡</span><p>منتظر انتخاب دانش‌آموز...</p></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== TAB 2: NOTIFICATIONS ===== -->
+            <div class="tab-content" id="tab-notifications">
+                <div class="card">
+                    <h3>🔔 ارسال نوتیفیکیشن هوشمند به دانش‌آموزان</h3>
+                    
+                    <div class="notif-section">
+                        <div class="notif-header">
+                            <div>
+                                <h4 style="color: var(--dark);">📋 نکات مهم برای دانش‌آموزان</h4>
+                                <p style="font-size: 13px; color: #666;">این پیام‌ها به دانش‌آموزان ارسال می‌شوند تا وظایف خود را انجام دهند</p>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="sendAllNotifications()">📤 ارسال همه به دانش‌آموزان</button>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: var(--dark); margin-bottom: 15px;">📝 لیست نوتیفیکیشن‌های هوشمند</h4>
+                        
+                        <div style="display: grid; gap: 12px;" id="notificationList">
+                            <!-- Evaluation Reminder -->
+                            <div class="suggestion-item" style="border-right-color: #f59e0b;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <div>
+                                        <div class="s-title">📝 ثبت خودارزیابی ماهانه</div>
+                                        <div class="s-desc">یادآوری برای ثبت خودارزیابی ماهانه - هر ماه یک بار</div>
+                                        <div class="s-meta">
+                                            <span>⏰ هر ماه | <span class="notif-tag important">مهم</span></span>
+                                            <span>👥 همه دانش‌آموزان</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-success btn-sm" onclick="sendNotification('evaluation')">📤 ارسال</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Goal Reminder -->
+                            <div class="suggestion-item" style="border-right-color: #667eea;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <div>
+                                        <div class="s-title">🎯 بررسی و به‌روزرسانی اهداف SMART</div>
+                                        <div class="s-desc">یادآوری برای بررسی اهداف و ثبت پیشرفت جدید</div>
+                                        <div class="s-meta">
+                                            <span>⏰ هر ۲ هفته | <span class="notif-tag normal">عادی</span></span>
+                                            <span>👥 همه دانش‌آموزان</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-success btn-sm" onclick="sendNotification('goal')">📤 ارسال</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Badge Reminder -->
+                            <div class="suggestion-item" style="border-right-color: #f59e0b;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <div>
+                                        <div class="s-title">🏆 کسب نشان‌های جدید</div>
+                                        <div class="s-desc">تشویق به کسب نشان‌های جدید و پیشرفت در مسیر یادگیری</div>
+                                        <div class="s-meta">
+                                            <span>⏰ ماهانه | <span class="notif-tag important">مهم</span></span>
+                                            <span>👥 دانش‌آموزان فعال</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-success btn-sm" onclick="sendNotification('badge')">📤 ارسال</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Portfolio Reminder -->
+                            <div class="suggestion-item" style="border-right-color: #10b981;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <div>
+                                        <div class="s-title">📂 تکمیل پوشه کار</div>
+                                        <div class="s-desc">یادآوری برای تکمیل اطلاعات پوشه کار و به‌روزرسانی آن</div>
+                                        <div class="s-meta">
+                                            <span>⏰ هر ماه | <span class="notif-tag normal">عادی</span></span>
+                                            <span>👥 دانش‌آموزان جدید</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-success btn-sm" onclick="sendNotification('portfolio')">📤 ارسال</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- At Risk Alert -->
+                            <div class="suggestion-item" style="border-right-color: #ef4444;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <div>
+                                        <div class="s-title">⚠️ هشدار: نیاز به توجه ویژه</div>
+                                        <div class="s-desc">برای دانش‌آموزانی که در معرض خطر هستند، پیام تشویقی ارسال می‌شود</div>
+                                        <div class="s-meta">
+                                            <span>⏰ فوری | <span class="notif-tag urgent">فوری</span></span>
+                                            <span>👥 دانش‌آموزان در معرض خطر</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="btn btn-danger btn-sm" onclick="sendNotification('atrisk')">📤 ارسال</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== TAB 3: SCHOOL REPORT ===== -->
+            <div class="tab-content" id="tab-school">
+                <div class="card">
+                    <h3>🏫 گزارش کلی مدرسه</h3>
+                    
+                    <div class="school-stats-grid" id="schoolStatsGrid"></div>
+                    
+                    <div class="grid-2">
+                        <div>
+                            <h4 style="color: var(--dark); margin-bottom: 10px;">📊 توزیع دانش‌آموزان</h4>
+                            <div class="chart-container">
+                                <canvas id="schoolDistributionChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--dark); margin-bottom: 10px;">📈 روند کلی پیشرفت</h4>
+                            <div class="chart-container">
+                                <canvas id="schoolTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4 style="color: var(--dark); margin-bottom: 10px;">📊 خلاصه کلی</h4>
+                        <div id="schoolSummaryContent"></div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="exportSchoolReport()">📥 دانلود گزارش کامل مدرسه</button>
+                        <button class="btn btn-secondary" onclick="refreshData()">🔄 بروزرسانی</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== TAB 4: CLASSES REPORT ===== -->
+            <div class="tab-content" id="tab-classes">
+                <div class="card">
+                    <h3>📚 گزارش کلاس‌ها</h3>
+                    
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <button class="btn btn-primary btn-sm" onclick="refreshClassesReport()">🔄 بروزرسانی</button>
+                        <button class="btn btn-success btn-sm" onclick="exportClassesReport()">📥 دانلود گزارش کلاس‌ها</button>
+                    </div>
+                    
+                    <div id="classesReportContent"></div>
+                </div>
+            </div>
+            
+            <!-- ===== TAB 5: AT RISK ===== -->
+            <div class="tab-content" id="tab-atrisk">
+                <div class="card">
+                    <h3>⚠️ دانش‌آموزان در معرض خطر <span id="atRiskCount" class="badge badge-danger">0</span></h3>
+                    
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <button class="btn btn-primary btn-sm" onclick="loadAtRiskStudents()">🔄 بروزرسانی</button>
+                        <button class="btn btn-success btn-sm" onclick="sendAtRiskNotifications()">📤 ارسال نوتیفیکیشن به همه</button>
+                    </div>
+                    
+                    <div id="atRiskContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // ADMIN AUTH
+        // ============================================
+        const adminAuth = new AdminAuth();
+        let ai = null;
+        let notifSystem = null;
+        let currentStudentId = null;
+        let currentSummary = null;
+        let charts = {};
+        
+        // ============================================
+        // LOGIN
+        // ============================================
+        function doLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                showMessage('loginMessage', '❌ لطفاً نام کاربری و رمز عبور را وارد کنید.', 'error');
+                return;
+            }
+            
+            const result = adminAuth.login(username, password);
+            
+            if (result.success) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appHeader').style.display = 'flex';
+                document.getElementById('dashboard').classList.add('active');
+                document.getElementById('userDisplay').textContent = `👤 ${username}`;
+                showMessage('loginMessage', result.message, 'success');
+                
+                ai = new AIAnalytics();
+                notifSystem = new NotificationSystem();
+                loadStudentsList();
+                renderSchoolReport();
+                renderClassesReport();
+                loadAtRiskStudents();
+            } else {
+                showMessage('loginMessage', result.message, 'error');
+            }
+        }
+        
+        function logout() {
+            adminAuth.logout();
+            location.reload();
+        }
+        
+        // ============================================
+        // TABS
+        // ============================================
+        function showTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.ai-tab').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            if (btn) btn.classList.add('active');
+            
+            // Refresh data when switching tabs
+            if (tabName === 'school') {
+                renderSchoolReport();
+            } else if (tabName === 'classes') {
+                renderClassesReport();
+            } else if (tabName === 'atrisk') {
+                loadAtRiskStudents();
+            } else if (tabName === 'notifications') {
+                // Already loaded
+            }
+        }
+        
+        // ============================================
+        // LOAD STUDENTS
+        // ============================================
+        function loadStudentsList() {
+            const select = document.getElementById('studentSelect');
+            
+            if (!ai) {
+                ai = new AIAnalytics();
+            }
+            
+            const students = ai.data.students || [];
+            console.log('📋 Students loaded:', students.length);
+            
+            select.innerHTML = '<option value="">-- انتخاب کنید --</option>';
+            
+            if (students.length === 0) {
+                select.innerHTML = '<option value="">-- هیچ دانش‌آموزی ثبت نشده --</option>';
+                document.getElementById('summaryContent').innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📭</span>
+                        <p>هیچ دانش‌آموزی در سیستم ثبت نشده است.</p>
+                        <p style="font-size: 13px; margin-top: 10px;">لطفاً ابتدا از <strong>مرکز کنترل</strong> دانش‌آموز اضافه کنید.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} - پایه ${student.grade}`;
+                select.appendChild(option);
+            });
+            
+            if (students.length > 0) {
+                select.value = students[0].id;
+                loadStudentAnalysis();
+            }
+        }
+        
+        // ============================================
+        // LOAD STUDENT ANALYSIS
+        // ============================================
+        function loadStudentAnalysis() {
+            const select = document.getElementById('studentSelect');
+            const studentId = select.value;
+            
+            if (!studentId) {
+                showMessage('summaryContent', '❌ لطفاً یک دانش‌آموز انتخاب کنید.', 'error');
+                return;
+            }
+            
+            currentStudentId = studentId;
+            
+            if (!ai) {
+                ai = new AIAnalytics();
+            }
+            
+            const summary = ai.getStudentSummary(studentId);
+            
+            if (!summary) {
+                showMessage('summaryContent', '❌ دانش‌آموز یافت نشد.', 'error');
+                return;
+            }
+            
+            currentSummary = summary;
+            console.log('📊 Summary for', summary.student.name, ':', summary);
+            
+            renderSummary(summary);
+            renderProgress(summary.progress);
+            renderAnalysis(summary.analysis);
+            renderPatterns(summary.patterns);
+            renderSuggestions(summary.suggestions);
+        }
+        
+        // ============================================
+        // RENDER FUNCTIONS (خلاصه)
+        // ============================================
+        function renderSummary(summary) {
+            const container = document.getElementById('summaryContent');
+            const student = summary.student;
+            const score = summary.totalScore;
+            
+            let scoreClass = 'badge-info';
+            let scoreText = 'متوسط';
+            if (score >= 8) { scoreClass = 'badge-success'; scoreText = 'عالی'; }
+            else if (score >= 6) { scoreClass = 'badge-info'; scoreText = 'خوب'; }
+            else if (score >= 4) { scoreClass = 'badge-warning'; scoreText = 'نیاز به توجه'; }
+            else { scoreClass = 'badge-danger'; scoreText = 'نیاز به مداخله'; }
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                    <div>
+                        <div style="font-size: 13px; color: #666;">👤 نام</div>
+                        <div style="font-size: 20px; font-weight: 800; color: var(--dark);">${student.name}</div>
+                        <div style="font-size: 13px; color: #666;">پایه ${student.grade}</div>
+                        <div style="font-size: 12px; color: #999;">🆔 ${student.code || '---'}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #666;">⭐ امتیاز کلی</div>
+                        <div style="font-size: 32px; font-weight: 800; color: var(--dark);">${score}</div>
+                        <span class="badge ${scoreClass}">${scoreText}</span>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #666;">🎯 اهداف</div>
+                        <div style="font-size: 24px; font-weight: 800; color: var(--dark);">${summary.goalsCount}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #666;">📝 خودارزیابی</div>
+                        <div style="font-size: 24px; font-weight: 800; color: var(--dark);">${summary.evaluationsCount}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 13px; color: #666;">📋 یادداشت‌ها</div>
+                        <div style="font-size: 24px; font-weight: 800; color: var(--dark);">${summary.notesCount}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 15px; background: var(--light); border-radius: 10px; border-right: 4px solid var(--primary);">
+                    <div style="font-weight: 700; color: var(--dark);">📋 خلاصه:</div>
+                    <div style="font-size: 14px; color: #666; margin-top: 5px; line-height: 1.8;">${summary.summary}</div>
+                </div>
+            `;
+        }
+        
+        function renderProgress(progress) {
+            const container = document.getElementById('progressContent');
+            
+            if (!progress || progress.trend === 'insufficient_data') {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #999;">
+                        📊 ${progress?.message || 'داده کافی برای پیش‌بینی وجود ندارد'}
+                        ${progress?.currentRating ? `<div style="margin-top: 10px; font-size: 13px;">امتیاز فعلی: ${progress.currentRating}</div>` : ''}
+                    </div>
+                `;
+                return;
+            }
+            
+            const trendEmoji = progress.trend === 'improving' ? '📈' : progress.trend === 'declining' ? '📉' : '📊';
+            const trendClass = progress.trend === 'improving' ? 'up' : progress.trend === 'declining' ? 'down' : 'stable';
+            const trendColor = progress.trend === 'improving' ? 'green' : progress.trend === 'declining' ? 'red' : 'yellow';
+            
+            container.innerHTML = `
+                <div style="display: grid; gap: 15px;">
+                    <div class="progress-indicator">
+                        <div>
+                            <div class="pi-value">${progress.predictedRating || '---'}</div>
+                            <div class="pi-label">امتیاز پیش‌بینی شده</div>
+                        </div>
+                        <div style="flex: 1; min-width: 100px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; color: #666; flex-wrap: wrap;">
+                                <span>کنونی: ${progress.currentRating || 0}</span>
+                                <span>میانگین: ${progress.avgRating || 0}</span>
+                            </div>
+                            <div class="pi-bar">
+                                <div class="pi-fill ${trendColor}" 
+                                     style="width: ${Math.min((progress.predictedRating || 0) * 20, 100)}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px; padding: 12px; background: var(--light); border-radius: 10px; flex-wrap: wrap;">
+                        <span style="font-size: 28px;">${trendEmoji}</span>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; color: var(--dark);">${progress.message}</div>
+                            <div style="font-size: 13px; color: #666;">
+                                اطمینان: ${progress.confidence || 0}% | ${progress.months?.length || 0} ماه داده
+                            </div>
+                        </div>
+                        <span class="trend-badge ${trendClass}">
+                            ${progress.trend === 'improving' ? '📈 رو به رشد' : progress.trend === 'declining' ? '📉 کاهشی' : '📊 ثابت'}
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderAnalysis(analysis) {
+            const container = document.getElementById('analysisContent');
+            
+            if (!analysis || !analysis.hasData) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #999;">
+                        ${analysis?.message || 'هنوز خودارزیابی ثبت نشده است'}
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="mini-stats">
+                    <div class="mini-stat"><div class="ms-value">${analysis.totalMonths}</div><div class="ms-label">ماه</div></div>
+                    <div class="mini-stat"><div class="ms-value">${analysis.avgRating}</div><div class="ms-label">میانگین امتیاز</div></div>
+                    <div class="mini-stat"><div class="ms-value">${analysis.avgPrides}</div><div class="ms-label">میانگین افتخارات</div></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                    <div style="padding: 10px; background: var(--light); border-radius: 8px; text-align: center;">
+                        <div style="font-size: 12px; color: #666;">😊 حالت غالب</div>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--dark);">${analysis.dominantMood}</div>
+                    </div>
+                    <div style="padding: 10px; background: var(--light); border-radius: 8px; text-align: center;">
+                        <div style="font-size: 12px; color: #666;">📚 بهترین درس</div>
+                        <div style="font-size: 18px; font-weight: 700; color: var(--dark);">${analysis.bestSubject}</div>
+                    </div>
+                </div>
+                <div style="padding: 10px; background: var(--light); border-radius: 8px; border-right: 3px solid var(--primary);">
+                    <div style="font-size: 13px; color: #666; line-height: 1.8;">${analysis.message}</div>
+                </div>
+            `;
+        }
+        
+        function renderPatterns(patterns) {
+            const container = document.getElementById('patternsContent');
+            
+            if (!patterns || !patterns.hasData) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #999;">
+                        ${patterns?.message || 'داده کافی برای تشخیص الگو وجود ندارد'}
+                    </div>
+                `;
+                return;
+            }
+            
+            if (patterns.patterns.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--success);">
+                        ✅ الگوی خاصی شناسایی نشد
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = patterns.patterns.map(p => `
+                <div style="padding: 12px 15px; background: var(--light); border-radius: 10px; margin-bottom: 8px; border-right: 3px solid var(--primary);">
+                    <div style="font-weight: 700; color: var(--dark);">${p.name}</div>
+                    <div style="font-size: 13px; color: #666;">${p.description}</div>
+                </div>
+            `).join('');
+        }
+        
+        function renderSuggestions(suggestions) {
+            const container = document.getElementById('suggestionsContent');
+            const countBadge = document.getElementById('suggestionCount');
+            
+            if (!suggestions || suggestions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">💡</span>
+                        <p>پیشنهادی برای این دانش‌آموز وجود ندارد</p>
+                    </div>
+                `;
+                countBadge.textContent = '0';
+                return;
+            }
+            
+            countBadge.textContent = suggestions.length;
+            
+            container.innerHTML = suggestions.map((s, index) => `
+                <div class="suggestion-item">
+                    <div class="s-title">${index + 1}. 🎯 ${s.generalGoal}</div>
+                    <div class="s-desc">${s.specificGoal || '---'}</div>
+                    <div class="s-meta">
+                        <span>📊 ${s.measurable || '---'}</span>
+                        <span>✅ ${s.achievable || '---'}</span>
+                        ${s.frequency ? `<span>📅 ${s.frequency} بار در هفته</span>` : ''}
+                    </div>
+                    <div class="s-actions">
+                        <button class="btn btn-success btn-sm" onclick="useSuggestion('${index}')">➕ استفاده</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            window._suggestions = suggestions;
+        }
+        
+        function useSuggestion(index) {
+            const suggestions = window._suggestions || [];
+            const suggestion = suggestions[index];
+            if (!suggestion) return;
+            
+            if (confirm(`🎯 آیا می‌خواهید این هدف را ثبت کنید؟\n\n${suggestion.generalGoal}\n${suggestion.specificGoal}`)) {
+                window.location.href = `smart-goals-v3.html`;
+            }
+        }
+        
+        // ============================================
+        // NOTIFICATIONS
+        // ============================================
+        function sendNotification(type) {
+            if (!notifSystem) {
+                notifSystem = new NotificationSystem();
+            }
+            
+            const messages = {
+                'evaluation': {
+                    title: '📝 یادآوری خودارزیابی ماهانه',
+                    message: 'سلام! 🌟 وقتشه که خودارزیابی این ماه رو ثبت کنی. به بخش خودارزیابی برو و داستان یادگیریت رو بنویس!',
+                    type: 'evaluation_reminder'
+                },
+                'goal': {
+                    title: '🎯 یادآوری بررسی اهداف SMART',
+                    message: 'سلام! 🎯 وقتشه که اهداف SMART خودت رو بررسی کنی و پیشرفتت رو ثبت کنی. به بخش اهداف برو!',
+                    type: 'goal_reminder'
+                },
+                'badge': {
+                    title: '🏆 نشان‌های جدید در انتظار توست!',
+                    message: 'سلام! 🌟 با ادامه مسیر یادگیری، نشان‌های جدیدی می‌تونی به دست بیاری. به تلاش خودت ادامه بده!',
+                    type: 'badge_alert'
+                },
+                'portfolio': {
+                    title: '📂 پوشه کار خود را کامل کن!',
+                    message: 'سلام! 📂 وقتشه که پوشه کار خودت رو کامل کنی. اطلاعاتت رو به‌روز کن و پیشرفتت رو ثبت کن!',
+                    type: 'system'
+                },
+                'atrisk': {
+                    title: '💪 ما به تو ایمان داریم!',
+                    message: 'سلام عزیزم! 🌟 می‌دونیم که گاهی سخته، ولی ما به تو ایمان داریم. می‌تونی با تلاش بیشتر به موفقیت برسی. به ما اعتماد کن!',
+                    type: 'achievement'
+                }
+            };
+            
+            const msg = messages[type];
+            if (!msg) return;
+            
+            // Send to all students
+            const students = ai?.data?.students || [];
+            if (students.length === 0) {
+                showMessage('summaryContent', '❌ هیچ دانش‌آموزی برای ارسال وجود ندارد.', 'error');
+                return;
+            }
+            
+            let sentCount = 0;
+            students.forEach(student => {
+                notifSystem.add(msg.type, msg.title, `${msg.message}\n\n— سامانه هوشمند`, {
+                    studentId: student.id,
+                    studentName: student.name
+                });
+                sentCount++;
+            });
+            
+            showMessage('summaryContent', `✅ نوتیفیکیشن به ${sentCount} دانش‌آموز ارسال شد!`, 'success');
+        }
+        
+        function sendAllNotifications() {
+            const types = ['evaluation', 'goal', 'badge', 'portfolio'];
+            let totalSent = 0;
+            
+            types.forEach(type => {
+                sendNotification(type);
+                totalSent++;
+            });
+            
+            showMessage('summaryContent', `✅ ${totalSent} نوتیفیکیشن هوشمند به همه دانش‌آموزان ارسال شد!`, 'success');
+        }
+        
+        function sendSmartNotification() {
+            if (!currentStudentId) {
+                showMessage('summaryContent', '❌ ابتدا یک دانش‌آموز انتخاب کنید.', 'error');
+                return;
+            }
+            
+            if (!notifSystem) {
+                notifSystem = new NotificationSystem();
+            }
+            
+            const student = ai.data.students.find(s => s.id === currentStudentId);
+            if (!student) return;
+            
+            const summary = ai.getStudentSummary(currentStudentId);
+            
+            // Personalized notification based on student's status
+            let title = '📋 نکات مهم برای پیشرفت';
+            let message = `سلام ${student.name}! 🌟\n\n`;
+            
+            // Customize based on student's data
+            if (summary.goalsCount === 0) {
+                message += '🎯 هنوز هیچ هدفی ثبت نکردی! وقتشه که اولین هدف SMART خودت رو ثبت کنی.\n\n';
+            }
+            
+            if (summary.evaluationsCount === 0) {
+                message += '📝 خودارزیابی ماهانه رو فراموش نکن! ثبت کن تا پیشرفتت رو ببینی.\n\n';
+            }
+            
+            if (summary.analysis.hasData && summary.analysis.avgRating < 3) {
+                message += '💪 می‌دونیم که گاهی سخته، ولی ما به تو ایمان داریم. با تلاش بیشتر می‌تونی موفق بشی!\n\n';
+            }
+            
+            if (summary.goalsCount > 0 && summary.evaluationsCount > 0) {
+                message += '🌟 عالی! به مسیر خودت ادامه بده و هر روز بهتر از دیروز باش.\n\n';
+            }
+            
+            message += '— سامانه هوشمند پوشه کار';
+            
+            notifSystem.add('system', title, message, {
+                studentId: currentStudentId,
+                studentName: student.name
+            });
+            
+            showMessage('summaryContent', `✅ نوتیفیکیشن هوشمند به ${student.name} ارسال شد!`, 'success');
+        }
+        
+        function sendAtRiskNotifications() {
+            if (!ai) {
+                ai = new AIAnalytics();
+            }
+            if (!notifSystem) {
+                notifSystem = new NotificationSystem();
+            }
+            
+            const atRiskList = ai.identifyAtRiskStudents();
+            
+            if (atRiskList.length === 0) {
+                showMessage('atRiskContent', '✅ هیچ دانش‌آموزی در معرض خطر نیست.', 'success');
+                return;
+            }
+            
+            let sentCount = 0;
+            atRiskList.forEach(item => {
+                notifSystem.add(
+                    'achievement',
+                    '💪 ما به تو ایمان داریم!',
+                    `سلام ${item.student.name}! 🌟 می‌دونیم که گاهی سخته، ولی ما به تو ایمان داریم. می‌تونی با تلاش بیشتر به موفقیت برسی. ما کنار توایم!`,
+                    { studentId: item.student.id, studentName: item.student.name, atRisk: true }
+                );
+                sentCount++;
+            });
+            
+            showMessage('atRiskContent', `✅ نوتیفیکیشن تشویقی به ${sentCount} دانش‌آموز ارسال شد!`, 'success');
+        }
+        
+        // ============================================
+        // AT RISK STUDENTS
+        // ============================================
+        function loadAtRiskStudents() {
+            if (!ai) {
+                ai = new AIAnalytics();
+            }
+            
+            const atRiskList = ai.identifyAtRiskStudents();
+            const container = document.getElementById('atRiskContent');
+            const countBadge = document.getElementById('atRiskCount');
+            
+            countBadge.textContent = atRiskList.length;
+            
+            if (atRiskList.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 30px; color: var(--success);">
+                        ✅ هیچ دانش‌آموزی در معرض خطر شناسایی نشد
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = atRiskList.map(item => {
+                const severity = item.riskScore >= 5 ? 'high' : item.riskScore >= 3 ? 'medium' : 'low';
+                const severityLabel = severity === 'high' ? '🔴 بالا' : severity === 'medium' ? '🟡 متوسط' : '🟢 پایین';
+                
+                return `
+                    <div class="risk-item ${severity}">
+                        <div class="r-header">
+                            <div>
+                                <div class="r-title">${item.student.name} - پایه ${item.student.grade}</div>
+                                <div style="font-size: 13px; color: #666;">${item.totalRisks} مورد خطر شناسایی شده</div>
+                            </div>
+                            <span style="font-weight: 700; font-size: 14px; padding: 4px 12px; background: white; border-radius: 10px;">${severityLabel}</span>
+                        </div>
+                        <ul class="r-risks">
+                            ${item.risks.map(risk => `<li>• ${risk.description}</li>`).join('')}
+                        </ul>
+                        <div class="r-actions">
+                            <button class="btn btn-primary btn-sm" onclick="selectStudent('${item.student.id}')">👁️ مشاهده تحلیل</button>
+                            <button class="btn btn-success btn-sm" onclick="sendAtRiskNotification('${item.student.id}')">📤 ارسال نوتیفیکیشن</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function sendAtRiskNotification(studentId) {
+            const student = ai.data.students.find(s => s.id === studentId);
+            if (!student) return;
+            
+            if (!notifSystem) {
+                notifSystem = new NotificationSystem();
+            }
+            
+            const msg = `سلام ${student.name}! 🌟 می‌دونیم که گاهی سخته، ولی ما به تو ایمان داریم. می‌تونی با تلاش بیشتر به موفقیت برسی. ما کنار توایم! 💪`;
+            
+            notifSystem.add('achievement', '💪 ما به تو ایمان داریم!', msg, {
+                studentId: student.id,
+                studentName: student.name,
+                atRisk: true
+            });
+            
+            showMessage('atRiskContent', `✅ نوتیفیکیشن به ${student.name} ارسال شد!`, 'success');
+        }
+        
+        function selectStudent(studentId) {
+            const select = document.getElementById('studentSelect');
+            select.value = studentId;
+            loadStudentAnalysis();
+            // Switch to student tab
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.ai-tab').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-student').classList.add('active');
+            document.querySelector('.ai-tab:first-child').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // ============================================
+        // SCHOOL REPORT
+        // ============================================
+        function renderSchoolReport() {
+            if (!ai) {
+                ai = new AIAnalytics();
+            }
+            
+            const students = ai.data.students || [];
+            const totalStudents = students.length;
+            
+            let totalGoals = 0;
+            let totalEvals = 0;
+            let totalPrides = 0;
+            let totalScore = 0;
+            let gradeDistribution = {};
+            let monthlyData = {};
+            
+            students.forEach(s => {
+                const goals = ai.data.goals[s.id] || [];
+                const evals = ai.data.evaluations[s.id] || {};
+                totalGoals += goals.length;
+                totalEvals += Object.keys(evals).length;
+                
+                // Grade distribution
+                gradeDistribution[s.grade] = (gradeDistribution[s.grade] || 0) + 1;
+                
+                // Monthly data
+                Object.keys(evals).forEach(month => {
+                    monthlyData[month] = (monthlyData[month] || 0) + 1;
+                });
+                
+                // Total prides
+                Object.values(evals).forEach(e => {
+                    totalPrides += (e.prides?.length || 0);
+                });
+                
+                // Total score
+                const summary = ai.getStudentSummary(s.id);
+                if (summary) totalScore += summary.totalScore;
+            });
+            
+            const avgScore = totalStudents > 0 ? (totalScore / totalStudents).toFixed(1) : 0;
+            
+            // Stats Grid
+            document.getElementById('schoolStatsGrid').innerHTML = `
+                <div class="school-stat-card">
+                    <span class="ss-icon">👥</span>
+                    <div class="ss-value">${totalStudents}</div>
+                    <div class="ss-label">دانش‌آموزان</div>
+                </div>
+                <div class="school-stat-card">
+                    <span class="ss-icon">🎯</span>
+                    <div class="ss-value">${totalGoals}</div>
+                    <div class="ss-label">کل اهداف</div>
+                </div>
+                <div class="school-stat-card">
+                    <span class="ss-icon">📝</span>
+                    <div class="ss-value">${totalEvals}</div>
+                    <div class="ss-label">خودارزیابی</div>
+                </div>
+                <div class="school-stat-card">
+                    <span class="ss-icon">🏆</span>
+                    <div class="ss-value">${totalPrides}</div>
+                    <div class="ss-label">افتخارات</div>
+                </div>
+                <div class="school-stat-card">
+                    <span class="ss-icon">⭐</span>
+                    <div class="ss-value">${avgScore}</div>
+                    <div class="ss-label">میانگین امتیاز</div>
+                </div>
+                <div class="school-stat-card">
+                    <span class="ss-icon">📚</span>
+                    <div class="ss-value">${Object.keys(gradeDistribution).length}</div>
+                    <div class="ss-label">پایه‌های تحصیلی</div>
+                </div>
+            `;
+            
+            // Charts
+            renderSchoolCharts(gradeDistribution, monthlyData);
+            
+            // Summary
+            document.getElementById('schoolSummaryContent').innerHTML = `
+                <div style="background: var(--light); padding: 20px; border-radius: 12px; border-right: 4px solid var(--primary);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px;">
+                        <div><strong>📊 وضعیت کلی:</strong></div>
+                        <div>${totalStudents > 0 ? '✅ مدرسه فعال' : '⚠️ هیچ دانش‌آموزی ثبت نشده'}</div>
+                        <div><strong>🎯 میانگین اهداف:</strong></div>
+                        <div>${totalStudents > 0 ? (totalGoals / totalStudents).toFixed(1) : 0} هدف در هر دانش‌آموز</div>
+                        <div><strong>📝 میانگین خودارزیابی:</strong></div>
+                        <div>${totalStudents > 0 ? (totalEvals / totalStudents).toFixed(1) : 0} ارزیابی در هر دانش‌آموز</div>
+                        <div><strong>🏆 میانگین افتخارات:</strong></div>
+                        <div>${totalStudents > 0 ? (totalPrides / totalStudents).toFixed(1) : 0} افتخار در هر دانش‌آموز</div>
+                        <div><strong>⭐ میانگین امتیاز:</strong></div>
+                        <div>${avgScore} از ۱۰</div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: white; border-radius: 8px;">
+                        <strong>📋 نتیجه‌گیری کلی:</strong>
+                        <p style="margin-top: 5px; color: #666;">${totalStudents > 0 ? (totalEvals > 0 ? '✅ دانش‌آموزان در مسیر پیشرفت هستند. ادامه دهید!' : '⚠️ دانش‌آموزان نیاز به تشویق برای ثبت خودارزیابی دارند.') : '⚠️ هنوز دانش‌آموزی ثبت نشده است.'}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderSchoolCharts(gradeDistribution, monthlyData) {
+            // Distribution chart
+            const ctx1 = document.getElementById('schoolDistributionChart');
+            if (charts.distribution) charts.distribution.destroy();
+            
+            const labels = Object.keys(gradeDistribution);
+            const data = Object.values(gradeDistribution);
+            const colors = ['#667eea', '#764ba2', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            
+            charts.distribution = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { family: 'Vazirmatn' } }
+                        }
+                    }
+                }
+            });
+            
+            // Trend chart
+            const ctx2 = document.getElementById('schoolTrendChart');
+            if (charts.trend) charts.trend.destroy();
+            
+            const monthOrder = ['مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند', 'فروردین', 'اردیبهشت', 'خرداد'];
+            const sortedMonths = monthOrder.filter(m => monthlyData[m]);
+            
+            charts.trend = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [{
+                        label: 'تعداد خودارزیابی‌ها',
+                        data: sortedMonths.map(m => monthlyData[m] || 0),
+                        borderColor: '#A51C30',
+                        backgroundColor: 'rgba(165, 28, 48, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#A51C30',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { font: { family: 'Vazirmatn' } }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+        
+        function exportSchoolReport() {
+            const content = document.getElementById('schoolSummaryContent').innerHTML;
+            const stats = document.getElementById('schoolStatsGrid').innerHTML;
+            
+            const fullHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>گزارش کلی مدرسه</title></head>
+                <body style="font-family: 'Vazirmatn', Tahoma; direction: rtl; text-align: right; font-size: 12pt; line-height: 2; padding: 20px;">
+                    <h1 style="color: #A51C30; text-align: center;">🏫 گزارش کلی مدرسه</h1>
+                    <p style="text-align: center; color: #666;">تاریخ: ${new Date().toLocaleDateString('fa-IR')}</p>
+                    <hr style="margin: 20px 0;">
+                    <h2>📊 آمار کلی</h2>
+                    ${stats}
+                    <hr style="margin: 20px 0;">
+                    <h2>📋 خلاصه</h2>
+                    ${content}
+                    <hr style="margin: 20px 0;">
+                    <p style="text-align: center; color: #999; font-size: 10pt;">این گزارش توسط سامانه پوشه کار تعاملی تولید شده است</p>
+                </body>
+                </html>
+            `;
+            
+            const blob = new Blob(['\ufeff' + fullHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `گزارش-مدرسه-${new Date().toISOString().split('T')[0]}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            
+            showMessage('schoolSummaryContent', '✅ گزارش مدرسه با موفقیت دانلود شد!', 'success');
+        }
+        
+        // ============================================
+        // CLASSES REPORT
+        // ============================================
+        function renderClassesReport() {
+            if (!ai) {
+                ai = new AIAnalytics();
+            }
+            
+            const students = ai.data.students || [];
+            const container = document.getElementById('classesReportContent');
+            
+            // Group students by grade
+            const classes = {};
+            students.forEach(s => {
+                const grade = s.grade || 'نامشخص';
+                if (!classes[grade]) classes[grade] = [];
+                classes[grade].push(s);
+            });
+            
+            const classNames = Object.keys(classes);
+            
+            if (classNames.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📚</span>
+                        <p>هیچ کلاسی ثبت نشده است</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            classNames.forEach(grade => {
+                const classStudents = classes[grade];
+                const totalStudents = classStudents.length;
+                
+                let totalGoals = 0;
+                let totalEvals = 0;
+                let totalPrides = 0;
+                let totalScore = 0;
+                
+                classStudents.forEach(s => {
+                    const goals = ai.data.goals[s.id] || [];
+                    const evals = ai.data.evaluations[s.id] || {};
+                    totalGoals += goals.length;
+                    totalEvals += Object.keys(evals).length;
+                    
+                    Object.values(evals).forEach(e => {
+                        totalPrides += (e.prides?.length || 0);
+                    });
+                    
+                    const summary = ai.getStudentSummary(s.id);
+                    if (summary) totalScore += summary.totalScore;
+                });
+                
+                const avgScore = totalStudents > 0 ? (totalScore / totalStudents).toFixed(1) : 0;
+                const completionRate = totalStudents > 0 ? Math.round((totalEvals / (totalStudents * 9)) * 100) : 0;
+                
+                let progressClass = 'green';
+                if (completionRate < 30) progressClass = 'red';
+                else if (completionRate < 60) progressClass = 'yellow';
+                
+                html += `
+                    <div class="class-report-item">
+                        <div>
+                            <div class="cr-name">📚 ${grade}</div>
+                            <div class="cr-stats">
+                                <span>👥 <strong>${totalStudents}</strong> دانش‌آموز</span>
+                                <span>🎯 <strong>${totalGoals}</strong> هدف</span>
+                                <span>📝 <strong>${totalEvals}</strong> خودارزیابی</span>
+                                <span>⭐ <strong>${avgScore}</strong> امتیاز</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 12px; color: #666;">${completionRate}%</span>
+                                <div class="cr-progress">
+                                    <div class="cr-fill ${progressClass}" style="width: ${Math.min(completionRate, 100)}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function refreshClassesReport() {
+            renderClassesReport();
+            showMessage('classesReportContent', '✅ گزارش کلاس‌ها بروزرسانی شد!', 'success');
+        }
+        
+        function exportClassesReport() {
+            const content = document.getElementById('classesReportContent').innerHTML;
+            
+            const fullHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>گزارش کلاس‌ها</title></head>
+                <body style="font-family: 'Vazirmatn', Tahoma; direction: rtl; text-align: right; font-size: 12pt; line-height: 2; padding: 20px;">
+                    <h1 style="color: #A51C30; text-align: center;">📚 گزارش کلاس‌ها</h1>
+                    <p style="text-align: center; color: #666;">تاریخ: ${new Date().toLocaleDateString('fa-IR')}</p>
+                    <hr style="margin: 20px 0;">
+                    ${content}
+                    <hr style="margin: 20px 0;">
+                    <p style="text-align: center; color: #999; font-size: 10pt;">این گزارش توسط سامانه پوشه کار تعاملی تولید شده است</p>
+                </body>
+                </html>
+            `;
+            
+            const blob = new Blob(['\ufeff' + fullHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `گزارش-کلاس‌ها-${new Date().toISOString().split('T')[0]}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            
+            showMessage('classesReportContent', '✅ گزارش کلاس‌ها با موفقیت دانلود شد!', 'success');
+        }
+        
+        // ============================================
+        // REFRESH
+        // ============================================
+        function refreshData() {
+            ai = new AIAnalytics();
+            notifSystem = new NotificationSystem();
+            loadStudentsList();
+            renderSchoolReport();
+            renderClassesReport();
+            loadAtRiskStudents();
+            showMessage('summaryContent', '✅ همه داده‌ها بروزرسانی شدند!', 'success');
+        }
+        
+        // ============================================
+        // UTILITIES
+        // ============================================
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            if (!container) {
+                const div = document.createElement('div');
+                div.className = `message show ${type}`;
+                div.textContent = text;
+                div.style.position = 'fixed';
+                div.style.top = '20px';
+                div.style.left = '50%';
+                div.style.transform = 'translateX(-50%)';
+                div.style.zIndex = '9999';
+                div.style.maxWidth = '500px';
+                div.style.width = '90%';
+                div.style.padding = '15px 20px';
+                div.style.borderRadius = '12px';
+                div.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 4000);
+                return;
+            }
+            
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            if (adminAuth.isLoggedIn()) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appHeader').style.display = 'flex';
+                document.getElementById('dashboard').classList.add('active');
+                
+                const session = adminAuth.getSession();
+                if (session) {
+                    document.getElementById('userDisplay').textContent = `👤 ${session.username || 'مدیر'}`;
+                }
+                
+                ai = new AIAnalytics();
+                notifSystem = new NotificationSystem();
+                loadStudentsList();
+                renderSchoolReport();
+                renderClassesReport();
+                loadAtRiskStudents();
+            }
+        });
+        
+        console.log('🤖 پنل تحلیل هوشمند پیشرفته با نوتیفیکیشن و گزارش بارگذاری شد!');
+        console.log('🔑 نام کاربری: admin | رمز: admin123');
+    </script>
+</body>
+</html>

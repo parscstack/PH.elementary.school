@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👥 ورود معاونین</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="assistant-auth.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1a202c;
+            --text: #2d3748;
+            --border: #e2e8f0;
+            --light: #f7fafc;
+            --harvard-crimson: #A51C30;
+            --harvard-dark: #1E3A5F;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .login-container .logo {
+            text-align: center;
+            font-size: 60px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .login-container h1 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .login-container .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        
+        .message.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+        }
+        
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+        
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .back-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .role-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .role-badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .role-badge.edu {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .role-badge.culture {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .role-badge.exec {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <span class="logo">👥</span>
+        <h1>ورود معاونین</h1>
+        <p class="subtitle">به سامانه مدیریت مدرسه خوش آمدید</p>
+        
+        <div class="role-badges">
+            <span class="role-badge edu">📚 معاون آموزشی</span>
+            <span class="role-badge culture">🌱 معاون پرورشی</span>
+            <span class="role-badge exec">🏢 معاون اجرایی</span>
+        </div>
+        
+        <div class="form-group">
+            <label>نام کاربری:</label>
+            <input type="text" id="loginUsername" placeholder="نام کاربری را وارد کنید">
+        </div>
+        
+        <div class="form-group">
+            <label>رمز عبور:</label>
+            <input type="password" id="loginPassword" placeholder="رمز عبور را وارد کنید">
+        </div>
+        
+        <button class="btn btn-primary" onclick="handleLogin()">🔓 ورود به پنل</button>
+        
+        <div id="loginMessage"></div>
+        
+        <div class="back-link">
+            <a href="index.html">← بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+
+    <script>
+        const assistantAuth = new AssistantAuth();
+        
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                showMessage('loginMessage', '❌ لطفاً نام کاربری و رمز عبور را وارد کنید.', 'error');
+                return;
+            }
+            
+            const result = assistantAuth.login(username, password);
+            
+            if (result.success) {
+                showMessage('loginMessage', result.message, 'success');
+                setTimeout(() => {
+                    window.location.href = 'assistant-dashboard.html';
+                }, 1000);
+            } else {
+                showMessage('loginMessage', result.message, 'error');
+            }
+        }
+        
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        // Enter key support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
+        });
+        
+        console.log('👥 صفحه ورود معاونین بارگذاری شد!');
+        console.log('🔑 رمزهای پیش‌فرض: edu / edu123 | culture / culture123 | executive / exec123');
+    </script>
+</body>
+</html>

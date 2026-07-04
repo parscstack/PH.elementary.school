@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👨‍🏫 ورود معلم</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="teacher-auth.js"></script>
+    <style>
+        :root {
+            --role-color: #10b981;
+            --role-light: #ecfdf5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #064e3b, #065f46, #047857);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 45px 40px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease;
+            border-top: 6px solid var(--role-color);
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-container .login-icon {
+            font-size: 70px;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .login-container h1 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        
+        .login-container .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .login-container .info-box {
+            background: var(--role-light);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-right: 4px solid var(--role-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .login-container .info-box .info-icon {
+            font-size: 30px;
+        }
+        
+        .login-container .info-box .info-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .login-container .info-box .info-text strong {
+            color: var(--role-color);
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1a202c;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--role-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #047857);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1a202c;
+            width: auto;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        .message.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        .back-link a {
+            color: var(--role-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .change-pwd-btn {
+            text-align: center;
+            margin-top: 12px;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-container .login-icon {
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <span class="login-icon">👨‍🏫</span>
+        <h1>ورود معلم</h1>
+        <p class="subtitle">به پنل مدیریت معلمان خوش آمدید</p>
+        
+        <div class="info-box">
+            <span class="info-icon">📊</span>
+            <div class="info-text">
+                <strong>مدیریت دانش‌آموزان و پاداش‌ها</strong><br>
+                پیشرفت دانش‌آموزان را پیگیری کنید
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>نام کاربری:</label>
+            <input type="text" id="loginUsername" placeholder="نام کاربری">
+        </div>
+        
+        <div class="form-group">
+            <label>رمز عبور:</label>
+            <input type="password" id="loginPassword" placeholder="رمز عبور">
+        </div>
+        
+        <button class="btn btn-primary" onclick="handleLogin()">🔓 ورود به داشبورد</button>
+        
+        <div class="change-pwd-btn">
+            <button class="btn btn-secondary" onclick="showChangePassword()">🔑 تغییر رمز عبور</button>
+        </div>
+        
+        <div id="loginMessage"></div>
+        
+        <div class="back-link">
+            <a href="index.html">← بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+
+    <script>
+        const teacherAuth = new TeacherAuth();
+        
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                showMessage('loginMessage', '❌ لطفاً نام کاربری و رمز عبور را وارد کنید.', 'error');
+                return;
+            }
+            
+            const result = teacherAuth.login(username, password);
+            
+            if (result.success) {
+                showMessage('loginMessage', '✅ ورود با موفقیت انجام شد!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'teacher-dashboard-v3.html';
+                }, 1000);
+            } else {
+                showMessage('loginMessage', result.message, 'error');
+            }
+        }
+        
+        function showChangePassword() {
+            alert('🔑 برای تغییر رمز عبور، پس از ورود به پنل معلم به بخش "تغییر رمز عبور" بروید.');
+        }
+        
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        
+        console.log('👨‍🏫 صفحه ورود معلم بارگذاری شد!');
+        console.log('🔑 نام کاربری: teacher | رمز: teacher123');
+    </script>
+</body>
+</html>

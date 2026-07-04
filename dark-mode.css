@@ -1,0 +1,931 @@
+/* dark-mode.css - استایل‌های حالت تاریک */
+
+:root {
+    /* Light Mode (پیش‌فرض) */
+    --bg-primary: #f7fafc;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-hover: #f0f4ff;
+    --text-primary: #1a202c;
+    --text-secondary: #2d3748;
+    --text-muted: #666666;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --shadow-hover: rgba(0, 0, 0, 0.15);
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --gradient-start: #667eea;
+    --gradient-end: #764ba2;
+    --badge-bg: #f0f4ff;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+    --bg-primary: #0f0f1a;
+    --bg-secondary: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-hover: #1a2a4a;
+    --text-primary: #e2e8f0;
+    --text-secondary: #cbd5e0;
+    --text-muted: #94a3b8;
+    --border-color: #2d3748;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --shadow-hover: rgba(0, 0, 0, 0.6);
+    --scrollbar-track: #1a1a2e;
+    --scrollbar-thumb: #4a4a6a;
+    --gradient-start: #4f46e5;
+    --gradient-end: #7c3aed;
+    --badge-bg: #1a2a4a;
+}
+
+/* ===== Dark Mode Specific ===== */
+
+/* Backgrounds */
+body.dark-mode {
+    background: var(--bg-primary);
+}
+
+.dark-mode .header,
+.dark-mode .dashboard-header {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .header h1,
+.dark-mode .header p,
+.dark-mode .dashboard-header .user-info .name,
+.dark-mode .dashboard-header .user-info .role {
+    color: var(--text-primary);
+}
+
+.dark-mode .card,
+.dark-mode .stat-card,
+.dark-mode .rewards-section,
+.dark-mode .action-card,
+.dark-mode .info-card,
+.dark-mode .note-card,
+.dark-mode .note-stat-card,
+.dark-mode .note-input-area,
+.dark-mode .notes-container,
+.dark-mode .login-container,
+.dark-mode .login-screen,
+.dark-mode .level-box,
+.dark-mode .modal-content {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+.dark-mode .card h2,
+.dark-mode .card h3,
+.dark-mode .rewards-title,
+.dark-mode .action-title,
+.dark-mode .stat-label,
+.dark-mode .info-card h3,
+.dark-mode .login-container h1,
+.dark-mode .login-container .subtitle,
+.dark-mode .modal-content h2,
+.dark-mode .level-box .lb-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .stat-value,
+.dark-mode .student-name,
+.dark-mode .class-card .class-name,
+.dark-mode .teacher-item .ti-name,
+.dark-mode .info-value,
+.dark-mode .goal-title,
+.dark-mode .notif-title,
+.dark-mode .reward-item .ri-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .stat-card {
+    border-top-color: #4f46e5;
+}
+
+.dark-mode .stat-card,
+.dark-mode .class-card,
+.dark-mode .teacher-item,
+.dark-mode .student-item,
+.dark-mode .info-card {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .student-item:hover {
+    background: #1a2a4a;
+}
+
+.dark-mode .student-grade,
+.dark-mode .info-label,
+.dark-mode .class-card .class-stats span,
+.dark-mode .teacher-item .ti-detail,
+.dark-mode .note-date,
+.dark-mode .activity-item .ai-meta,
+.dark-mode .reward-item .ri-meta {
+    color: var(--text-muted);
+}
+
+.dark-mode .badge-card {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .badge-card.earned {
+    background: linear-gradient(135deg, #1a2a4a, #2a1a3a);
+    border-color: #f59e0b;
+}
+
+.dark-mode .badge-name {
+    color: var(--text-primary);
+}
+
+.dark-mode .badge-description {
+    color: var(--text-muted);
+}
+
+/* Form Elements */
+.dark-mode .form-group input,
+.dark-mode .form-group select,
+.dark-mode .form-group textarea,
+.dark-mode .note-textarea,
+.dark-mode .styled-input,
+.dark-mode .styled-textarea,
+.dark-mode .student-selector select {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.dark-mode .form-group input:focus,
+.dark-mode .form-group select:focus,
+.dark-mode .form-group textarea:focus,
+.dark-mode .note-textarea:focus,
+.dark-mode .styled-input:focus,
+.dark-mode .styled-textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+.dark-mode .form-group label {
+    color: var(--text-secondary);
+}
+
+/* Login Screen */
+.dark-mode .login-screen h2,
+.dark-mode .login-screen p,
+.dark-mode .login-container h1,
+.dark-mode .login-container .subtitle {
+    color: var(--text-primary);
+}
+
+.dark-mode .login-screen .form-group label,
+.dark-mode .login-container .form-group label {
+    color: var(--text-secondary);
+}
+
+.dark-mode .login-screen .info-box,
+.dark-mode .login-container .info-box {
+    background: var(--bg-hover);
+    border-color: #4f46e5;
+}
+
+.dark-mode .login-screen .info-box .info-text,
+.dark-mode .login-container .info-box .info-text {
+    color: var(--text-secondary);
+}
+
+/* Buttons */
+.dark-mode .btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.dark-mode .btn-secondary:hover {
+    background: var(--bg-hover);
+}
+
+.dark-mode .btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+.dark-mode .btn-success {
+    background: #059669;
+}
+
+.dark-mode .btn-success:hover {
+    background: #047857;
+}
+
+.dark-mode .btn-danger {
+    background: #dc2626;
+}
+
+.dark-mode .btn-danger:hover {
+    background: #b91c1c;
+}
+
+/* Notifications */
+.dark-mode .notif-dropdown,
+.dark-mode .notif-dropdown.teacher {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.dark-mode .notif-dropdown .notif-header h4 {
+    color: var(--text-primary);
+}
+
+.dark-mode .notif-item {
+    background: var(--bg-hover);
+}
+
+.dark-mode .notif-item.unread {
+    background: #1a2a4a;
+    border-right-color: #4f46e5;
+}
+
+.dark-mode .notif-item .notif-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .notif-item .notif-message,
+.dark-mode .notif-item .notif-preview {
+    color: var(--text-secondary);
+}
+
+.dark-mode .notif-item .notif-time {
+    color: var(--text-muted);
+}
+
+.dark-mode .notif-empty {
+    color: var(--text-muted);
+}
+
+/* Modal */
+.dark-mode .modal-content {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.dark-mode .modal-content h2 {
+    color: var(--text-primary);
+}
+
+.dark-mode .modal-content .modal-subtitle,
+.dark-mode .modal-content p {
+    color: var(--text-muted);
+}
+
+.dark-mode .modal-close-btn {
+    color: var(--text-muted);
+}
+
+.dark-mode .modal-close-btn:hover {
+    color: #ef4444;
+}
+
+.dark-mode .student-select-item {
+    background: var(--bg-hover);
+}
+
+.dark-mode .student-select-item .ss-name {
+    color: var(--text-primary);
+}
+
+.dark-mode .student-select-item .ss-grade {
+    color: var(--text-muted);
+}
+
+.dark-mode .student-select-item.selected {
+    border-color: #4f46e5;
+    background: #1a2a4a;
+}
+
+/* Notes */
+.dark-mode .note-card {
+    background: var(--bg-hover);
+}
+
+.dark-mode .note-text {
+    color: var(--text-secondary);
+}
+
+.dark-mode .note-date {
+    color: var(--text-muted);
+}
+
+.dark-mode .note-type-badge {
+    color: var(--text-primary);
+}
+
+/* Profile */
+.dark-mode .profile-header {
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+    border: 1px solid var(--border-color);
+}
+
+.dark-mode .profile-info h2,
+.dark-mode .profile-info p {
+    color: var(--text-primary);
+}
+
+.dark-mode .profile-avatar,
+.dark-mode .ph-avatar {
+    background: #4f46e5;
+    color: white;
+}
+
+/* Tabs */
+.dark-mode .tab-btn,
+.dark-mode .teacher-tab,
+.dark-mode .profile-tab,
+.dark-mode .reward-tab,
+.dark-mode .admin-tab,
+.dark-mode .ai-tab {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+.dark-mode .tab-btn:hover,
+.dark-mode .teacher-tab:hover,
+.dark-mode .profile-tab:hover,
+.dark-mode .reward-tab:hover,
+.dark-mode .admin-tab:hover,
+.dark-mode .ai-tab:hover {
+    border-color: #4f46e5;
+    color: var(--text-primary);
+}
+
+.dark-mode .tab-btn.active,
+.dark-mode .teacher-tab.active,
+.dark-mode .profile-tab.active,
+.dark-mode .reward-tab.active,
+.dark-mode .admin-tab.active,
+.dark-mode .ai-tab.active {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    border-color: #4f46e5;
+}
+
+/* Charts */
+.dark-mode .chart-container canvas {
+    filter: brightness(0.9);
+}
+
+/* Scrollbar */
+.dark-mode ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #5a5a7a;
+}
+
+/* Connection Status */
+.dark-mode .connection-item {
+    background: var(--bg-hover);
+}
+
+.dark-mode .connection-name {
+    color: var(--text-primary);
+}
+
+.dark-mode .connection-desc {
+    color: var(--text-muted);
+}
+
+/* Quick Actions */
+.dark-mode .action-card,
+.dark-mode .quick-item {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.dark-mode .action-card .action-title,
+.dark-mode .quick-item .qi-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .action-card .action-desc,
+.dark-mode .quick-item .qi-desc {
+    color: var(--text-muted);
+}
+
+/* Empty State */
+.dark-mode .empty-state,
+.dark-mode .empty-profile {
+    color: var(--text-muted);
+}
+
+.dark-mode .empty-state .empty-icon,
+.dark-mode .empty-profile .empty-icon {
+    opacity: 0.5;
+}
+
+/* Reward Section */
+.dark-mode .rewards-section {
+    background: var(--bg-card);
+}
+
+.dark-mode .progress-bar-container,
+.dark-mode .level-box .lb-bar {
+    background: var(--bg-secondary);
+}
+
+.dark-mode .progress-bar-fill,
+.dark-mode .level-box .lb-bar .lb-fill {
+    background: linear-gradient(90deg, #4f46e5, #7c3aed);
+}
+
+.dark-mode .points-display {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.dark-mode .level-display {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+/* Note Stats */
+.dark-mode .note-stat-card {
+    background: var(--bg-hover);
+}
+
+.dark-mode .note-stat-value {
+    color: var(--text-primary);
+}
+
+.dark-mode .note-stat-label {
+    color: var(--text-muted);
+}
+
+/* Filter Buttons */
+.dark-mode .filter-btn,
+.dark-mode .note-type-btn,
+.dark-mode .nt-btn {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+.dark-mode .filter-btn:hover,
+.dark-mode .note-type-btn:hover,
+.dark-mode .nt-btn:hover {
+    border-color: #4f46e5;
+    color: var(--text-primary);
+}
+
+.dark-mode .filter-btn.active,
+.dark-mode .note-type-btn.active,
+.dark-mode .nt-btn.active {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    border-color: #4f46e5;
+}
+
+/* Goal SMART Items */
+.dark-mode .goal-smart-item.s {
+    background: #1a2a4a;
+    border-right-color: #4f46e5;
+}
+.dark-mode .goal-smart-item.m {
+    background: #1a3a2a;
+    border-right-color: #059669;
+}
+.dark-mode .goal-smart-item.a {
+    background: #3a2a1a;
+    border-right-color: #d97706;
+}
+.dark-mode .goal-smart-item.r {
+    background: #3a1a1a;
+    border-right-color: #dc2626;
+}
+.dark-mode .goal-smart-item.t {
+    background: #2a1a3a;
+    border-right-color: #7c3aed;
+}
+
+.dark-mode .goal-smart-item .label {
+    color: var(--text-muted);
+}
+
+.dark-mode .goal-smart-item .value {
+    color: var(--text-primary);
+}
+
+/* Suggested Goals */
+.dark-mode .suggested-goals {
+    background: linear-gradient(135deg, #2a2a1a, #3a2a1a);
+    border-right-color: #d97706;
+}
+
+.dark-mode .suggested-goals h3 {
+    color: #fbbf24;
+}
+
+.dark-mode .suggested-goals li {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.dark-mode .suggested-goals li:hover {
+    background: #4f46e5;
+    color: white;
+}
+
+/* Letter Container */
+.dark-mode .letter-container {
+    background: linear-gradient(135deg, #2a2a1a, #3a2a1a);
+    border-color: #d97706;
+}
+
+.dark-mode .letter-container .letter-header h3 {
+    color: #fbbf24;
+}
+
+.dark-mode .letter-container .letter-header p {
+    color: #fcd34d;
+}
+
+.dark-mode .letter-textarea {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: #d97706;
+}
+
+.dark-mode .letter-textarea:focus {
+    border-color: #4f46e5;
+}
+
+.dark-mode .letter-signature {
+    color: #fcd34d;
+}
+
+/* Quiz */
+.dark-mode .quiz-option {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.dark-mode .quiz-option:hover {
+    border-color: #4f46e5;
+    background: var(--bg-secondary);
+}
+
+.dark-mode .quiz-result {
+    background: linear-gradient(135deg, #2a2a1a, #3a2a1a);
+}
+
+.dark-mode .quiz-result h3 {
+    color: #fbbf24;
+}
+
+.dark-mode .quiz-result p {
+    color: var(--text-secondary);
+}
+
+.dark-mode .quiz-question {
+    color: var(--text-primary);
+}
+
+/* Interests */
+.dark-mode .interest-card {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.dark-mode .interest-card:hover {
+    border-color: #4f46e5;
+}
+
+.dark-mode .interest-card.selected {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-color: #4f46e5;
+    color: white;
+}
+
+.dark-mode .selected-count {
+    color: var(--text-muted);
+}
+
+.dark-mode .selected-count strong {
+    color: #4f46e5;
+}
+
+/* Messages */
+.dark-mode .message.success {
+    background: #1a3a2a;
+    color: #34d399;
+}
+
+.dark-mode .message.error {
+    background: #3a1a1a;
+    color: #f87171;
+}
+
+.dark-mode .message.info {
+    background: #1a2a4a;
+    color: #60a5fa;
+}
+
+/* Teacher Dashboard Specific */
+.dark-mode .teacher-tabs {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.dark-mode .reward-activity {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .shop-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .shop-item .si-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .shop-item .si-price {
+    color: #f59e0b;
+}
+
+.dark-mode .library-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .library-item .li-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .library-item .li-desc {
+    color: var(--text-muted);
+}
+
+/* Student Dashboard Specific */
+.dark-mode .level-box {
+    background: var(--bg-hover);
+    border-color: #4f46e5;
+}
+
+.dark-mode .level-box .lb-level {
+    color: #8b5cf6;
+}
+
+.dark-mode .badge-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .badge-item.earned {
+    background: linear-gradient(135deg, #1a2a4a, #2a1a3a);
+    border-color: #f59e0b;
+}
+
+.dark-mode .reward-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .reward-item .ri-points {
+    color: #8b5cf6;
+}
+
+.dark-mode .shop-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .shop-item .si-price {
+    color: #8b5cf6;
+}
+
+.dark-mode .quick-item {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.dark-mode .quick-item .qi-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .quick-item .qi-desc {
+    color: var(--text-muted);
+}
+
+/* Admin Dashboard Specific */
+.dark-mode .admin-tabs {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.dark-mode .class-card {
+    background: var(--bg-hover);
+}
+
+.dark-mode .teacher-item {
+    background: var(--bg-hover);
+}
+
+.dark-mode .students-table th {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.dark-mode .students-table td {
+    color: var(--text-secondary);
+}
+
+.dark-mode .students-table tr:hover td {
+    background: var(--bg-hover);
+}
+
+.dark-mode .school-stat-card {
+    background: var(--bg-hover);
+}
+
+.dark-mode .school-stat-card .ss-value {
+    color: var(--text-primary);
+}
+
+.dark-mode .school-stat-card .ss-label {
+    color: var(--text-muted);
+}
+
+/* Security Dashboard Specific */
+.dark-mode .check-item {
+    background: var(--bg-hover);
+}
+
+.dark-mode .check-item .check-name {
+    color: var(--text-primary);
+}
+
+.dark-mode .check-item .check-message {
+    color: var(--text-muted);
+}
+
+.dark-mode .backup-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .backup-item .backup-date {
+    color: var(--text-primary);
+}
+
+.dark-mode .backup-item .backup-meta {
+    color: var(--text-muted);
+}
+
+.dark-mode .setting-row {
+    border-color: var(--border-color);
+}
+
+.dark-mode .setting-row .setting-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .setting-row .setting-desc {
+    color: var(--text-muted);
+}
+
+.dark-mode .log-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .log-item .log-time {
+    color: var(--text-muted);
+}
+
+.dark-mode .log-item .log-user {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.dark-mode .log-item .log-role-badge {
+    color: var(--text-primary);
+}
+
+.dark-mode .alert-critical {
+    background: #3a1a1a !important;
+}
+
+.dark-mode .alert-warning {
+    background: #3a2a1a !important;
+}
+
+.dark-mode .alert-info {
+    background: #1a2a4a !important;
+}
+
+/* Password Manager */
+.dark-mode .password-item {
+    background: var(--bg-hover);
+    border-color: var(--border-color);
+}
+
+.dark-mode .password-item .pw-name {
+    color: var(--text-primary);
+}
+
+.dark-mode .password-item .pw-detail {
+    color: var(--text-muted);
+}
+
+.dark-mode .password-item .pw-detail code {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    color: var(--text-primary);
+}
+
+.theme-toggle-btn:hover {
+    transform: rotate(30deg) scale(1.1);
+    box-shadow: 0 5px 20px var(--shadow-hover);
+}
+
+/* Dark mode specific for toggle */
+[data-theme="dark"] .theme-toggle-btn {
+    background: var(--bg-hover);
+    border-color: #4f46e5;
+}
+
+/* Portal Cards */
+.dark-mode .portal-card {
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border-color: var(--border-color);
+}
+
+.dark-mode .portal-card .pc-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .portal-card .pc-desc {
+    color: var(--text-muted);
+}
+
+.dark-mode .portal-card:hover {
+    border-color: #4f46e5;
+}
+
+.dark-mode .stats-item {
+    background: rgba(26, 26, 46, 0.8);
+    border-color: var(--border-color);
+}
+
+.dark-mode .stats-item .stat-number {
+    color: var(--text-primary);
+}
+
+.dark-mode .stats-item .stat-label {
+    color: var(--text-muted);
+}
+
+/* Tools Page */
+.dark-mode .tool-card {
+    background: rgba(26, 26, 46, 0.95);
+    border-color: var(--border-color);
+}
+
+.dark-mode .tool-card .tc-title {
+    color: var(--text-primary);
+}
+
+.dark-mode .tool-card .tc-desc {
+    color: var(--text-muted);
+}
+
+.dark-mode .tool-card:hover {
+    border-color: #4f46e5;
+}

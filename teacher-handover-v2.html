@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>‍🏫 Teacher Handover - متصل به مرکز کنترل</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --harvard-crimson: #A51C30;
+            --harvard-dark: #1E3A5F;
+            --harvard-gold: #C9A961;
+            --harvard-cream: #F5F1E8;
+            --harvard-light: #FAF8F5;
+            --success: #2D6A4F;
+            --warning: #E9A820;
+            --danger: #A51C30;
+            --text-primary: #1E3A5F;
+            --text-secondary: #5A6B7C;
+            --border: #E0D5C5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+        }
+        
+        body {
+            background: var(--harvard-light);
+            min-height: 100vh;
+            direction: rtl;
+            line-height: 1.8;
+            color: var(--text-primary);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--harvard-dark) 0%, var(--harvard-crimson) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .connection-badge {
+            display: inline-block;
+            background: rgba(45, 106, 79, 0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+        
+        .connection-badge::before {
+            content: '🟢 ';
+        }
+        
+        .form-container {
+            padding: 40px 30px;
+        }
+        
+        .student-selector {
+            background: linear-gradient(135deg, var(--harvard-cream), white);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px dashed var(--harvard-gold);
+        }
+        
+        .student-selector h3 {
+            color: var(--harvard-dark);
+            margin-bottom: 15px;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        .existing-students {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .existing-student-card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .existing-student-card:hover {
+            border-color: var(--harvard-crimson);
+            transform: translateY(-3px);
+        }
+        
+        .existing-student-card.selected {
+            background: linear-gradient(135deg, var(--harvard-dark), var(--harvard-crimson));
+            color: white;
+            border-color: var(--harvard-crimson);
+        }
+        
+        .existing-student-card .name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+        
+        .existing-student-card .grade {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--harvard-dark), var(--harvard-crimson));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--harvard-dark);
+            border: 2px solid var(--harvard-dark);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .form-section {
+            background: var(--harvard-light);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-right: 4px solid var(--harvard-crimson);
+        }
+        
+        .form-section h3 {
+            color: var(--harvard-dark);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+            direction: rtl;
+            background: white;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--harvard-crimson);
+            box-shadow: 0 0 0 3px rgba(165, 28, 48, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.8;
+        }
+        
+        .rating-scale {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .rating-option:hover {
+            border-color: var(--harvard-crimson);
+        }
+        
+        .rating-option.selected {
+            background: linear-gradient(135deg, var(--harvard-dark), var(--harvard-crimson));
+            color: white;
+            border-color: var(--harvard-crimson);
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .checkbox-item:hover {
+            border-color: var(--harvard-crimson);
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .checkbox-item.selected {
+            background: var(--harvard-light);
+            border-color: var(--harvard-crimson);
+        }
+        
+        .message {
+            display: none;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .message.show { display: block; animation: slideIn 0.4s ease; }
+        .message.success { background: #D4EDDA; color: var(--success); border: 2px solid var(--success); }
+        .message.error { background: #F8D7DA; color: var(--danger); border: 2px solid var(--danger); }
+        .message.info { background: #D1ECF1; color: #0c5460; border: 2px solid #17a2b8; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .existing-data-notice {
+            background: #fff3cd;
+            border: 2px solid var(--warning);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .existing-data-notice.show {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 { font-size: 22px; }
+            .existing-students { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👨🏫 Teacher Handover</h1>
+            <p>انتقال اطلاعات دانش‌آموز به معلم جدید</p>
+            <div class="connection-badge">متصل به مرکز کنترل</div>
+        </div>
+        
+        <div class="form-container">
+            <!-- Student Selector -->
+            <div class="student-selector">
+                <h3>🎯 انتخاب دانش‌آموز</h3>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; text-align: center;">
+                    دانش‌آموزی که می‌خواهید اطلاعاتش را منتقل کنید انتخاب کنید
+                </p>
+                
+                <div class="existing-students" id="existingStudents"></div>
+                
+                <button class="btn btn-secondary btn-full" onclick="showNewStudentForm()">
+                    ➕ ثبت دانش‌آموز جدید
+                </button>
+            </div>
+            
+            <!-- Existing Data Notice -->
+            <div class="existing-data-notice" id="existingDataNotice">
+                <strong>⚠️ توجه:</strong> اطلاعات قبلی از معلم قبلی برای این دانش‌آموز ثبت شده است. می‌توانید آن را ویرایش کنید.
+            </div>
+            
+            <!-- Main Form -->
+            <div id="mainForm" style="display: none;">
+                <!-- Section 1: Basic Info -->
+                <div class="form-section">
+                    <h3>📋 اطلاعات پایه</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>نام و نام خانوادگی دانش‌آموز:</label>
+                            <input type="text" id="studentName" placeholder="مثلاً: علی رضایی">
+                        </div>
+                        <div class="form-group">
+                            <label>پایه تحصیلی:</label>
+                            <select id="grade">
+                                <option value="اول">اول ابتدایی</option>
+                                <option value="دوم">دوم ابتدایی</option>
+                                <option value="سوم">سوم ابتدایی</option>
+                                <option value="چهارم">چهارم ابتدایی</option>
+                                <option value="پنجم">پنجم ابتدایی</option>
+                                <option value="ششم">ششم ابتدایی</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>سن:</label>
+                            <input type="number" id="age" placeholder="مثلاً: 9" min="5" max="15">
+                        </div>
+                        <div class="form-group">
+                            <label>وضعیت خاص:</label>
+                            <select id="specialStatus">
+                                <option value="عادی">عادی</option>
+                                <option value="نیاز به حمایت">نیاز به حمایت آموزشی</option>
+                                <option value="IEP">دارای برنامه IEP</option>
+                                <option value="تیزهوش">تیزهوش</option>
+                                <option value="بیماری خاص">بیماری خاص</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Academic Performance -->
+                <div class="form-section">
+                    <h3>📊 عملکرد تحصیلی</h3>
+                    <div class="form-group">
+                        <label>نقاط قوت تحصیلی:</label>
+                        <textarea id="academicStrengths" rows="3" placeholder="مثلاً: ریاضی، علوم، خواندن..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>نقاط ضعف تحصیلی:</label>
+                        <textarea id="academicWeaknesses" rows="3" placeholder="مثلاً: املا، نگارش، ریاضی..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>ارزیابی کلی عملکرد:</label>
+                        <div class="rating-scale" id="overallRating">
+                            <div class="rating-option" data-value="عالی">عالی ⭐⭐⭐⭐⭐</div>
+                            <div class="rating-option" data-value="خوب">خوب ⭐⭐⭐⭐</div>
+                            <div class="rating-option" data-value="متوسط">متوسط ⭐⭐⭐</div>
+                            <div class="rating-option" data-value="نیاز به بهبود">نیاز به بهبود ⭐⭐</div>
+                            <div class="rating-option" data-value="ضعیف">ضعیف ⭐</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>استراتژی‌های آموزشی مؤثر:</label>
+                        <textarea id="effectiveStrategies" rows="3" placeholder="مثلاً: استفاده از تصاویر، بازی‌های آموزشی، کار گروهی..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Learning Style -->
+                <div class="form-section">
+                    <h3> سبک یادگیری</h3>
+                    <div class="form-group">
+                        <label>سبک یادگیری غالب:</label>
+                        <div class="rating-scale" id="learningStyle">
+                            <div class="rating-option" data-value="دیداری">👁️ دیداری</div>
+                            <div class="rating-option" data-value="شنیداری">👂 شنیداری</div>
+                            <div class="rating-option" data-value="حرکتی">🤸 حرکتی</div>
+                            <div class="rating-option" data-value="ترکیبی">🎯 ترکیبی</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>نحوه واکنش به چالش‌های یادگیری:</label>
+                        <textarea id="challengeResponse" rows="3" placeholder="وقتی چیزی را متوجه نمی‌شود چه می‌کند؟"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>تسهیلات مورد نیاز:</label>
+                        <div class="checkbox-group" id="accommodations">
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="زمان اضافی"> زمان اضافی برای تکالیف
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="صندلی خاص"> صندلی خاص در کلاس
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="تکالیف کمتر"> تکالیف کمتر
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="کمک همکلاسی"> کمک همکلاسی
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="ابزار کمکی"> ابزار کمکی
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" value="استراحت بیشتر"> استراحت بیشتر
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 4: Behavior & Social -->
+                <div class="form-section">
+                    <h3>🤝 رفتار و روابط اجتماعی</h3>
+                    <div class="form-group">
+                        <label>تعامل با همکلاسی‌ها:</label>
+                        <div class="rating-scale" id="peerInteraction">
+                            <div class="rating-option" data-value="عالی">عالی - رهبر گروه</div>
+                            <div class="rating-option" data-value="خوب">خوب - دوست‌داشتنی</div>
+                            <div class="rating-option" data-value="متوسط">متوسط - گاهی انزوا</div>
+                            <div class="rating-option" data-value="ضعیف">ضعیف - نیاز به کمک</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>رفتارهای چالش‌برانگیز:</label>
+                        <textarea id="behavioralChallenges" rows="3" placeholder="مثلاً: پرحرفی، بی‌قراری، عدم تمرکز..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>مشوق‌ها و پاداش‌های مؤثر:</label>
+                        <textarea id="effectiveRewards" rows="3" placeholder="چه چیزهایی او را انگیزه می‌دهد؟"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Section 5: Special Needs -->
+                <div class="form-section">
+                    <h3>🏥 نیازهای ویژه</h3>
+                    <div class="form-group">
+                        <label>آیا نیاز به پشتیبانی ویژه دارد؟</label>
+                        <div class="rating-scale" id="specialSupport">
+                            <div class="rating-option" data-value="خیر">خیر</div>
+                            <div class="rating-option" data-value="مشاوره">مشاوره مدرسه</div>
+                            <div class="rating-option" data-value="گفتاردرمانی">گفتاردرمانی</div>
+                            <div class="rating-option" data-value="کاردرمانی">کاردرمانی</div>
+                            <div class="rating-option" data-value="سایر">سایر</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>توضیحات بیشتر:</label>
+                        <textarea id="specialNeedsDetails" rows="3" placeholder="جزئیات بیشتر..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>برنامه‌های مداخله‌ای اجرا شده:</label>
+                        <textarea id="interventions" rows="3" placeholder="چه برنامه‌هایی اجرا شده و نتیجه چه بوده؟"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Section 6: Goals & Recommendations -->
+                <div class="form-section">
+                    <h3>🎯 اهداف و توصیه‌ها</h3>
+                    <div class="form-group">
+                        <label>اهداف یادگیری برای سال بعد:</label>
+                        <textarea id="nextYearGoals" rows="3" placeholder="چه اهدافی برای سال بعد پیشنهاد می‌کنید؟"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>توصیه‌های کلیدی به معلم جدید:</label>
+                        <textarea id="teacherRecommendations" rows="4" placeholder="مهم‌ترین نکاتی که معلم جدید باید بداند..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>نکات مثبت و ویژگی‌های خاص:</label>
+                        <textarea id="positiveNotes" rows="3" placeholder="چه چیزی این دانش‌آموز را خاص می‌کند؟"></textarea>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="saveTeacherData()">
+                    💾 ذخیره اطلاعات در مرکز کنترل
+                </button>
+                
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class MiniPortfolioCore {
+            constructor() {
+                this.STORAGE_KEY = 'portfolio_database_v1';
+                this.data = this.loadData();
+            }
+            
+            loadData() {
+                try {
+                    const saved = localStorage.getItem(this.STORAGE_KEY);
+                    if (saved) return JSON.parse(saved);
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                }
+                return {
+                    students: [],
+                    evaluations: {},
+                    goals: {},
+                    parentData: {},
+                    teacherData: {},
+                    createdAt: new Date().toISOString(),
+                    lastModified: new Date().toISOString()
+                };
+            }
+            
+            saveData() {
+                try {
+                    this.data.lastModified = new Date().toISOString();
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
+                } catch (error) {
+                    console.error('Error saving data:', error);
+                    throw error;
+                }
+            }
+            
+            getAllStudents() {
+                return this.data.students;
+            }
+            
+            getStudent(studentId) {
+                return this.data.students.find(s => s.id === studentId);
+            }
+            
+            getStudentByName(name) {
+                return this.data.students.find(s => s.name === name);
+            }
+            
+            addStudent(name, grade, code = null) {
+                const studentId = 'student_' + Date.now();
+                const student = {
+                    id: studentId,
+                    name: name,
+                    grade: grade,
+                    code: code || studentId,
+                    createdAt: new Date().toISOString(),
+                    data: {
+                        student_view: null,
+                        parent_view: null,
+                        teacher_view: null,
+                        evaluations: [],
+                        goals: []
+                    }
+                };
+                
+                this.data.students.push(student);
+                this.saveData();
+                return student;
+            }
+            
+            saveTeacherData(studentId, teacherData) {
+                this.data.teacherData[studentId] = teacherData;
+                const student = this.getStudent(studentId);
+                if (student) {
+                    student.data.teacher_view = teacherData;
+                }
+                this.saveData();
+            }
+            
+            getTeacherData(studentId) {
+                return this.data.teacherData[studentId] || null;
+            }
+        }
+        
+        const portfolio = new MiniPortfolioCore();
+        let selectedStudentId = null;
+        
+        function loadExistingStudents() {
+            const students = portfolio.getAllStudents();
+            const container = document.getElementById('existingStudents');
+            
+            if (students.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; font-size: 13px; grid-column: 1/-1;">هنوز دانش‌آموزی در سیستم ثبت نشده است</p>';
+                return;
+            }
+            
+            container.innerHTML = students.map(student => `
+                <div class="existing-student-card" onclick="selectStudent('${student.id}')" data-id="${student.id}">
+                    <div class="name">${student.name}</div>
+                    <div class="grade">پایه ${student.grade}</div>
+                </div>
+            `).join('');
+        }
+        
+        function selectStudent(studentId) {
+            selectedStudentId = studentId;
+            const student = portfolio.getStudent(studentId);
+            if (!student) return;
+            
+            document.querySelectorAll('.existing-student-card').forEach(card => {
+                card.classList.remove('selected');
+                if (card.dataset.id === studentId) {
+                    card.classList.add('selected');
+                }
+            });
+            
+            document.getElementById('studentName').value = student.name;
+            document.getElementById('grade').value = student.grade;
+            
+            const existingTeacherData = portfolio.getTeacherData(studentId);
+            if (existingTeacherData) {
+                fillTeacherForm(existingTeacherData);
+                document.getElementById('existingDataNotice').classList.add('show');
+                showMessage('اطلاعات قبلی معلم بارگذاری شد. می‌توانید ویرایش کنید.', 'info');
+            } else {
+                document.getElementById('existingDataNotice').classList.remove('show');
+            }
+            
+            document.getElementById('mainForm').style.display = 'block';
+        }
+        
+        function showNewStudentForm() {
+            selectedStudentId = null;
+            document.querySelectorAll('.existing-student-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.getElementById('mainForm').style.display = 'block';
+            document.getElementById('existingDataNotice').classList.remove('show');
+            clearForm();
+        }
+        
+        function fillTeacherForm(data) {
+            if (data.age) document.getElementById('age').value = data.age;
+            if (data.specialStatus) document.getElementById('specialStatus').value = data.specialStatus;
+            if (data.academicStrengths) document.getElementById('academicStrengths').value = data.academicStrengths;
+            if (data.academicWeaknesses) document.getElementById('academicWeaknesses').value = data.academicWeaknesses;
+            if (data.overallRating) setRating('overallRating', data.overallRating);
+            if (data.effectiveStrategies) document.getElementById('effectiveStrategies').value = data.effectiveStrategies;
+            if (data.learningStyle) setRating('learningStyle', data.learningStyle);
+            if (data.challengeResponse) document.getElementById('challengeResponse').value = data.challengeResponse;
+            if (data.accommodations) setCheckboxes('accommodations', data.accommodations);
+            if (data.peerInteraction) setRating('peerInteraction', data.peerInteraction);
+            if (data.behavioralChallenges) document.getElementById('behavioralChallenges').value = data.behavioralChallenges;
+            if (data.effectiveRewards) document.getElementById('effectiveRewards').value = data.effectiveRewards;
+            if (data.specialSupport) setRating('specialSupport', data.specialSupport);
+            if (data.specialNeedsDetails) document.getElementById('specialNeedsDetails').value = data.specialNeedsDetails;
+            if (data.interventions) document.getElementById('interventions').value = data.interventions;
+            if (data.nextYearGoals) document.getElementById('nextYearGoals').value = data.nextYearGoals;
+            if (data.teacherRecommendations) document.getElementById('teacherRecommendations').value = data.teacherRecommendations;
+            if (data.positiveNotes) document.getElementById('positiveNotes').value = data.positiveNotes;
+        }
+        
+        function clearForm() {
+            document.querySelectorAll('#mainForm input, #mainForm textarea').forEach(el => {
+                if (el.type !== 'button') el.value = '';
+            });
+            document.querySelectorAll('.rating-option, .checkbox-item').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+        }
+        
+        function setRating(containerId, value) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.querySelectorAll('.rating-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.value === value) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+        
+        function setCheckboxes(containerId, values) {
+            const container = document.getElementById(containerId);
+            if (!container || !values) return;
+            
+            container.querySelectorAll('.checkbox-item').forEach(item => {
+                const checkbox = item.querySelector('input[type="checkbox"]');
+                const isChecked = values.includes(checkbox.value);
+                checkbox.checked = isChecked;
+                item.classList.toggle('selected', isChecked);
+            });
+        }
+        
+        function getSelectedValue(containerId) {
+            const selected = document.querySelector(`#${containerId} .rating-option.selected`);
+            return selected ? selected.dataset.value : '';
+        }
+        
+        function getSelectedCheckboxes(containerId) {
+            const checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`);
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+        
+        function saveTeacherData() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const grade = document.getElementById('grade').value;
+            
+            if (!studentName) {
+                showMessage('❌ لطفاً نام دانش‌آموز را وارد کنید.', 'error');
+                return;
+            }
+            
+            if (!selectedStudentId) {
+                const existing = portfolio.getStudentByName(studentName);
+                if (existing) {
+                    selectedStudentId = existing.id;
+                } else {
+                    const newStudent = portfolio.addStudent(studentName, grade);
+                    selectedStudentId = newStudent.id;
+                }
+            }
+            
+            const teacherData = {
+                age: document.getElementById('age').value,
+                specialStatus: document.getElementById('specialStatus').value,
+                academicStrengths: document.getElementById('academicStrengths').value.trim(),
+                academicWeaknesses: document.getElementById('academicWeaknesses').value.trim(),
+                overallRating: getSelectedValue('overallRating'),
+                effectiveStrategies: document.getElementById('effectiveStrategies').value.trim(),
+                learningStyle: getSelectedValue('learningStyle'),
+                challengeResponse: document.getElementById('challengeResponse').value.trim(),
+                accommodations: getSelectedCheckboxes('accommodations'),
+                peerInteraction: getSelectedValue('peerInteraction'),
+                behavioralChallenges: document.getElementById('behavioralChallenges').value.trim(),
+                effectiveRewards: document.getElementById('effectiveRewards').value.trim(),
+                specialSupport: getSelectedValue('specialSupport'),
+                specialNeedsDetails: document.getElementById('specialNeedsDetails').value.trim(),
+                interventions: document.getElementById('interventions').value.trim(),
+                nextYearGoals: document.getElementById('nextYearGoals').value.trim(),
+                teacherRecommendations: document.getElementById('teacherRecommendations').value.trim(),
+                positiveNotes: document.getElementById('positiveNotes').value.trim(),
+                savedAt: new Date().toISOString()
+            };
+            
+            portfolio.saveTeacherData(selectedStudentId, teacherData);
+            
+            showMessage('✅ اطلاعات معلم با موفقیت در مرکز کنترل ذخیره شد!', 'success');
+            
+            setTimeout(() => {
+                loadExistingStudents();
+            }, 1000);
+        }
+        
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = 'message show ' + type;
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Setup rating scales
+        document.querySelectorAll('.rating-scale').forEach(scale => {
+            scale.querySelectorAll('.rating-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    scale.querySelectorAll('.rating-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+        });
+        
+        // Setup checkbox groups
+        document.querySelectorAll('.checkbox-group').forEach(group => {
+            group.querySelectorAll('.checkbox-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    this.classList.toggle('selected', this.querySelector('input[type="checkbox"]').checked);
+                });
+            });
+        });
+        
+        loadExistingStudents();
+    </script>
+</body>
+</html>

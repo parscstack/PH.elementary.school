@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 داشبورد امنیت</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="admin-auth.js"></script>
+    <script src="security-system.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1a202c;
+            --text: #2d3748;
+            --border: #e2e8f0;
+            --light: #f7fafc;
+            --harvard-crimson: #A51C30;
+            --harvard-dark: #1E3A5F;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--harvard-dark) 0%, var(--harvard-crimson) 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(30, 58, 95, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        /* ===== LOGIN ===== */
+        .login-screen {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        .login-screen.hidden {
+            display: none;
+        }
+        
+        .login-screen h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        .login-screen p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--harvard-crimson);
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        .message.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+        }
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== DASHBOARD ===== */
+        #dashboard {
+            display: none;
+        }
+        #dashboard.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== CARDS ===== */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        /* ===== SECURITY CHECKS ===== */
+        .check-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .check-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .check-item .check-name {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .check-item .check-status {
+            font-size: 18px;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+        
+        .check-item .check-status.green {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .check-item .check-status.yellow {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .check-item .check-status.red {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .check-item .check-message {
+            width: 100%;
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* ===== BACKUPS ===== */
+        .backup-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+        
+        .backup-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .backup-item .backup-info .backup-date {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .backup-item .backup-info .backup-meta {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .backup-item .backup-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        /* ===== SETTINGS ===== */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-row .setting-info .setting-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .setting-row .setting-info .setting-desc {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .setting-row .setting-control {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: #ccc;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .toggle-switch.active {
+            background: var(--success);
+        }
+        
+        .toggle-switch .toggle-slider {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            right: 25px;
+        }
+        
+        .setting-row input[type="number"] {
+            width: 80px;
+            padding: 6px 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+        }
+        
+        .setting-row select {
+            padding: 6px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+        }
+        
+        /* ===== LOGS ===== */
+        .log-item {
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            border-right: 3px solid var(--border);
+            background: var(--light);
+            transition: all 0.3s;
+        }
+        
+        .log-item:hover {
+            background: white;
+            transform: translateX(-3px);
+        }
+        
+        .log-item .log-time {
+            font-size: 11px;
+            color: #999;
+        }
+        
+        .log-item .log-level {
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+        
+        .log-item .log-level.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .log-item .log-level.warn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .log-item .log-level.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .log-item .log-level.debug {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+        
+        .log-item .log-user {
+            font-size: 11px;
+            color: #666;
+            background: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        .log-item .log-role-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+        
+        .log-item .log-role-badge.admin {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .log-item .log-role-badge.teacher {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .log-item .log-role-badge.student {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .log-item .log-role-badge.parent {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+        .log-item .log-role-badge.guest {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .logs-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .logs-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        .logs-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .logs-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        /* ===== ALERTS ===== */
+        .alert-critical {
+            border-right: 4px solid #ef4444 !important;
+            background: #fee2e2 !important;
+        }
+        
+        .alert-warning {
+            border-right: 4px solid #f59e0b !important;
+            background: #fef3c7 !important;
+        }
+        
+        .alert-info {
+            border-right: 4px solid #3b82f6 !important;
+            background: #dbeafe !important;
+        }
+        
+        .alert-badge {
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .alert-badge.hidden {
+            display: none;
+        }
+        
+        /* ===== FILTER BUTTONS ===== */
+        .filter-btn.active {
+            background: var(--harvard-crimson) !important;
+            color: white !important;
+            border-color: var(--harvard-crimson) !important;
+        }
+        
+        /* ===== PASSWORD MANAGEMENT ===== */
+        .password-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-right: 4px solid var(--primary);
+        }
+        
+        .password-item .pw-info .pw-name {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .password-item .pw-info .pw-detail {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .password-item .pw-info .pw-detail code {
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        .password-item .pw-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .password-item .pw-badge {
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .password-item .pw-badge.default {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .password-item .pw-badge.custom {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        /* ===== EXPORT BUTTONS ===== */
+        .export-section {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-right {
+                justify-content: center;
+                width: 100%;
+            }
+            .check-grid {
+                grid-template-columns: 1fr;
+            }
+            .setting-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .setting-row .setting-control {
+                justify-content: flex-start;
+            }
+            .backup-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .log-item {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+            .password-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <div class="header" id="appHeader" style="display: none;">
+            <div>
+                <h1>🔐 داشبورد امنیت</h1>
+                <p>مدیریت پشتیبان‌گیری، رمزنگاری، لاگ‌ها و هشدارها</p>
+            </div>
+            <div class="header-right">
+                <button class="logout-btn" id="logoutButton" onclick="handleLogout()">🚪 خروج</button>
+            </div>
+        </div>
+        
+        <!-- ===== LOGIN ===== -->
+        <div class="login-screen" id="loginScreen">
+            <h2>🔐 ورود به داشبورد امنیت</h2>
+            <p>برای مدیریت امنیت، وارد شوید</p>
+            
+            <div class="form-group">
+                <label>نام کاربری:</label>
+                <input type="text" id="loginUsername" placeholder="نام کاربری" value="admin">
+            </div>
+            <div class="form-group">
+                <label>رمز عبور:</label>
+                <input type="password" id="loginPassword" placeholder="رمز عبور" value="admin123">
+            </div>
+            
+            <button class="btn btn-primary btn-full" onclick="handleLogin()">🔓 ورود</button>
+            <div id="loginMessage"></div>
+        </div>
+        
+        <!-- ===== DASHBOARD ===== -->
+        <div id="dashboard">
+            <!-- Security Checks -->
+            <div class="card">
+                <h2>🛡️ وضعیت امنیتی</h2>
+                <div id="securityChecks"></div>
+                <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary btn-sm" onclick="runSecurityCheck()">🔄 بررسی مجدد</button>
+                    <button class="btn btn-danger btn-sm" onclick="emergencyRecovery()">🚨 بازیابی اضطراری</button>
+                </div>
+                <div id="securityMessage"></div>
+            </div>
+            
+            <!-- ===== ALERTS ===== -->
+            <div class="card">
+                <h2>🚨 هشدارهای امنیتی</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: center;">
+                    <span id="alertBadge" class="alert-badge hidden">0</span>
+                    <span style="font-size: 13px; color: #666;">هشدار خوانده نشده</span>
+                    <button class="btn btn-secondary btn-sm" onclick="markAllAlertsRead()">✅ همه خوانده شد</button>
+                    <button class="btn btn-secondary btn-sm" onclick="renderAlerts()">🔄 بروزرسانی</button>
+                </div>
+                <div id="alertsContainer">
+                    <p style="color: #999;">در حال بارگذاری...</p>
+                </div>
+            </div>
+            
+            <!-- ===== PASSWORD MANAGEMENT ===== -->
+            <div class="card">
+                <h2>🔑 مدیریت رمزهای عبور کاربران</h2>
+                <p style="color: #666; font-size: 13px; margin-bottom: 15px;">
+                    مشاهده و تغییر رمز عبور تمام کاربران سیستم
+                </p>
+                <div id="passwordManagement"></div>
+            </div>
+            
+            <!-- ===== SETTINGS ===== -->
+            <div class="card">
+                <h2>⚙️ تنظیمات امنیت</h2>
+                <div id="settingsContainer"></div>
+            </div>
+            
+            <!-- ===== BACKUPS ===== -->
+            <div class="card">
+                <h2>💾 پشتیبان‌گیری‌ها</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <button class="btn btn-success btn-sm" onclick="createBackup()">📤 ایجاد پشتیبان جدید</button>
+                    <button class="btn btn-secondary btn-sm" onclick="exportDatabase()">📥 خروجی دیتابیس</button>
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('importFile').click()">📤 ورودی دیتابیس</button>
+                    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importDatabase(event)">
+                </div>
+                <div id="backupsList"></div>
+            </div>
+            
+            <!-- ===== ROLE LOGS ===== -->
+            <div class="card">
+                <h2>👥 لاگ‌های تفکیکی بر اساس نقش</h2>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <button class="btn btn-secondary btn-sm filter-btn active" data-role="all" onclick="filterLogsByRole('all', this)">📋 همه</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-role="admin" onclick="filterLogsByRole('admin', this)">👑 مدیر</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-role="teacher" onclick="filterLogsByRole('teacher', this)">👨‍🏫 معلم</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-role="student" onclick="filterLogsByRole('student', this)">👦 دانش‌آموز</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-role="parent" onclick="filterLogsByRole('parent', this)">👨‍👩‍👧 والدین</button>
+                    <button class="btn btn-secondary btn-sm filter-btn" data-role="guest" onclick="filterLogsByRole('guest', this)">👤 مهمان</button>
+                </div>
+                <div id="roleLogsContainer">
+                    <p style="color: #999; text-align: center; padding: 20px;">هیچ لاگی یافت نشد</p>
+                </div>
+            </div>
+            
+            <!-- ===== ALL LOGS ===== -->
+            <div class="card">
+                <h2>📋 همه لاگ‌های سیستم</h2>
+                <div class="export-section">
+                    <button class="btn btn-success btn-sm" onclick="exportLogsPDF()">📄 خروجی PDF</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportLogsWord()">📘 خروجی Word</button>
+                    <select id="logFilter" onchange="renderAllLogs()" style="padding: 6px 12px; border: 2px solid var(--border); border-radius: 8px; font-family: 'Vazirmatn', sans-serif;">
+                        <option value="">همه سطوح</option>
+                        <option value="info">🔵 اطلاعات</option>
+                        <option value="warn">🟡 هشدار</option>
+                        <option value="error">🔴 خطا</option>
+                        <option value="debug">🟣 دیباگ</option>
+                    </select>
+                    <button class="btn btn-secondary btn-sm" onclick="clearLogs()">🗑️ پاک کردن لاگ‌ها</button>
+                    <button class="btn btn-secondary btn-sm" onclick="renderAllLogs()">🔄 بروزرسانی</button>
+                </div>
+                <div class="logs-container" id="allLogsContainer">
+                    <p style="color: #999; text-align: center; padding: 20px;">هیچ لاگی ثبت نشده است</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // INIT
+        // ============================================
+        const adminAuth = new AdminAuth();
+        let security = null;
+        let currentRoleFilter = 'all';
+        
+        // ============================================
+        // HANDLE LOGIN
+        // ============================================
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                showMessage('loginMessage', '❌ لطفاً نام کاربری و رمز عبور را وارد کنید.', 'error');
+                return;
+            }
+            
+            const result = adminAuth.login(username, password);
+            
+            if (result.success) {
+                security = new SecuritySystem();
+                
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appHeader').style.display = 'flex';
+                document.getElementById('dashboard').classList.add('active');
+                
+                showMessage('loginMessage', result.message, 'success');
+                
+                if (security) {
+                    security.addLog('info', `✅ ورود موفق مدیر: ${username}`, { user: { name: username, role: 'مدیر' } });
+                    loadDashboard();
+                }
+            } else {
+                showMessage('loginMessage', result.message, 'error');
+                if (security) {
+                    security.addLog('warn', `❌ ورود ناموفق برای کاربر: ${username}`, { user: { name: username } });
+                }
+            }
+        }
+        
+        // ============================================
+        // HANDLE LOGOUT
+        // ============================================
+        function handleLogout() {
+            if (security) {
+                security.addLog('info', '🚪 خروج از سیستم', { user: { name: 'مدیر', role: 'مدیر' } });
+            }
+            adminAuth.logout();
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('appHeader').style.display = 'none';
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginMessage').innerHTML = '';
+            location.reload();
+        }
+        
+        // ============================================
+        // LOAD DASHBOARD
+        // ============================================
+        function loadDashboard() {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            renderSecurityChecks();
+            renderSettings();
+            renderBackups();
+            renderAlerts();
+            renderPasswords();
+            renderRoleLogs();
+            renderAllLogs();
+        }
+        
+        // ============================================
+        // SECURITY CHECKS
+        // ============================================
+        async function runSecurityCheck() {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            showMessage('securityMessage', '⏳ در حال بررسی امنیت...', 'info');
+            
+            const results = await security.runSecurityCheck();
+            renderSecurityChecks(results);
+            
+            showMessage('securityMessage', '✅ بررسی امنیت با موفقیت انجام شد!', 'success');
+            setTimeout(() => {
+                document.getElementById('securityMessage').innerHTML = '';
+            }, 3000);
+        }
+        
+        function renderSecurityChecks(results) {
+            const container = document.getElementById('securityChecks');
+            
+            if (!results) {
+                container.innerHTML = '<p style="color: #999;">برای مشاهده وضعیت امنیت، روی دکمه "بررسی مجدد" کلیک کنید</p>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="check-grid">
+                    ${results.checks.map(check => `
+                        <div class="check-item">
+                            <div>
+                                <div class="check-name">${check.name}</div>
+                                <div class="check-message">${check.message}</div>
+                            </div>
+                            <span class="check-status ${check.status === '✅' ? 'green' : check.status === '⚠️' ? 'yellow' : 'red'}">
+                                ${check.status}
+                            </span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="margin-top: 10px; font-size: 12px; color: #999;">
+                    آخرین بررسی: ${new Date(results.timestamp).toLocaleString('fa-IR')}
+                </div>
+            `;
+        }
+        
+        // ============================================
+        // SETTINGS
+        // ============================================
+        function renderSettings() {
+            const container = document.getElementById('settingsContainer');
+            
+            if (!security) {
+                container.innerHTML = '<p style="color: #999;">در حال بارگذاری تنظیمات...</p>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">🔒 رمزنگاری داده‌ها</div>
+                        <div class="setting-desc">داده‌های ذخیره شده رمزنگاری می‌شوند</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch ${security.settings.encryption ? 'active' : ''}" onclick="toggleSetting('encryption')">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">💾 پشتیبان‌گیری خودکار</div>
+                        <div class="setting-desc">به‌صورت خودکار از دیتابیس پشتیبان بگیر</div>
+                    </div>
+                    <div class="setting-control">
+                        <div class="toggle-switch ${security.settings.autoBackup ? 'active' : ''}" onclick="toggleSetting('autoBackup')">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">⏱️ فاصله پشتیبان‌گیری</div>
+                        <div class="setting-desc">هر چند ساعت یکبار پشتیبان گرفته شود</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="number" id="backupInterval" value="${security.settings.backupInterval}" min="1" max="168" onchange="updateBackupInterval()">
+                        <span style="font-size: 13px; color: #666;">ساعت</span>
+                    </div>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">📦 تعداد پشتیبان‌ها</div>
+                        <div class="setting-desc">حداکثر تعداد پشتیبان‌های ذخیره شده</div>
+                    </div>
+                    <div class="setting-control">
+                        <input type="number" id="maxBackups" value="${security.settings.maxBackups}" min="1" max="50" onchange="updateMaxBackups()">
+                        <span style="font-size: 13px; color: #666;">عدد</span>
+                    </div>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-info">
+                        <div class="setting-title">📋 سطح لاگ‌ها</div>
+                        <div class="setting-desc">سطح جزئیات لاگ‌ها</div>
+                    </div>
+                    <div class="setting-control">
+                        <select id="logLevelSelect" onchange="updateLogLevel()">
+                            <option value="debug" ${security.settings.logLevel === 'debug' ? 'selected' : ''}>🟣 دیباگ</option>
+                            <option value="info" ${security.settings.logLevel === 'info' ? 'selected' : ''}>🔵 اطلاعات</option>
+                            <option value="warn" ${security.settings.logLevel === 'warn' ? 'selected' : ''}>🟡 هشدار</option>
+                            <option value="error" ${security.settings.logLevel === 'error' ? 'selected' : ''}>🔴 خطا</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span style="font-size: 13px; color: #666;">
+                        📅 آخرین پشتیبان‌گیری: ${security.settings.lastBackup ? new Date(security.settings.lastBackup).toLocaleString('fa-IR') : 'انجام نشده'}
+                    </span>
+                    <span style="font-size: 13px; color: #666;">
+                        🔍 آخرین بررسی امنیت: ${security.settings.lastSecurityCheck ? new Date(security.settings.lastSecurityCheck).toLocaleString('fa-IR') : 'انجام نشده'}
+                    </span>
+                </div>
+            `;
+        }
+        
+        function toggleSetting(key) {
+            if (!security) return;
+            security.settings[key] = !security.settings[key];
+            security.saveSettings();
+            renderSettings();
+            if (security) {
+                security.addLog('info', `تغییر تنظیمات: ${key} = ${security.settings[key]}`, { setting: key });
+            }
+        }
+        
+        function updateBackupInterval() {
+            if (!security) return;
+            const val = parseInt(document.getElementById('backupInterval').value);
+            if (val > 0) {
+                security.settings.backupInterval = val;
+                security.saveSettings();
+                renderSettings();
+                security.addLog('info', `تغییر فاصله پشتیبان‌گیری: ${val} ساعت`);
+            }
+        }
+        
+        function updateMaxBackups() {
+            if (!security) return;
+            const val = parseInt(document.getElementById('maxBackups').value);
+            if (val > 0) {
+                security.settings.maxBackups = val;
+                security.saveSettings();
+                renderSettings();
+                security.addLog('info', `تغییر تعداد پشتیبان‌ها: ${val}`);
+            }
+        }
+        
+        function updateLogLevel() {
+            if (!security) return;
+            security.settings.logLevel = document.getElementById('logLevelSelect').value;
+            security.saveSettings();
+            renderSettings();
+            security.addLog('info', `تغییر سطح لاگ: ${security.settings.logLevel}`);
+        }
+        
+        // ============================================
+        // BACKUPS
+        // ============================================
+        async function createBackup() {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            showMessage('securityMessage', '⏳ در حال ایجاد پشتیبان...', 'info');
+            
+            const backup = await security.createBackup();
+            if (backup) {
+                showMessage('securityMessage', '✅ پشتیبان با موفقیت ایجاد شد!', 'success');
+                renderBackups();
+                setTimeout(() => {
+                    document.getElementById('securityMessage').innerHTML = '';
+                }, 3000);
+            } else {
+                showMessage('securityMessage', '❌ خطا در ایجاد پشتیبان!', 'error');
+            }
+        }
+        
+        function renderBackups() {
+            const container = document.getElementById('backupsList');
+            if (!security) {
+                container.innerHTML = '<p style="color: #999;">در حال بارگذاری...</p>';
+                return;
+            }
+            
+            const backups = security.getBackups();
+            
+            if (backups.length === 0) {
+                container.innerHTML = '<p style="color: #999;">هنوز هیچ پشتیبان‌گیری انجام نشده است</p>';
+                return;
+            }
+            
+            container.innerHTML = backups.map(backup => `
+                <div class="backup-item">
+                    <div class="backup-info">
+                        <div class="backup-date">📅 ${new Date(backup.timestamp).toLocaleString('fa-IR')}</div>
+                        <div class="backup-meta">
+                            📦 حجم: ${(backup.size / 1024).toFixed(2)} KB | 
+                            ${backup.encrypted ? '🔒 رمزنگاری شده' : '🔓 بدون رمزنگاری'} |
+                            نسخه: ${backup.version || '1.0'}
+                        </div>
+                    </div>
+                    <div class="backup-actions">
+                        <button class="btn btn-success btn-sm" onclick="restoreBackup('${backup.id}')">↩️ بازیابی</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteBackup('${backup.id}')">🗑️ حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function restoreBackup(backupId) {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            if (confirm('⚠️ آیا از بازیابی این پشتیبان اطمینان دارید؟\nداده‌های فعلی جایگزین می‌شوند!')) {
+                showMessage('securityMessage', '⏳ در حال بازیابی پشتیبان...', 'info');
+                
+                const success = await security.restoreBackup(backupId);
+                if (success) {
+                    showMessage('securityMessage', '✅ پشتیبان با موفقیت بازیابی شد!', 'success');
+                    renderBackups();
+                    loadDashboard();
+                } else {
+                    showMessage('securityMessage', '❌ خطا در بازیابی پشتیبان!', 'error');
+                }
+            }
+        }
+        
+        function deleteBackup(backupId) {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            if (confirm('آیا از حذف این پشتیبان اطمینان دارید؟')) {
+                security.deleteBackup(backupId);
+                renderBackups();
+            }
+        }
+        
+        // ============================================
+        // EXPORT / IMPORT
+        // ============================================
+        async function exportDatabase() {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            const data = await security.exportDatabase();
+            if (data) {
+                const blob = new Blob(['\ufeff' + data], { type: 'application/json;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `database-backup-${Date.now()}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+                
+                showMessage('securityMessage', '✅ خروجی دیتابیس با موفقیت دانلود شد!', 'success');
+            }
+        }
+        
+        async function importDatabase(event) {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!confirm('⚠️ آیا از ورودی دیتابیس اطمینان دارید؟\nداده‌های فعلی جایگزین می‌شوند!')) {
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const success = await security.importDatabase(e.target.result);
+                    if (success) {
+                        showMessage('securityMessage', '✅ دیتابیس با موفقیت وارد شد!', 'success');
+                        loadDashboard();
+                    } else {
+                        showMessage('securityMessage', '❌ خطا در ورودی دیتابیس!', 'error');
+                    }
+                } catch (error) {
+                    showMessage('securityMessage', '❌ خطا: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+        
+        // ============================================
+        // EMERGENCY RECOVERY
+        // ============================================
+        async function emergencyRecovery() {
+            if (!security) {
+                security = new SecuritySystem();
+            }
+            if (confirm('🚨 آیا از بازیابی اضطراری اطمینان دارید؟\nآخرین پشتیبان موجود بازیابی می‌شود!')) {
+                showMessage('securityMessage', '⏳ در حال بازیابی اضطراری...', 'info');
+                
+                const result = await security.emergencyRecovery();
+                if (result.success) {
+                    showMessage('securityMessage', `✅ ${result.message}`, 'success');
+                    loadDashboard();
+                } else {
+                    showMessage('securityMessage', `❌ ${result.message}`, 'error');
+                }
+            }
+        }
+        
+        // ============================================
+        // ALERTS
+        // ============================================
+        function renderAlerts() {
+            const container = document.getElementById('alertsContainer');
+            if (!security) {
+                container.innerHTML = '<p style="color: #999;">در حال بارگذاری...</p>';
+                return;
+            }
+            
+            const alerts = security.getAlerts(null, 50);
+            const unread = security.getUnreadAlerts().length;
+            
+            const badge = document.getElementById('alertBadge');
+            badge.textContent = unread;
+            badge.classList.toggle('hidden', unread === 0);
+            
+            if (alerts.length === 0) {
+                container.innerHTML = '<p style="color: #999;">✅ هیچ هشداری وجود ندارد</p>';
+                return;
+            }
+            
+            container.innerHTML = alerts.map(alert => `
+                <div class="backup-item ${alert.level === 'critical' ? 'alert-critical' : alert.level === 'warning' ? 'alert-warning' : 'alert-info'}">
+                    <div class="backup-info">
+                        <div class="backup-date">
+                            ${alert.level === 'critical' ? '🔴' : alert.level === 'warning' ? '🟡' : '🔵'} 
+                            ${alert.title}
+                            ${!alert.read ? '<span style="background: #ef4444; color: white; padding: 2px 10px; border-radius: 12px; font-size: 11px;">جدید</span>' : ''}
+                            ${alert.resolved ? '<span style="background: #10b981; color: white; padding: 2px 10px; border-radius: 12px; font-size: 11px;">✅ حل شده</span>' : ''}
+                        </div>
+                        <div class="backup-meta">
+                            ${alert.message}
+                            <br>
+                            <span style="font-size: 11px; color: #999;">
+                                📅 ${new Date(alert.timestamp).toLocaleString('fa-IR')}
+                                ${alert.data && alert.data.user ? ` | 👤 ${alert.data.user?.name || 'ناشناس'}` : ''}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="backup-actions">
+                        ${!alert.read ? `<button class="btn btn-primary btn-sm" onclick="markAlertRead('${alert.id}')">✅ خوانده شد</button>` : ''}
+                        ${!alert.resolved ? `<button class="btn btn-success btn-sm" onclick="resolveAlert('${alert.id}')">✅ حل شد</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function markAlertRead(alertId) {
+            if (!security) return;
+            security.markAlertAsRead(alertId);
+            renderAlerts();
+            security.addLog('info', `هشدار خوانده شد: ${alertId}`);
+        }
+        
+        function markAllAlertsRead() {
+            if (!security) return;
+            security.markAllAlertsAsRead();
+            renderAlerts();
+            security.addLog('info', 'همه هشدارها خوانده شدند');
+        }
+        
+        function resolveAlert(alertId) {
+            if (!security) return;
+            security.resolveAlert(alertId);
+            renderAlerts();
+            security.addLog('info', `هشدار حل شد: ${alertId}`);
+        }
+        
+        // ============================================
+        // PASSWORD MANAGEMENT
+        // ============================================
+        function renderPasswords() {
+            const container = document.getElementById('passwordManagement');
+            if (!security) {
+                container.innerHTML = '<p style="color: #999;">در حال بارگذاری...</p>';
+                return;
+            }
+            
+            const passwords = security.getAllPasswords();
+            let html = '';
+            
+            // Admin
+            if (passwords.admin) {
+                html += `
+                    <div class="password-item" style="border-right-color: #f59e0b;">
+                        <div class="pw-info">
+                            <div class="pw-name">👑 مدیر</div>
+                            <div class="pw-detail">
+                                نام کاربری: <code>${passwords.admin.username}</code> | 
+                                رمز عبور: <code>${passwords.admin.password}</code>
+                                <span class="pw-badge ${passwords.admin.isDefault ? 'default' : 'custom'}">
+                                    ${passwords.admin.isDefault ? 'پیش‌فرض' : 'تغییر داده شده'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pw-actions">
+                            <button class="btn btn-danger btn-sm" onclick="resetAdminPassword()">🔄 ریست به پیش‌فرض</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Teacher
+            if (passwords.teacher) {
+                html += `
+                    <div class="password-item" style="border-right-color: #3b82f6;">
+                        <div class="pw-info">
+                            <div class="pw-name">👨‍🏫 معلم</div>
+                            <div class="pw-detail">
+                                نام کاربری: <code>${passwords.teacher.username}</code> | 
+                                رمز عبور: <code>${passwords.teacher.password}</code>
+                                <span class="pw-badge ${passwords.teacher.isDefault ? 'default' : 'custom'}">
+                                    ${passwords.teacher.isDefault ? 'پیش‌فرض' : 'تغییر داده شده'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pw-actions">
+                            <button class="btn btn-danger btn-sm" onclick="resetTeacherPassword()">🔄 ریست به پیش‌فرض</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Students
+            if (passwords.students && passwords.students.length > 0) {
+                html += `
+                    <div style="margin-top: 15px; font-weight: 700; color: var(--dark);">👦 دانش‌آموزان</div>
+                `;
+                passwords.students.forEach(student => {
+                    html += `
+                        <div class="password-item" style="border-right-color: #10b981;">
+                            <div class="pw-info">
+                                <div class="pw-name">${student.name}</div>
+                                <div class="pw-detail">
+                                    پایه: ${student.grade} | 
+                                    رمز عبور: <code>${student.password}</code>
+                                    <span class="pw-badge ${student.isDefault ? 'default' : 'custom'}">
+                                        ${student.isDefault ? 'پیش‌فرض' : 'تغییر داده شده'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="pw-actions">
+                                <button class="btn btn-danger btn-sm" onclick="resetStudentPassword('${student.id}')">🔄 ریست به پیش‌فرض</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            if (!html) {
+                html = '<p style="color: #999;">هیچ کاربری در سیستم ثبت نشده است</p>';
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        function resetStudentPassword(studentId) {
+            if (!security) return;
+            if (confirm('⚠️ آیا از ریست رمز عبور این دانش‌آموز به پیش‌فرض (123456) اطمینان دارید؟')) {
+                const success = security.resetStudentPassword(studentId);
+                if (success) {
+                    showMessage('securityMessage', '✅ رمز عبور دانش‌آموز با موفقیت ریست شد!', 'success');
+                    renderPasswords();
+                } else {
+                    showMessage('securityMessage', '❌ خطا در ریست رمز عبور!', 'error');
+                }
+            }
+        }
+        
+        function resetTeacherPassword() {
+            if (!security) return;
+            if (confirm('⚠️ آیا از ریست رمز عبور معلم به پیش‌فرض (teacher123) اطمینان دارید؟')) {
+                const success = security.resetTeacherPassword();
+                if (success) {
+                    showMessage('securityMessage', '✅ رمز عبور معلم با موفقیت ریست شد!', 'success');
+                    renderPasswords();
+                } else {
+                    showMessage('securityMessage', '❌ خطا در ریست رمز عبور!', 'error');
+                }
+            }
+        }
+        
+        function resetAdminPassword() {
+            if (!security) return;
+            if (confirm('⚠️ آیا از ریست رمز عبور مدیر به پیش‌فرض (admin123) اطمینان دارید؟')) {
+                const success = security.resetAdminPassword();
+                if (success) {
+                    showMessage('securityMessage', '✅ رمز عبور مدیر با موفقیت ریست شد!', 'success');
+                    renderPasswords();
+                } else {
+                    showMessage('securityMessage', '❌ خطا در ریست رمز عبور!', 'error');
+                }
+            }
+        }
+        
+        // ============================================
+        // ROLE LOGS
+        // ============================================
+        function filterLogsByRole(role, btn) {
+            if (!security) return;
+            currentRoleFilter = role;
+            
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            if (btn) btn.classList.add('active');
+            
+            renderRoleLogs();
+        }
+        
+        function renderRoleLogs() {
+            const container = document.getElementById('roleLogsContainer');
+            if (!security) {
+                container.innerHTML = '<p style="color: #999;">در حال بارگذاری...</p>';
+                return;
+            }
+            
+            let logs = [];
+            
+            if (currentRoleFilter === 'all') {
+                logs = security.getLogs(null, 100);
+            } else {
+                logs = security.getLogsByRole(currentRoleFilter, 100);
+            }
+            
+            if (logs.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">هیچ لاگی برای این نقش یافت نشد</p>';
+                return;
+            }
+            
+            container.innerHTML = logs.map(log => `
+                <div class="log-item" style="border-right-color: ${log.level === 'error' ? '#ef4444' : log.level === 'warn' ? '#f59e0b' : log.level === 'info' ? '#3b82f6' : '#8b5cf6'}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
+                        <div>
+                            <span class="log-level ${log.level}">${log.level === 'error' ? '🔴' : log.level === 'warn' ? '🟡' : log.level === 'info' ? '🔵' : '🟣'} ${log.level}</span>
+                            <span class="log-time">${new Date(log.timestamp).toLocaleString('fa-IR')}</span>
+                            <span class="log-user">👤 ${log.user?.name || 'ناشناس'}</span>
+                        </div>
+                        <div>
+                            <span class="log-role-badge ${log.tags?.role || 'guest'}">${log.user?.role || 'مهمان'}</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 3px;">${log.message}</div>
+                    ${Object.keys(log.data).length > 0 ? `<div style="font-size: 12px; color: #999; margin-top: 3px;">📎 ${JSON.stringify(log.data)}</div>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // ============================================
+        // ALL LOGS
+        // ============================================
+        function renderAllLogs() {
+            const container = document.getElementById('allLogsContainer');
+            if (!security) {
+                container.innerHTML = '<p style="color: #999;">در حال بارگذاری...</p>';
+                return;
+            }
+            
+            const filter = document.getElementById('logFilter').value;
+            const logs = security.getLogs(filter || null, 200);
+            
+            if (logs.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">هیچ لاگی ثبت نشده است</p>';
+                return;
+            }
+            
+            container.innerHTML = logs.map(log => `
+                <div class="log-item" style="border-right-color: ${log.level === 'error' ? '#ef4444' : log.level === 'warn' ? '#f59e0b' : log.level === 'info' ? '#3b82f6' : '#8b5cf6'}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
+                        <div>
+                            <span class="log-level ${log.level}">${log.level === 'error' ? '🔴' : log.level === 'warn' ? '🟡' : log.level === 'info' ? '🔵' : '🟣'} ${log.level}</span>
+                            <span class="log-time">${new Date(log.timestamp).toLocaleString('fa-IR')}</span>
+                            <span class="log-user">👤 ${log.user?.name || 'ناشناس'}</span>
+                        </div>
+                        <div>
+                            <span class="log-role-badge ${log.tags?.role || 'guest'}">${log.user?.role || 'مهمان'}</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 3px;">${log.message}</div>
+                    ${Object.keys(log.data).length > 0 ? `<div style="font-size: 12px; color: #999; margin-top: 3px;">📎 ${JSON.stringify(log.data)}</div>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // ============================================
+        // EXPORT LOGS
+        // ============================================
+        function exportLogsPDF() {
+            if (!security) return;
+            const logs = security.getLogs(null, 500);
+            if (logs.length === 0) {
+                showMessage('securityMessage', '❌ هیچ لاگی برای خروجی وجود ندارد!', 'error');
+                return;
+            }
+            
+            const html = generateLogsHTML(logs);
+            const win = window.open('', '_blank');
+            win.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>گزارش لاگ‌ها</title>
+                    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Vazirmatn', Tahoma; direction: rtl; padding: 20px; }
+                        h1 { color: #A51C30; text-align: center; border-bottom: 3px solid #A51C30; padding-bottom: 10px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th { background: #1E3A5F; color: white; padding: 10px; text-align: right; }
+                        td { padding: 8px 10px; border-bottom: 1px solid #e2e8f0; }
+                        .level-info { color: #1e40af; }
+                        .level-warn { color: #92400e; }
+                        .level-error { color: #991b1b; }
+                        .level-debug { color: #6b21a8; }
+                        .badge { padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+                        .badge-admin { background: #fef3c7; color: #92400e; }
+                        .badge-teacher { background: #dbeafe; color: #1e40af; }
+                        .badge-student { background: #d1fae5; color: #065f46; }
+                        .badge-parent { background: #fce7f3; color: #9d174d; }
+                        .badge-guest { background: #f3f4f6; color: #374151; }
+                        .footer { text-align: center; margin-top: 30px; color: #999; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 20px; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    ${html}
+                    <div class="footer">
+                        <p>این گزارش توسط سامانه پوشه کار تعاملی تولید شده است</p>
+                        <p>تاریخ: ${new Date().toLocaleDateString('fa-IR')}</p>
+                    </div>
+                    <div class="no-print" style="text-align: center; padding: 20px;">
+                        <button onclick="window.print()" style="padding: 10px 30px; background: #A51C30; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; font-family: 'Vazirmatn', sans-serif;">
+                            📄 دانلود PDF
+                        </button>
+                        <button onclick="window.close()" style="padding: 10px 30px; background: #e2e8f0; color: #1a202c; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; font-family: 'Vazirmatn', sans-serif; margin-right: 10px;">
+                            ❌ بستن
+                        </button>
+                    </div>
+                </body>
+                </html>
+            `);
+            win.document.close();
+        }
+        
+        function exportLogsWord() {
+            if (!security) return;
+            const logs = security.getLogs(null, 500);
+            if (logs.length === 0) {
+                showMessage('securityMessage', '❌ هیچ لاگی برای خروجی وجود ندارد!', 'error');
+                return;
+            }
+            
+            const html = generateLogsHTML(logs);
+            const fullHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>گزارش لاگ‌ها</title>
+                    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+                </head>
+                <body style="font-family: 'Vazirmatn', Tahoma; direction: rtl; padding: 20px; font-size: 12pt;">
+                    ${html}
+                    <div style="text-align: center; margin-top: 30px; color: #999; font-size: 10pt; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                        <p>این گزارش توسط سامانه پوشه کار تعاملی تولید شده است</p>
+                        <p>تاریخ: ${new Date().toLocaleDateString('fa-IR')}</p>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            const blob = new Blob(['\ufeff' + fullHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `گزارش-لاگ-${Date.now()}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            
+            showMessage('securityMessage', '✅ خروجی Word با موفقیت دانلود شد!', 'success');
+        }
+        
+        function generateLogsHTML(logs) {
+            let html = `
+                <h1>📋 گزارش کامل لاگ‌های سیستم</h1>
+                <p style="text-align: center; color: #666;">تعداد کل: ${logs.length} رویداد</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>تاریخ و زمان</th>
+                            <th>کاربر</th>
+                            <th>نقش</th>
+                            <th>سطح</th>
+                            <th>پیام</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            logs.forEach((log, index) => {
+                const roleClass = log.tags?.role || 'guest';
+                const levelClass = log.level || 'info';
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${new Date(log.timestamp).toLocaleString('fa-IR')}</td>
+                        <td>${log.user?.name || 'ناشناس'}</td>
+                        <td><span class="badge badge-${roleClass}">${log.user?.role || 'مهمان'}</span></td>
+                        <td class="level-${levelClass}">${levelClass === 'error' ? '🔴' : levelClass === 'warn' ? '🟡' : levelClass === 'info' ? '🔵' : '🟣'} ${levelClass}</td>
+                        <td>${log.message}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                    </tbody>
+                </table>
+            `;
+            
+            return html;
+        }
+        
+        // ============================================
+        // CLEAR LOGS
+        // ============================================
+        function clearLogs() {
+            if (!security) return;
+            if (confirm('⚠️ آیا از پاک کردن همه لاگ‌ها اطمینان دارید؟')) {
+                security.logs.logs = [];
+                security.saveLogs();
+                renderAllLogs();
+                renderRoleLogs();
+                security.addLog('info', 'همه لاگ‌ها پاک شدند');
+                showMessage('securityMessage', '✅ همه لاگ‌ها با موفقیت پاک شدند!', 'success');
+            }
+        }
+        
+        // ============================================
+        // UTILITIES
+        // ============================================
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            if (!container) {
+                const div = document.createElement('div');
+                div.className = `message show ${type}`;
+                div.textContent = text;
+                div.style.position = 'fixed';
+                div.style.top = '20px';
+                div.style.left = '50%';
+                div.style.transform = 'translateX(-50%)';
+                div.style.zIndex = '9999';
+                div.style.maxWidth = '500px';
+                div.style.width = '90%';
+                div.style.padding = '15px 20px';
+                div.style.borderRadius = '12px';
+                div.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 4000);
+                return;
+            }
+            
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            if (adminAuth.isLoggedIn()) {
+                security = new SecuritySystem();
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appHeader').style.display = 'flex';
+                document.getElementById('dashboard').classList.add('active');
+                loadDashboard();
+                
+                if (security) {
+                    security.addLog('info', '🔄 بازگشت به جلسه قبلی', { user: { name: 'مدیر', role: 'مدیر' } });
+                }
+            }
+            
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        });
+        
+        console.log('🔐 داشبورد امنیت کامل بارگذاری شد!');
+        console.log('🔑 نام کاربری: admin | رمز: admin123');
+        console.log('📋 تمام فعالیت‌ها ثبت و پایش می‌شوند');
+        console.log('📄 امکان خروجی PDF و Word از لاگ‌ها');
+    </script>
+</body>
+</html>

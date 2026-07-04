@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 داشبورد گزارش‌ها</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="admin-auth.js"></script>
+    <script src="report-system.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1a202c;
+            --text: #2d3748;
+            --border: #e2e8f0;
+            --light: #f7fafc;
+            --harvard-crimson: #A51C30;
+            --harvard-dark: #1E3A5F;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--harvard-dark) 0%, var(--harvard-crimson) 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(30, 58, 95, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 26px;
+            font-weight: 800;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* ===== LOGIN ===== */
+        .login-screen {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        .login-screen.hidden {
+            display: none;
+        }
+        
+        .login-screen h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        .login-screen p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--harvard-crimson);
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        .message.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+        }
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== DASHBOARD ===== */
+        #dashboard {
+            display: none;
+        }
+        #dashboard.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== FILTERS ===== */
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .filter-section h3 {
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .filter-row .form-group {
+            margin-bottom: 0;
+        }
+        
+        .filter-row .form-group label {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        
+        .filter-row .form-group input,
+        .filter-row .form-group select {
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px;
+            width: 100%;
+        }
+        
+        .filter-row .form-group input:focus,
+        .filter-row .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* ===== REPORTS LIST ===== */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .report-item {
+            background: var(--light);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-right: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .report-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .report-item .report-info .report-name {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 16px;
+        }
+        
+        .report-item .report-info .report-meta {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .report-item .report-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-right {
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .report-item .report-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <div class="header" id="appHeader" style="display: none;">
+            <div>
+                <h1>📊 داشبورد گزارش‌ها</h1>
+                <p>تولید و مدیریت گزارش‌های پیشرفت تحصیلی</p>
+            </div>
+            <div class="header-right">
+                <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+            </div>
+        </div>
+        
+        <!-- ===== LOGIN ===== -->
+        <div class="login-screen" id="loginScreen">
+            <h2>📊 ورود به داشبورد گزارش‌ها</h2>
+            <p>برای مدیریت گزارش‌ها، وارد شوید</p>
+            
+            <div class="form-group">
+                <label>نام کاربری:</label>
+                <input type="text" id="loginUsername" placeholder="نام کاربری">
+            </div>
+            <div class="form-group">
+                <label>رمز عبور:</label>
+                <input type="password" id="loginPassword" placeholder="رمز عبور">
+            </div>
+            
+            <button class="btn btn-primary btn-full" onclick="doLogin()">🔓 ورود</button>
+            <div id="loginMessage"></div>
+        </div>
+        
+        <!-- ===== DASHBOARD ===== -->
+        <div id="dashboard">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <h3>🎯 ساخت گزارش جدید</h3>
+                <div class="filter-row">
+                    <div class="form-group">
+                        <label>پایه تحصیلی:</label>
+                        <select id="filterGrade">
+                            <option value="">همه پایه‌ها</option>
+                            <option value="اول">اول ابتدایی</option>
+                            <option value="دوم">دوم ابتدایی</option>
+                            <option value="سوم">سوم ابتدایی</option>
+                            <option value="چهارم">چهارم ابتدایی</option>
+                            <option value="پنجم">پنجم ابتدایی</option>
+                            <option value="ششم">ششم ابتدایی</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>دانش‌آموز:</label>
+                        <select id="filterStudent">
+                            <option value="">همه دانش‌آموزان</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>تاریخ از:</label>
+                        <input type="date" id="filterStartDate">
+                    </div>
+                    <div class="form-group">
+                        <label>تاریخ تا:</label>
+                        <input type="date" id="filterEndDate">
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-primary" onclick="generateReport()">📊 تولید گزارش</button>
+                    <button class="btn btn-secondary" onclick="resetFilters()">🔄 ریست فیلترها</button>
+                </div>
+                <div id="generateMessage"></div>
+            </div>
+            
+            <!-- Reports List -->
+            <div class="card">
+                <h2>📋 گزارش‌های ذخیره شده</h2>
+                <div id="reportsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // AUTH
+        // ============================================
+        const adminAuth = new AdminAuth();
+        const reportSystem = new ReportSystem();
+        
+        function doLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                showMessage('loginMessage', '❌ لطفاً نام کاربری و رمز عبور را وارد کنید.', 'error');
+                return;
+            }
+            
+            const result = adminAuth.login(username, password);
+            
+            if (result.success) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appHeader').style.display = 'flex';
+                document.getElementById('dashboard').classList.add('active');
+                showMessage('loginMessage', result.message, 'success');
+                loadStudentsList();
+                renderReportsList();
+            } else {
+                showMessage('loginMessage', result.message, 'error');
+            }
+        }
+        
+        function logout() {
+            adminAuth.logout();
+            location.reload();
+        }
+        
+        // ============================================
+        // LOAD STUDENTS
+        // ============================================
+        function loadStudentsList() {
+            const select = document.getElementById('filterStudent');
+            const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"students":[]}');
+            const students = data.students || [];
+            
+            select.innerHTML = '<option value="">همه دانش‌آموزان</option>';
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} - پایه ${student.grade}`;
+                select.appendChild(option);
+            });
+        }
+        
+        // ============================================
+        // GENERATE REPORT
+        // ============================================
+        function generateReport() {
+            const grade = document.getElementById('filterGrade').value;
+            const studentId = document.getElementById('filterStudent').value;
+            const startDate = document.getElementById('filterStartDate').value;
+            const endDate = document.getElementById('filterEndDate').value;
+            
+            if (!grade && !studentId) {
+                showMessage('generateMessage', '⚠️ لطفاً حداقل یکی از فیلترها را انتخاب کنید.', 'error');
+                return;
+            }
+            
+            const report = reportSystem.generateReport({
+                grade: grade,
+                studentId: studentId,
+                startDate: startDate,
+                endDate: endDate,
+                type: 'comprehensive'
+            });
+            
+            showMessage('generateMessage', `✅ گزارش "${report.name}" با موفقیت تولید شد!`, 'success');
+            
+            // Show report
+            setTimeout(() => {
+                const win = reportSystem.exportToPDF(report.id);
+                if (win) {
+                    // Close after a moment
+                }
+                renderReportsList();
+            }, 1000);
+        }
+        
+        function resetFilters() {
+            document.getElementById('filterGrade').value = '';
+            document.getElementById('filterStudent').value = '';
+            document.getElementById('filterStartDate').value = '';
+            document.getElementById('filterEndDate').value = '';
+            document.getElementById('generateMessage').innerHTML = '';
+        }
+        
+        // ============================================
+        // RENDER REPORTS LIST
+        // ============================================
+        function renderReportsList() {
+            const container = document.getElementById('reportsList');
+            const reports = reportSystem.getReportsList();
+            
+            if (reports.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📭</span>
+                        <p>هیچ گزارشی ذخیره نشده است</p>
+                        <p style="font-size: 13px; margin-top: 5px;">با استفاده از فیلترهای بالا، گزارش جدید تولید کنید</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = reports.map(report => `
+                <div class="report-item">
+                    <div class="report-info">
+                        <div class="report-name">📊 ${report.name}</div>
+                        <div class="report-meta">
+                            📅 ${new Date(report.createdAt).toLocaleDateString('fa-IR')} | 
+                            👥 ${Object.keys(report.data).length} دانش‌آموز
+                        </div>
+                    </div>
+                    <div class="report-actions">
+                        <button class="btn btn-primary btn-sm" onclick="viewReport('${report.id}')">👁️ مشاهده</button>
+                        <button class="btn btn-success btn-sm" onclick="exportPDF('${report.id}')">📄 PDF</button>
+                        <button class="btn btn-secondary btn-sm" onclick="exportWord('${report.id}')">📘 Word</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteReport('${report.id}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function viewReport(reportId) {
+            const win = reportSystem.exportToPDF(reportId);
+            if (win) {
+                // Open in new tab
+            }
+        }
+        
+        function exportPDF(reportId) {
+            const win = reportSystem.exportToPDF(reportId);
+            if (win) {
+                setTimeout(() => {
+                    win.print();
+                }, 500);
+            }
+        }
+        
+        function exportWord(reportId) {
+            reportSystem.exportToWord(reportId);
+        }
+        
+        function deleteReport(reportId) {
+            if (confirm('⚠️ آیا از حذف این گزارش اطمینان دارید؟')) {
+                reportSystem.deleteReport(reportId);
+                renderReportsList();
+                showMessage('reportsList', '✅ گزارش با موفقیت حذف شد!', 'success');
+            }
+        }
+        
+        // ============================================
+        // UTILITIES
+        // ============================================
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            if (!container) {
+                const div = document.createElement('div');
+                div.className = `message show ${type}`;
+                div.textContent = text;
+                div.style.position = 'fixed';
+                div.style.top = '20px';
+                div.style.left = '50%';
+                div.style.transform = 'translateX(-50%)';
+                div.style.zIndex = '9999';
+                div.style.maxWidth = '500px';
+                div.style.width = '90%';
+                div.style.padding = '15px 20px';
+                div.style.borderRadius = '12px';
+                div.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 4000);
+                return;
+            }
+            
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            if (adminAuth.isLoggedIn()) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appHeader').style.display = 'flex';
+                document.getElementById('dashboard').classList.add('active');
+                loadStudentsList();
+                renderReportsList();
+            }
+        });
+        
+        console.log('📊 داشبورد گزارش‌ها بارگذاری شد!');
+        console.log('🔑 نام کاربری: admin | رمز: admin123');
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 ابزارهای مدیریتی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        
+        .header h1 span {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header .back-btn {
+            padding: 10px 20px;
+            background: #e2e8f0;
+            color: #1a202c;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Vazirmatn', sans-serif;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .header .back-btn:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s;
+            text-decoration: none;
+            color: #1a202c;
+            border: 2px solid transparent;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-color: #667eea;
+        }
+        
+        .tool-card .tc-icon {
+            font-size: 50px;
+            display: block;
+            margin-bottom: 12px;
+        }
+        
+        .tool-card .tc-title {
+            font-size: 18px;
+            font-weight: 800;
+        }
+        
+        .tool-card .tc-desc {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+            line-height: 1.8;
+        }
+        
+        .tool-card .tc-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 12px;
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .tools-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            .tool-card {
+                padding: 20px;
+            }
+            .tool-card .tc-icon {
+                font-size: 40px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 <span>ابزارهای مدیریتی</span></h1>
+            <a href="index.html" class="back-btn">← بازگشت به صفحه اصلی</a>
+        </div>
+        
+        <div class="tools-grid">
+            <a href="portfolio-core.html" class="tool-card">
+                <span class="tc-icon">🗄️</span>
+                <div class="tc-title">مرکز کنترل</div>
+                <div class="tc-desc">مدیریت یکپارچه دانش‌آموزان و داده‌ها</div>
+                <span class="tc-badge">مدیریت</span>
+            </a>
+            
+            <a href="reports-dashboard.html" class="tool-card">
+                <span class="tc-icon">📊</span>
+                <div class="tc-title">داشبورد گزارش‌ها</div>
+                <div class="tc-desc">تولید و مدیریت گزارش‌های پیشرفت</div>
+                <span class="tc-badge">گزارش</span>
+            </a>
+            
+            <a href="security-dashboard.html" class="tool-card">
+                <span class="tc-icon">🔐</span>
+                <div class="tc-title">داشبورد امنیت</div>
+                <div class="tc-desc">مدیریت پشتیبان‌گیری و لاگ‌ها</div>
+                <span class="tc-badge">امنیت</span>
+            </a>
+            
+            <a href="teacher-handover-v2.html" class="tool-card">
+                <span class="tc-icon">📤</span>
+                <div class="tc-title">انتقال معلم</div>
+                <div class="tc-desc">انتقال اطلاعات دانش‌آموز به معلم جدید</div>
+                <span class="tc-badge">انتقال</span>
+            </a>
+            
+            <a href="word-to-json-v2.html" class="tool-card">
+                <span class="tc-icon">🔄</span>
+                <div class="tc-title">تبدیل Word به JSON</div>
+                <div class="tc-desc">تبدیل فایل‌های Word به داده‌های ساختاریافته</div>
+                <span class="tc-badge">تبدیل</span>
+            </a>
+            
+            <a href="password-manager.html" class="tool-card">
+                <span class="tc-icon">🔑</span>
+                <div class="tc-title">مدیریت رمزهای عبور</div>
+                <div class="tc-desc">تغییر رمز معلم، مدیر و مرکز کنترل</div>
+                <span class="tc-badge">امنیت</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

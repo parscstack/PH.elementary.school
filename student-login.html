@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎒 ورود دانش‌آموز</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="student-auth.js"></script>
+    <style>
+        :root {
+            --role-color: #667eea;
+            --role-light: #f0f4ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 45px 40px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease;
+            border-top: 6px solid var(--role-color);
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-container .login-icon {
+            font-size: 70px;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .login-container h1 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        
+        .login-container .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .login-container .info-box {
+            background: var(--role-light);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-right: 4px solid var(--role-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .login-container .info-box .info-icon {
+            font-size: 30px;
+        }
+        
+        .login-container .info-box .info-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .login-container .info-box .info-text strong {
+            color: var(--role-color);
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1a202c;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--role-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--role-color), #764ba2);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        .message.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        .back-link a {
+            color: var(--role-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-container .login-icon {
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <span class="login-icon">👦</span>
+        <h1>ورود دانش‌آموز</h1>
+        <p class="subtitle">به سامانه پوشه کار خوش آمدید</p>
+        
+        <div class="info-box">
+            <span class="info-icon">📚</span>
+            <div class="info-text">
+                <strong>پوشه کار، هدف‌گذاری و خودارزیابی</strong><br>
+                پیشرفت خود را ثبت و پیگیری کن
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>نام و نام خانوادگی:</label>
+            <input type="text" id="loginName" placeholder="مثلاً: علی رضایی">
+        </div>
+        
+        <div class="form-group">
+            <label>پایه تحصیلی:</label>
+            <select id="loginGrade">
+                <option value="">انتخاب کن</option>
+                <option value="اول">اول ابتدایی</option>
+                <option value="دوم">دوم ابتدایی</option>
+                <option value="سوم">سوم ابتدایی</option>
+                <option value="چهارم">چهارم ابتدایی</option>
+                <option value="پنجم">پنجم ابتدایی</option>
+                <option value="ششم">ششم ابتدایی</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>رمز عبور:</label>
+            <input type="password" id="loginPassword" placeholder="رمز عبور (پیش‌فرض: 123456)">
+        </div>
+        
+        <button class="btn btn-primary" onclick="handleLogin()">🚀 ورود به داشبورد</button>
+        
+        <div id="loginMessage"></div>
+        
+        <div class="back-link">
+            <a href="index.html">← بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+
+    <script>
+        const auth = new StudentAuth();
+        
+        function handleLogin() {
+            const name = document.getElementById('loginName').value.trim();
+            const grade = document.getElementById('loginGrade').value;
+            const password = document.getElementById('loginPassword').value || '123456';
+            
+            if (!name || !grade) {
+                showMessage('loginMessage', '❌ لطفاً نام و پایه را وارد کن.', 'error');
+                return;
+            }
+            
+            const result = auth.login(name, grade, password);
+            
+            if (result.success) {
+                showMessage('loginMessage', '✅ ورود با موفقیت انجام شد!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'student-dashboard-v2.html';
+                }, 1000);
+            } else {
+                showMessage('loginMessage', result.message, 'error');
+            }
+        }
+        
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        
+        console.log('🎒 صفحه ورود دانش‌آموز بارگذاری شد!');
+    </script>
+</body>
+</html>

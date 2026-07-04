@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 جدول رتبه‌بندی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="student-auth.js"></script>
+    <script src="social-features.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1a202c;
+            --text: #2d3748;
+            --border: #e2e8f0;
+            --light: #f7fafc;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        
+        .header h1 span {
+            background: linear-gradient(135deg, var(--gold), #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .back-btn {
+            padding: 10px 20px;
+            background: var(--light);
+            color: var(--dark);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--primary);
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        /* ===== PODIUM ===== */
+        .podium {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            min-height: 350px;
+        }
+        
+        .podium-item {
+            text-align: center;
+            border-radius: 20px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .podium-item:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+        
+        .podium-item .medal {
+            font-size: 55px;
+            display: block;
+            margin-bottom: 5px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        .podium-item .rank-number {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+        
+        .podium-item .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .podium-item:hover .avatar {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .podium-item .name {
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            margin-top: 5px;
+        }
+        
+        .podium-item .grade {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .podium-item .points {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-top: 8px;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .podium-item .badge-count {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* ===== POSITION 1 (GOLD) ===== */
+        .podium-item.first {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            padding: 30px 40px 25px;
+            min-width: 200px;
+            transform: scale(1.1);
+            box-shadow: 0 20px 60px rgba(255, 215, 0, 0.4);
+            order: 2;
+        }
+        
+        .podium-item.first .avatar {
+            width: 100px;
+            height: 100px;
+            font-size: 40px;
+            border-color: white;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .podium-item.first .name {
+            font-size: 24px;
+        }
+        
+        .podium-item.first .points {
+            font-size: 32px;
+        }
+        
+        .podium-item.first .medal {
+            font-size: 70px;
+        }
+        
+        .podium-item.first .crown {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            animation: float 2s ease-in-out infinite;
+        }
+        
+        /* ===== POSITION 2 (SILVER) ===== */
+        .podium-item.second {
+            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+            padding: 25px 30px 20px;
+            min-width: 170px;
+            transform: scale(0.95);
+            box-shadow: 0 15px 40px rgba(192, 192, 192, 0.3);
+            order: 1;
+        }
+        
+        .podium-item.second .avatar {
+            width: 70px;
+            height: 70px;
+            font-size: 28px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .podium-item.second .name {
+            font-size: 18px;
+        }
+        
+        .podium-item.second .points {
+            font-size: 22px;
+        }
+        
+        /* ===== POSITION 3 (BRONZE) ===== */
+        .podium-item.third {
+            background: linear-gradient(135deg, #CD7F32, #B87333);
+            padding: 20px 25px 18px;
+            min-width: 150px;
+            transform: scale(0.85);
+            box-shadow: 0 10px 30px rgba(205, 127, 50, 0.3);
+            order: 3;
+        }
+        
+        .podium-item.third .avatar {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .podium-item.third .name {
+            font-size: 16px;
+        }
+        
+        .podium-item.third .points {
+            font-size: 20px;
+        }
+        
+        .podium-item.third .medal {
+            font-size: 40px;
+        }
+        
+        /* ===== PODIUM EMPTY ===== */
+        .podium-empty {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.5);
+            width: 100%;
+        }
+        
+        .podium-empty .empty-icon {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 15px;
+        }
+        
+        /* ===== GLOW EFFECTS ===== */
+        .podium-item.first::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+            z-index: -1;
+            filter: blur(20px);
+            opacity: 0.6;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        /* ===== CARD ===== */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .leaderboard-table th {
+            background: var(--light);
+            color: var(--dark);
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 2px solid var(--border);
+            font-weight: 800;
+            font-size: 14px;
+        }
+        
+        .leaderboard-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        
+        .leaderboard-table tr {
+            transition: all 0.3s;
+        }
+        
+        .leaderboard-table tr:hover td {
+            background: var(--light);
+        }
+        
+        .leaderboard-table .rank-cell {
+            font-weight: 800;
+            font-size: 18px;
+        }
+        
+        .leaderboard-table .rank-1 {
+            color: var(--gold);
+        }
+        .leaderboard-table .rank-2 {
+            color: var(--silver);
+        }
+        .leaderboard-table .rank-3 {
+            color: var(--bronze);
+        }
+        
+        .leaderboard-table .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .leaderboard-table .avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+        
+        .leaderboard-table .user-name {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .leaderboard-table .user-grade {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .leaderboard-table .points-cell {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .leaderboard-table .badge-cell {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .leaderboard-table .badge-cell .badge-icon {
+            font-size: 18px;
+        }
+        
+        .leaderboard-table .level-cell {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            background: var(--light);
+        }
+        
+        .leaderboard-table .current-user {
+            background: #f0f4ff;
+        }
+        
+        .leaderboard-table .current-user td {
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        /* ===== FILTERS ===== */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filters select {
+            padding: 8px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px;
+            background: white;
+        }
+        
+        .filters select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .podium {
+                gap: 10px;
+                padding: 20px 10px;
+                min-height: 300px;
+            }
+            
+            .podium-item.first {
+                padding: 20px 25px 18px;
+                min-width: 150px;
+            }
+            
+            .podium-item.second {
+                padding: 18px 20px 15px;
+                min-width: 130px;
+            }
+            
+            .podium-item.third {
+                padding: 15px 18px 12px;
+                min-width: 110px;
+            }
+            
+            .podium-item.first .avatar {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+            }
+            
+            .podium-item .medal {
+                font-size: 40px;
+            }
+            
+            .podium-item.first .medal {
+                font-size: 50px;
+            }
+            
+            .podium-item.first .name {
+                font-size: 18px;
+            }
+            
+            .podium-item .name {
+                font-size: 15px;
+            }
+            
+            .podium-item .points {
+                font-size: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .podium {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                min-height: auto;
+            }
+            
+            .podium-item {
+                width: 80%;
+                max-width: 250px;
+            }
+            
+            .podium-item.first {
+                transform: scale(1);
+                order: 0;
+                min-width: auto;
+                width: 90%;
+                max-width: 280px;
+            }
+            
+            .podium-item.second {
+                transform: scale(1);
+                order: 0;
+                min-width: auto;
+                width: 85%;
+                max-width: 250px;
+            }
+            
+            .podium-item.third {
+                transform: scale(1);
+                order: 0;
+                min-width: auto;
+                width: 80%;
+                max-width: 220px;
+            }
+            
+            .podium-item .avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+            
+            .podium-item.first .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+            }
+            
+            .leaderboard-table {
+                font-size: 12px;
+            }
+            
+            .leaderboard-table td,
+            .leaderboard-table th {
+                padding: 8px 10px;
+            }
+            
+            .leaderboard-table .avatar-small {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+            
+            .podium-item .crown {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 15px;
+            }
+            
+            .podium-item {
+                width: 95%;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .filters select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🏆 <span>جدول رتبه‌بندی</span></h1>
+                <p>برترین دانش‌آموزان بر اساس امتیازات</p>
+            </div>
+            <a href="index.html" class="back-btn">← بازگشت به صفحه اصلی</a>
+        </div>
+        
+        <!-- Podium -->
+        <div class="podium" id="podium"></div>
+        
+        <!-- Leaderboard -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
+                <h2 style="border: none; padding: 0; margin: 0;">📊 لیست کامل</h2>
+                <div class="filters">
+                    <select id="gradeFilter" onchange="renderLeaderboard()">
+                        <option value="">همه پایه‌ها</option>
+                        <option value="اول">اول ابتدایی</option>
+                        <option value="دوم">دوم ابتدایی</option>
+                        <option value="سوم">سوم ابتدایی</option>
+                        <option value="چهارم">چهارم ابتدایی</option>
+                        <option value="پنجم">پنجم ابتدایی</option>
+                        <option value="ششم">ششم ابتدایی</option>
+                    </select>
+                    <select id="limitFilter" onchange="renderLeaderboard()">
+                        <option value="10">۱۰ نفر</option>
+                        <option value="20">۲۰ نفر</option>
+                        <option value="50">۵۰ نفر</option>
+                        <option value="100">همه</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table class="leaderboard-table" id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>دانش‌آموز</th>
+                            <th>پایه</th>
+                            <th>⭐ امتیاز</th>
+                            <th>🏅 نشان‌ها</th>
+                            <th>🎯 اهداف</th>
+                            <th>📝 خودارزیابی</th>
+                            <th>🎮 سطح</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const social = new SocialFeatures();
+        const auth = new StudentAuth();
+        let currentUser = auth.getCurrentStudent();
+        
+        function renderLeaderboard() {
+            const gradeFilter = document.getElementById('gradeFilter').value;
+            const limit = parseInt(document.getElementById('limitFilter').value) || 10;
+            
+            let leaderboard = social.getLeaderboard(100);
+            
+            // Filter by grade
+            if (gradeFilter) {
+                leaderboard = leaderboard.filter(item => item.grade === gradeFilter);
+            }
+            
+            // Apply limit
+            const limited = leaderboard.slice(0, limit);
+            
+            // Render podium (top 3)
+            renderPodium(limited.slice(0, 3));
+            
+            // Render table
+            const tbody = document.getElementById('leaderboardBody');
+            
+            if (limited.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 30px; color: #999;">
+                            هیچ دانش‌آموزی یافت نشد
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = limited.map(item => {
+                const isCurrentUser = currentUser && item.id === currentUser.id;
+                const rankClass = item.rank <= 3 ? `rank-${item.rank}` : '';
+                
+                return `
+                    <tr class="${isCurrentUser ? 'current-user' : ''}">
+                        <td class="rank-cell ${rankClass}">
+                            ${item.medal || `#${item.rank}`}
+                        </td>
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar-small">${item.avatar}</div>
+                                <div>
+                                    <div class="user-name">${item.name}</div>
+                                    ${isCurrentUser ? '<span style="font-size: 10px; color: var(--primary);">(شما)</span>' : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td>${item.grade}</td>
+                        <td class="points-cell">⭐ ${item.points}</td>
+                        <td>
+                            <div class="badge-cell">
+                                ${item.badges > 0 ? '🏅'.repeat(Math.min(item.badges, 5)) : '—'}
+                                ${item.badges > 5 ? `+${item.badges - 5}` : ''}
+                            </div>
+                        </td>
+                        <td>${item.goals}</td>
+                        <td>${item.evaluations}</td>
+                        <td>
+                            <span class="level-cell">
+                                ${item.level.icon} ${item.level.title}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        function renderPodium(top3) {
+            const podium = document.getElementById('podium');
+            
+            if (top3.length === 0) {
+                podium.innerHTML = `
+                    <div class="podium-empty">
+                        <span class="empty-icon">🏆</span>
+                        <p>هنوز دانش‌آموزی برای نمایش وجود ندارد</p>
+                        <p style="font-size: 13px; margin-top: 5px;">اولین نفر شما باشید! 🚀</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create podium items
+            let items = [];
+            
+            // Position 1 (Gold - Center)
+            if (top3[0]) {
+                items.push({
+                    item: top3[0],
+                    position: 'first',
+                    order: 2,
+                    crown: '👑'
+                });
+            }
+            
+            // Position 2 (Silver - Left)
+            if (top3[1]) {
+                items.push({
+                    item: top3[1],
+                    position: 'second',
+                    order: 1,
+                    crown: ''
+                });
+            }
+            
+            // Position 3 (Bronze - Right)
+            if (top3[2]) {
+                items.push({
+                    item: top3[2],
+                    position: 'third',
+                    order: 3,
+                    crown: ''
+                });
+            }
+            
+            // Sort by order
+            items.sort((a, b) => a.order - b.order);
+            
+            podium.innerHTML = items.map(({item, position, crown}) => `
+                <div class="podium-item ${position}">
+                    ${crown ? `<div class="crown">${crown}</div>` : ''}
+                    <span class="medal">${item.medal}</span>
+                    <div class="rank-number">رتبه ${item.rank}</div>
+                    <div class="avatar" style="background: linear-gradient(135deg, ${position === 'first' ? '#FFD700' : position === 'second' ? '#C0C0C0' : '#CD7F32'}, ${position === 'first' ? '#FFA500' : position === 'second' ? '#A8A8A8' : '#B87333'});">
+                        ${item.avatar}
+                    </div>
+                    <div class="name">${item.name}</div>
+                    <div class="grade">پایه ${item.grade}</div>
+                    <div class="points">⭐ ${item.points} امتیاز</div>
+                    <div class="badge-count">🏅 ${item.badges} نشان</div>
+                </div>
+            `).join('');
+        }
+        
+        // Initial render
+        renderLeaderboard();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(renderLeaderboard, 30000);
+        
+        console.log('🏆 جدول رتبه‌بندی حرفه‌ای بارگذاری شد!');
+    </script>
+</body>
+</html>

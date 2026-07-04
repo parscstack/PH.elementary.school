@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✍️ خودارزیابی ماهانه</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="student-auth.js"></script>
+    <script src="rewards-system.js"></script>
+    <style>
+        :root {
+            --primary: #10b981;
+            --secondary: #f59e0b;
+            --accent: #8b5cf6;
+            --light: #f0fdf4;
+            --cream: #fef3c7;
+            --purple-light: #f5f3ff;
+            --dark: #064e3b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+            --text: #2d3748;
+            --gold: #FFD700;
+            --gradient: linear-gradient(135deg, #10b981 0%, #f59e0b 50%, #8b5cf6 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ecfdf5 0%, #fef3c7 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            overflow: hidden;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+        }
+        
+        .user-grade {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: #f0f4ff;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--primary);
+            background: white;
+        }
+        
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .logout-btn {
+            padding: 10px 20px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .header-rewards {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .header-points {
+            background: linear-gradient(135deg, var(--gold), #FFA500);
+            padding: 8px 15px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .header-level {
+            background: var(--gradient);
+            padding: 8px 15px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* ===== LOGIN SCREEN ===== */
+        .login-screen {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 50px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-screen h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        
+        .login-screen p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        
+        .message.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .message.success {
+            background: #d1fae5;
+            color: var(--success);
+        }
+        
+        .message.error {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+        
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            display: none;
+        }
+        
+        .main-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .stat-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* ===== MONTHS TIMELINE ===== */
+        .months-timeline {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 15px;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .month-dot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 45px;
+        }
+        
+        .month-dot:hover {
+            transform: scale(1.05);
+        }
+        
+        .month-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 13px;
+            color: #9ca3af;
+            border: 3px solid #e5e7eb;
+            transition: all 0.3s;
+        }
+        
+        .month-dot.completed .month-circle {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .month-dot.current .month-circle {
+            background: white;
+            border: 3px dashed var(--warning);
+            color: var(--warning);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 15px rgba(245, 158, 11, 0);
+            }
+        }
+        
+        .month-label {
+            margin-top: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #999;
+        }
+        
+        .month-dot.completed .month-label {
+            color: var(--primary);
+        }
+        
+        .month-dot.current .month-label {
+            color: var(--warning);
+            font-weight: 800;
+        }
+        
+        .month-dot .month-rating {
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        
+        /* ===== VIEWS ===== */
+        .view {
+            display: none;
+        }
+        
+        .view.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* ===== ACTION CARDS ===== */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .action-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .action-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .action-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        
+        .action-desc {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* ===== CARD ===== */
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .card h3 {
+            color: var(--text);
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* ===== SECTIONS ===== */
+        .section {
+            background: linear-gradient(135deg, #f9fafb, #ffffff);
+            padding: 25px 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border-right: 6px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s;
+        }
+        
+        .section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section.reflection {
+            border-right-color: var(--accent);
+            background: linear-gradient(135deg, var(--purple-light), #ffffff);
+        }
+        
+        .section.achievement {
+            border-right-color: var(--warning);
+            background: linear-gradient(135deg, var(--cream), #ffffff);
+        }
+        
+        .section.challenge {
+            border-right-color: var(--danger);
+            background: linear-gradient(135deg, #fef2f2, #ffffff);
+        }
+        
+        .section.goals {
+            border-right-color: var(--primary);
+            background: linear-gradient(135deg, var(--light), #ffffff);
+        }
+        
+        .section.emotion {
+            border-right-color: #ec4899;
+            background: linear-gradient(135deg, #fdf2f8, #ffffff);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-icon {
+            font-size: 40px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: var(--text);
+            font-weight: 800;
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        /* ===== FORM ELEMENTS ===== */
+        .question-group {
+            margin-bottom: 22px;
+        }
+        
+        .question-label {
+            font-size: 16px;
+            color: var(--text);
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .question-hint {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        .styled-input,
+        .styled-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            background: white;
+            color: var(--text);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .styled-input:focus,
+        .styled-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .styled-input::placeholder,
+        .styled-textarea::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+        }
+        
+        .styled-textarea {
+            resize: vertical;
+            min-height: 110px;
+            line-height: 2;
+        }
+        
+        .styled-textarea:focus {
+            min-height: 130px;
+        }
+        
+        .styled-select {
+            padding: 12px 20px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .styled-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* ===== EMOJI PICKER ===== */
+        .emoji-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .emoji-option {
+            padding: 16px 8px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        .emoji-option:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+        }
+        
+        .emoji-option.selected {
+            background: var(--gradient);
+            border-color: var(--accent);
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .emoji-option.selected .emoji-label {
+            color: white;
+        }
+        
+        .emoji-icon {
+            font-size: 35px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .emoji-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        
+        /* ===== STAR RATING ===== */
+        .star-rating {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            padding: 15px 0;
+        }
+        
+        .star {
+            font-size: 48px;
+            cursor: pointer;
+            color: #e0e0e0;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        
+        .star:hover,
+        .star.active {
+            color: #fbbf24;
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .star.active {
+            transform: scale(1.1);
+        }
+        
+        /* ===== HISTORY ===== */
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .history-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .history-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .history-header {
+            background: var(--gradient);
+            color: white;
+            padding: 18px 20px;
+            text-align: center;
+        }
+        
+        .history-month {
+            font-size: 22px;
+            font-weight: 800;
+        }
+        
+        .history-emoji {
+            font-size: 45px;
+            margin: 8px 0;
+        }
+        
+        .history-body {
+            padding: 18px 20px;
+        }
+        
+        .history-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 13px;
+        }
+        
+        .history-stat:last-child {
+            border-bottom: none;
+        }
+        
+        .stars-display {
+            color: #fbbf24;
+            font-size: 16px;
+        }
+        
+        .history-note {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #666;
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+        
+        /* ===== CHART ===== */
+        .chart-container {
+            position: relative;
+            height: 280px;
+            margin-top: 15px;
+        }
+        
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #999;
+        }
+        
+        .empty-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .empty-state h3 {
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .header-rewards {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .months-timeline {
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            .month-dot {
+                min-width: 40px;
+            }
+            
+            .month-circle {
+                width: 38px;
+                height: 38px;
+                font-size: 11px;
+            }
+            
+            .section {
+                padding: 18px 16px;
+            }
+            
+            .emoji-picker {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .history-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .star {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .emoji-picker {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .month-label {
+                font-size: 9px;
+            }
+            
+            .month-circle {
+                width: 32px;
+                height: 32px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <div class="header" id="appHeader" style="display: none;">
+            <div class="user-info">
+                <div class="user-avatar" id="headerAvatar">
+                    <span id="headerAvatarText">ط</span>
+                    <img id="headerAvatarImg" style="display: none;">
+                </div>
+                <div>
+                    <div class="user-name" id="headerUserName">نام دانش‌آموز</div>
+                    <div class="user-grade" id="headerUserGrade">پایه</div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <a href="student-dashboard-v2.html" class="nav-btn">🏠 داشبورد</a>
+                <a href="portfolio-student-v3.html" class="nav-btn">🎒 پوشه کار</a>
+                <a href="smart-goals-v3.html" class="nav-btn">🎯 اهداف</a>
+                <a href="monthly-evaluation-v3.html" class="nav-btn active">✍️ خودارزیابی</a>
+                <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+            </div>
+            <div class="header-rewards">
+                <div class="header-points" id="headerPoints">⭐ 0</div>
+                <div class="header-level" id="headerLevel">🎮 L1</div>
+            </div>
+        </div>
+
+        <!-- ===== LOGIN SCREEN ===== -->
+        <div class="login-screen" id="loginScreen">
+            <h2>✍️ خودارزیابی ماهانه</h2>
+            <p>برای ثبت خودارزیابی، ابتدا وارد شو</p>
+            <div class="form-group">
+                <label>نام و نام خانوادگی:</label>
+                <input type="text" id="loginName" placeholder="مثلاً: علی رضایی">
+            </div>
+            <div class="form-group">
+                <label>پایه تحصیلی:</label>
+                <select id="loginGrade">
+                    <option value="">انتخاب کن</option>
+                    <option value="اول">اول ابتدایی</option>
+                    <option value="دوم">دوم ابتدایی</option>
+                    <option value="سوم">سوم ابتدایی</option>
+                    <option value="چهارم">چهارم ابتدایی</option>
+                    <option value="پنجم">پنجم ابتدایی</option>
+                    <option value="ششم">ششم ابتدایی</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>رمز عبور:</label>
+                <input type="password" id="loginPassword" placeholder="رمز عبور">
+            </div>
+            <button class="btn btn-primary" onclick="doLogin()">🚀 ورود</button>
+            <div class="message" id="loginMessage"></div>
+        </div>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <div class="main-content" id="mainContent">
+            <!-- Stats -->
+            <div class="stats-grid" id="statsGrid"></div>
+
+            <!-- Months Timeline -->
+            <div class="months-timeline" id="monthsTimeline"></div>
+
+            <!-- ===== MAIN VIEW ===== -->
+            <div class="view active" id="mainView">
+                <div class="action-grid">
+                    <div class="action-card" onclick="showNewEvaluation()">
+                        <span class="action-icon">✍️</span>
+                        <div class="action-title">خودارزیابی این ماه</div>
+                        <div class="action-desc">ماه جدیدی رو ارزیابی کن و داستان یادگیریت رو بنویس</div>
+                    </div>
+
+                    <div class="action-card" onclick="showHistory()">
+                        <span class="action-icon">📚</span>
+                        <div class="action-title">دفترچه خاطرات ماه‌های قبل</div>
+                        <div class="action-desc">نگاه کن در ماه‌های گذشته چه کردی و چه رشدی داشتی</div>
+                    </div>
+
+                    <div class="action-card" onclick="showGrowthChart()">
+                        <span class="action-icon">📈</span>
+                        <div class="action-title">نمودار رشد من</div>
+                        <div class="action-desc">ببین چقدر در طول سال پیشرفت کرده‌ای</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== NEW EVALUATION FORM ===== -->
+            <div class="view" id="evalForm">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+                        <h3>✍️ خودارزیابی ماه جدید</h3>
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <label style="font-weight: 700;">ماه:</label>
+                            <select id="evalMonth" class="styled-select">
+                                <option value="مهر">مهر</option>
+                                <option value="آبان">آبان</option>
+                                <option value="آذر">آذر</option>
+                                <option value="دی">دی</option>
+                                <option value="بهمن">بهمن</option>
+                                <option value="اسفند">اسفند</option>
+                                <option value="فروردین">فروردین</option>
+                                <option value="اردیبهشت">اردیبهشت</option>
+                                <option value="خرداد">خرداد</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary" onclick="showMainView()">← بازگشت</button>
+                    </div>
+
+                    <!-- Section 1: Mood -->
+                    <div class="section emotion">
+                        <div class="section-header">
+                            <span class="section-icon">😊</span>
+                            <div>
+                                <div class="section-title">حال و هوای ماه من</div>
+                                <div class="section-subtitle">این ماه چه حسی داشتی؟</div>
+                            </div>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">کدام ایموجی حالت این ماهت رو نشون میده؟</div>
+                            <div class="emoji-picker" id="moodPicker">
+                                <div class="emoji-option" onclick="selectMood(this, '😄', 'عالی')">
+                                    <span class="emoji-icon">😄</span>
+                                    <span class="emoji-label">عالی</span>
+                                </div>
+                                <div class="emoji-option" onclick="selectMood(this, '😊', 'خوب')">
+                                    <span class="emoji-icon">😊</span>
+                                    <span class="emoji-label">خوب</span>
+                                </div>
+                                <div class="emoji-option" onclick="selectMood(this, '😐', 'معمولی')">
+                                    <span class="emoji-icon">😐</span>
+                                    <span class="emoji-label">معمولی</span>
+                                </div>
+                                <div class="emoji-option" onclick="selectMood(this, '😔', 'ناراحت')">
+                                    <span class="emoji-icon">😔</span>
+                                    <span class="emoji-label">ناراحت</span>
+                                </div>
+                                <div class="emoji-option" onclick="selectMood(this, '😤', 'عصبی')">
+                                    <span class="emoji-icon">😤</span>
+                                    <span class="emoji-label">عصبی</span>
+                                </div>
+                                <div class="emoji-option" onclick="selectMood(this, '😨', 'نگران')">
+                                    <span class="emoji-icon">😨</span>
+                                    <span class="emoji-label">نگران</span>
+                                </div>
+                                <div class="emoji-option" onclick="selectMood(this, '🥱', 'خسته')">
+                                    <span class="emoji-icon">🥱</span>
+                                    <span class="emoji-label">خسته</span>
+                                </div>
+                                <div class="emoji-option" onclick="selectMood(this, '🤔', 'متفکر')">
+                                    <span class="emoji-icon">🤔</span>
+                                    <span class="emoji-label">متفکر</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Reflection -->
+                    <div class="section reflection">
+                        <div class="section-header">
+                            <span class="section-icon">🪞</span>
+                            <div>
+                                <div class="section-title">بازاندیشی روی ماه</div>
+                                <div class="section-subtitle">به ماه گذشته فکر کن و داستان یادگیریت رو بنویس</div>
+                            </div>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">💡 مهم‌ترین چیزی که این ماه یاد گرفتم چی بود؟</div>
+                            <div class="question-hint">می‌تونه یه درس، یه مهارت یا حتی یه تجربه زندگی باشه</div>
+                            <textarea class="styled-textarea" id="mainLearning" placeholder="مثلاً: این ماه یاد گرفتم که چطوری با دوستام بهتر همکاری کنم..."></textarea>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">📚 در کدام درس بیشترین پیشرفت رو داشتم؟</div>
+                            <input type="text" class="styled-input" id="bestSubject" placeholder="مثلاً: ریاضی، علوم، فارسی...">
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">🤔 چرا فکر می‌کنی در این درس پیشرفت کردم؟</div>
+                            <textarea class="styled-textarea" id="whyProgress" placeholder="مثلاً: چون هر روز تمرین کردم، از معلم پرسیدم..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Achievements -->
+                    <div class="section achievement">
+                        <div class="section-header">
+                            <span class="section-icon">🏆</span>
+                            <div>
+                                <div class="section-title">لحظات افتخارآمیز من</div>
+                                <div class="section-subtitle">به چه کارهات در این ماه افتخار می‌کنی؟</div>
+                            </div>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">🌟 افتخار اول:</div>
+                            <input type="text" class="styled-input" id="pride1" placeholder="مثلاً: توانستم جدول ضرب 7 رو کامل حفظ کنم">
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">🌟 افتخار دوم:</div>
+                            <input type="text" class="styled-input" id="pride2" placeholder="مثلاً: به دوست جدیدم کمک کردم">
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">🌟 افتخار سوم:</div>
+                            <input type="text" class="styled-input" id="pride3" placeholder="مثلاً: در مسابقه نقاشی شرکت کردم">
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">🎨 اگر بخواهی این ماه رو با یه رنگ نشون بدی، چه رنگی؟</div>
+                            <input type="text" class="styled-input" id="monthColor" placeholder="مثلاً: طلایی، آبی روشن، صورتی...">
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Challenges -->
+                    <div class="section challenge">
+                        <div class="section-header">
+                            <span class="section-icon">💪</span>
+                            <div>
+                                <div class="section-title">چالش‌های من</div>
+                                <div class="section-subtitle">چه چیزهایی برات سخت بود و چطور باهاش کنار اومدی؟</div>
+                            </div>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">⚡ بزرگ‌ترین چالش این ماه چی بود؟</div>
+                            <textarea class="styled-textarea" id="mainChallenge" placeholder="مثلاً: تمرکز کردن در درس خوندن، یاد گرفتن یه درس سخت..."></textarea>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">💡 چطور با این چالش کنار اومدی؟</div>
+                            <textarea class="styled-textarea" id="howOvercame" placeholder="مثلاً: از معلم کمک گرفتم، بیشتر تمرین کردم..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Goals -->
+                    <div class="section goals">
+                        <div class="section-header">
+                            <span class="section-icon">🎯</span>
+                            <div>
+                                <div class="section-title">اهداف ماه بعد من</div>
+                                <div class="section-subtitle">ماه بعدی می‌خوای چی کار کنی؟</div>
+                            </div>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">📚 هدف تحصیلی ماه بعد:</div>
+                            <input type="text" class="styled-input" id="nextGoalAcademic" placeholder="مثلاً: حفظ کردن جدول ضرب 8 و 9">
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">💚 هدف اخلاقی ماه بعد:</div>
+                            <input type="text" class="styled-input" id="nextGoalMoral" placeholder="مثلاً: هر روز به یه نفر کمک کنم">
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">🎨 هدف هنری/مهارتی ماه بعد:</div>
+                            <input type="text" class="styled-input" id="nextGoalSkill" placeholder="مثلاً: یاد گرفتن یه آهنگ جدید با ساز">
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">📖 ماه بعد چند کتاب داستان می‌خوای بخونی؟</div>
+                            <input type="text" class="styled-input" id="booksToRead" placeholder="مثلاً: 3 کتاب">
+                        </div>
+                    </div>
+
+                    <!-- Section 6: Rating -->
+                    <div class="section">
+                        <div class="section-header">
+                            <span class="section-icon">⭐</span>
+                            <div>
+                                <div class="section-title">امتیاز ماه من</div>
+                                <div class="section-subtitle">به این ماهت از 1 تا 5 ستاره بده</div>
+                            </div>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label" style="text-align: center;">چقدر از این ماهت راضی هستی؟</div>
+                            <div class="star-rating" id="starRating">
+                                <span class="star" data-value="1" onclick="setRating(1)">⭐</span>
+                                <span class="star" data-value="2" onclick="setRating(2)">⭐</span>
+                                <span class="star" data-value="3" onclick="setRating(3)">⭐</span>
+                                <span class="star" data-value="4" onclick="setRating(4)">⭐</span>
+                                <span class="star" data-value="5" onclick="setRating(5)">⭐</span>
+                            </div>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">📝 حرف آخر ماه:</div>
+                            <textarea class="styled-textarea" id="finalNote" placeholder="یه جمله زیبا که ماهت رو خلاصه کنه..."></textarea>
+                        </div>
+
+                        <div class="question-group">
+                            <div class="question-label">📸 اگر این ماه یه عکس داشت، چی توش بود؟</div>
+                            <textarea class="styled-textarea" id="monthPhoto" placeholder="مثلاً: عکسی از من و دوستام که داریم با هم درس می‌خونیم"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success btn-full" onclick="saveEvaluation()">💾 ذخیره خودارزیابی</button>
+                    <div class="message" id="saveMessage"></div>
+                </div>
+            </div>
+
+            <!-- ===== HISTORY VIEW ===== -->
+            <div class="view" id="historyView">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                        <h3>📚 دفترچه خاطرات ماه‌های قبل</h3>
+                        <button class="btn btn-secondary" onclick="showMainView()">← بازگشت</button>
+                    </div>
+                    <div class="history-grid" id="historyGrid"></div>
+                </div>
+            </div>
+
+            <!-- ===== CHART VIEW ===== -->
+            <div class="view" id="chartView">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                        <h3>📈 نمودار رشد من</h3>
+                        <button class="btn btn-secondary" onclick="showMainView()">← بازگشت</button>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // APP STATE
+        // ============================================
+        const auth = new StudentAuth();
+        let rewards = null;
+        let selectedMood = null;
+        let selectedRating = 0;
+        let charts = {};
+
+        const monthOrder = ['مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند', 'فروردین', 'اردیبهشت', 'خرداد'];
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            if (auth.isLoggedIn()) {
+                showDashboard();
+            }
+        });
+
+        // ============================================
+        // AUTH
+        // ============================================
+        function doLogin() {
+            const name = document.getElementById('loginName').value.trim();
+            const grade = document.getElementById('loginGrade').value;
+            const password = document.getElementById('loginPassword').value || '1234';
+
+            if (!name || !grade) {
+                showMessage('loginMessage', '❌ لطفاً نام و پایه را وارد کن.', 'error');
+                return;
+            }
+
+            const result = auth.login(name, grade, password);
+            if (result.success) {
+                showDashboard();
+            } else {
+                showMessage('loginMessage', result.message || 'خطا در ورود', 'error');
+            }
+        }
+
+        function logout() {
+            auth.logout();
+            location.reload();
+        }
+
+        // ============================================
+        // DASHBOARD
+        // ============================================
+        function showDashboard() {
+            const student = auth.getCurrentStudent();
+            if (!student) return;
+
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appHeader').style.display = 'flex';
+            document.getElementById('mainContent').classList.add('active');
+
+            document.getElementById('headerUserName').textContent = student.name;
+            document.getElementById('headerUserGrade').textContent = `پایه ${student.grade}`;
+            document.getElementById('headerAvatarText').textContent = student.name.charAt(0);
+
+            const photo = auth.getPhoto();
+            if (photo) {
+                document.getElementById('headerAvatarImg').src = photo;
+                document.getElementById('headerAvatarImg').style.display = 'block';
+                document.getElementById('headerAvatarText').style.display = 'none';
+            }
+
+            // Initialize rewards
+            try {
+                rewards = new RewardsSystem(auth);
+                rewards.autoAwardPoints();
+                updateHeaderRewards();
+            } catch (e) {
+                console.error('Rewards error:', e);
+                rewards = null;
+            }
+
+            updateStats();
+            renderMonthsTimeline();
+        }
+
+        function updateHeaderRewards() {
+            if (!rewards) return;
+            document.getElementById('headerPoints').textContent = `⭐ ${rewards.points.points}`;
+            const level = rewards.calculateLevel(rewards.points.points);
+            document.getElementById('headerLevel').textContent = `${level.icon} L${level.level}`;
+        }
+
+        // ============================================
+        // STATS
+        // ============================================
+        function updateStats() {
+            const evals = auth.getEvaluations();
+            const monthsCount = Object.keys(evals).length;
+
+            let totalRating = 0;
+            let totalPrides = 0;
+
+            Object.values(evals).forEach(e => {
+                totalRating += (e.rating || 0);
+                if (e.prides) totalPrides += e.prides.length;
+            });
+
+            const avgRating = monthsCount > 0 ? (totalRating / monthsCount).toFixed(1) : 0;
+
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value">${monthsCount}</div>
+                    <div class="stat-label">ماه ثبت شده</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value">${avgRating}</div>
+                    <div class="stat-label">میانگین امتیاز</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value">${totalPrides}</div>
+                    <div class="stat-label">کل افتخارات</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value">${9 - monthsCount}</div>
+                    <div class="stat-label">ماه باقی‌مانده</div>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // MONTHS TIMELINE
+        // ============================================
+        function renderMonthsTimeline() {
+            const evals = auth.getEvaluations();
+            const timeline = document.getElementById('monthsTimeline');
+
+            timeline.innerHTML = monthOrder.map(month => {
+                const isCompleted = evals[month] !== undefined;
+                const rating = isCompleted ? evals[month].rating : 0;
+                const stars = '⭐'.repeat(rating || 0);
+
+                return `
+                    <div class="month-dot ${isCompleted ? 'completed' : ''}" onclick="viewMonthHistory('${month}')">
+                        <div class="month-circle">${month.substring(0, 2)}</div>
+                        <div class="month-label">${month}</div>
+                        ${isCompleted ? `<div class="month-rating">${stars}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // VIEWS
+        // ============================================
+        function showMainView() {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('mainView').classList.add('active');
+            updateStats();
+            renderMonthsTimeline();
+        }
+
+        function showNewEvaluation() {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('evalForm').classList.add('active');
+            resetForm();
+        }
+
+        function showHistory() {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('historyView').classList.add('active');
+            renderHistoryCards();
+        }
+
+        function showGrowthChart() {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById('chartView').classList.add('active');
+            renderGrowthChart();
+        }
+
+        // ============================================
+        // FORM
+        // ============================================
+        function resetForm() {
+            document.querySelectorAll('#evalForm input[type="text"], #evalForm textarea').forEach(el => el.value = '');
+            document.querySelectorAll('.emoji-option, .star').forEach(el => el.classList.remove('selected', 'active'));
+            selectedMood = null;
+            selectedRating = 0;
+        }
+
+        function selectMood(element, emoji, label) {
+            document.querySelectorAll('.emoji-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedMood = { emoji, label };
+        }
+
+        function setRating(value) {
+            selectedRating = value;
+            document.querySelectorAll('#starRating .star').forEach((star, idx) => {
+                if (idx < value) star.classList.add('active');
+                else star.classList.remove('active');
+            });
+        }
+
+        // ============================================
+        // SAVE EVALUATION
+        // ============================================
+        function saveEvaluation() {
+            const month = document.getElementById('evalMonth').value;
+            const mainLearning = document.getElementById('mainLearning').value.trim();
+
+            if (!mainLearning) {
+                showMessage('saveMessage', '❌ لطفاً حداقل یه چیز بنویس!', 'error');
+                return;
+            }
+
+            if (!selectedMood) {
+                showMessage('saveMessage', '❌ لطفاً حال و هوای ماهت رو انتخاب کن.', 'error');
+                return;
+            }
+
+            // Check if this month already exists
+            const evals = auth.getEvaluations();
+            if (evals[month]) {
+                if (!confirm(`⚠️ برای ماه ${month} قبلاً خودارزیابی ثبت شده. آیا می‌خوای جایگزین کنی؟`)) {
+                    return;
+                }
+            }
+
+            const prides = [
+                document.getElementById('pride1').value.trim(),
+                document.getElementById('pride2').value.trim(),
+                document.getElementById('pride3').value.trim()
+            ].filter(p => p);
+
+            const evaluation = {
+                month,
+                date: new Date().toLocaleDateString('fa-IR'),
+                mood: selectedMood,
+                rating: selectedRating || 3,
+                mainLearning,
+                bestSubject: document.getElementById('bestSubject').value.trim(),
+                whyProgress: document.getElementById('whyProgress').value.trim(),
+                prides: prides,
+                monthColor: document.getElementById('monthColor').value.trim(),
+                mainChallenge: document.getElementById('mainChallenge').value.trim(),
+                howOvercame: document.getElementById('howOvercame').value.trim(),
+                nextGoals: {
+                    academic: document.getElementById('nextGoalAcademic').value.trim(),
+                    moral: document.getElementById('nextGoalMoral').value.trim(),
+                    skill: document.getElementById('nextGoalSkill').value.trim()
+                },
+                booksToRead: document.getElementById('booksToRead').value.trim(),
+                finalNote: document.getElementById('finalNote').value.trim(),
+                monthPhoto: document.getElementById('monthPhoto').value.trim()
+            };
+
+            const success = auth.addEvaluation(month, evaluation);
+
+            if (success) {
+                // ===== REWARDS SYSTEM =====
+                if (rewards) {
+                    try {
+                        const pointsResult = rewards.awardPoints('evaluation', 30);
+                        const newBadges = rewards.checkBadges();
+
+                        updateHeaderRewards();
+
+                        newBadges.forEach(badge => {
+                            setTimeout(() => {
+                                rewards.showBadgeAnimation(badge);
+                            }, 500);
+                        });
+
+                        showMessage('saveMessage', `✅ خودارزیابی ماه ${month} با موفقیت ذخیره شد! +30 امتیاز ⭐`, 'success');
+
+                    } catch (e) {
+                        console.error('Rewards error:', e);
+                        showMessage('saveMessage', `✅ خودارزیابی ماه ${month} با موفقیت ذخیره شد!`, 'success');
+                    }
+                } else {
+                    showMessage('saveMessage', `✅ خودارزیابی ماه ${month} با موفقیت ذخیره شد!`, 'success');
+                }
+
+                setTimeout(() => {
+                    showMainView();
+                }, 2000);
+            } else {
+                showMessage('saveMessage', '❌ خطا در ذخیره خودارزیابی.', 'error');
+            }
+        }
+
+        // ============================================
+        // HISTORY
+        // ============================================
+        function viewMonthHistory(month) {
+            const evals = auth.getEvaluations();
+            const evalData = evals[month];
+
+            if (!evalData) {
+                showNewEvaluation();
+                document.getElementById('evalMonth').value = month;
+                return;
+            }
+
+            const stars = '⭐'.repeat(evalData.rating || 0);
+            const prideText = evalData.prides && evalData.prides.length > 0 ?
+                evalData.prides.map((p, i) => `${i + 1}. ${p}`).join('\n') :
+                '---';
+
+            const details = `
+📅 ماه: ${evalData.month}
+📅 تاریخ: ${evalData.date}
+😊 حس: ${evalData.mood.emoji} ${evalData.mood.label}
+⭐ امتیاز: ${stars} (${evalData.rating}/5)
+
+💡 مهم‌ترین یادگیری:
+${evalData.mainLearning || '---'}
+
+📚 بهترین درس: ${evalData.bestSubject || '---'}
+
+🏆 افتخارات:
+${prideText}
+
+💪 چالش: ${evalData.mainChallenge || '---'}
+💡 راه‌حل: ${evalData.howOvercame || '---'}
+
+🎯 اهداف ماه بعد:
+- تحصیلی: ${evalData.nextGoals?.academic || '---'}
+- اخلاقی: ${evalData.nextGoals?.moral || '---'}
+- مهارتی: ${evalData.nextGoals?.skill || '---'}
+
+📝 حرف آخر: ${evalData.finalNote || '---'}
+            `;
+
+            alert(details);
+        }
+
+        function renderHistoryCards() {
+            const evals = auth.getEvaluations();
+            const grid = document.getElementById('historyGrid');
+
+            const months = monthOrder.filter(m => evals[m]);
+
+            if (months.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <span class="empty-icon">📭</span>
+                        <h3>هنوز ماهی رو ثبت نکردی!</h3>
+                        <p>برو و داستان اولین ماهت رو بنویس</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = months.map(month => {
+                const evalData = evals[month];
+                const starsDisplay = '⭐'.repeat(evalData.rating || 0);
+
+                return `
+                    <div class="history-card" onclick='viewMonthHistory("${month}")'>
+                        <div class="history-header">
+                            <div class="history-month">${month}</div>
+                            <div class="history-emoji">${evalData.mood?.emoji || '😊'}</div>
+                        </div>
+                        <div class="history-body">
+                            <div class="history-stat">
+                                <span>امتیاز:</span>
+                                <span class="stars-display">${starsDisplay}</span>
+                            </div>
+                            <div class="history-stat">
+                                <span>افتخارات:</span>
+                                <span>${evalData.prides ? evalData.prides.length : 0} مورد</span>
+                            </div>
+                            <div class="history-stat">
+                                <span>تاریخ:</span>
+                                <span>${evalData.date || '---'}</span>
+                            </div>
+                            ${evalData.finalNote ? `
+                            <div class="history-note">
+                                💭 ${evalData.finalNote}
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============================================
+        // CHART
+        // ============================================
+        function renderGrowthChart() {
+            const evals = auth.getEvaluations();
+            const ctx = document.getElementById('growthChart');
+
+            if (charts.growth) charts.growth.destroy();
+
+            const data = monthOrder.filter(m => evals[m]).map(m => ({
+                month: m,
+                rating: evals[m].rating,
+                prides: evals[m].prides ? evals[m].prides.length : 0
+            }));
+
+            if (data.length === 0) {
+                ctx.parentElement.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📊</span>
+                        <h3>هنوز داده‌ای برای نمایش وجود ندارد</h3>
+                        <p>اولین خودارزیابی خود را ثبت کن!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            charts.growth = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.month),
+                    datasets: [{
+                        label: '⭐ امتیاز ماه',
+                        data: data.map(d => d.rating),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }, {
+                        label: '🏆 تعداد افتخارات',
+                        data: data.map(d => d.prides),
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#f59e0b',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        borderDash: [5, 5]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: { family: 'Vazirmatn' }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    return '⭐'.repeat(value) || '0';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ============================================
+        // UTILITIES
+        // ============================================
+        function showMessage(containerId, text, type) {
+            const el = document.getElementById(containerId);
+            if (!el) return;
+            el.textContent = text;
+            el.className = `message show ${type}`;
+            setTimeout(() => {
+                el.className = 'message';
+            }, 3500);
+        }
+
+        console.log('✍️ خودارزیابی ماهانه v3 بارگذاری شد!');
+        console.log('✅ با سیستم پاداش یکپارچه');
+    </script>
+</body>
+</html>

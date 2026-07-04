@@ -1,0 +1,69 @@
+# ============================================
+# سامانه پوشه کار تعاملی - تنظیمات سرور
+# ============================================
+
+# ===== ۱. فشرده‌سازی فایل‌ها =====
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/xml text/plain
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ===== ۲. کش کردن فایل‌ها =====
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # CSS و JS - ۱ ماه
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # تصاویر - ۱ سال
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    
+    # فونت‌ها - ۱ سال
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    
+    # HTML - ۱ روز
+    ExpiresByType text/html "access plus 1 day"
+</IfModule>
+
+# ===== ۳. هدرهای امنیتی =====
+<IfModule mod_headers.c>
+    # جلوگیری از MIME sniffing
+    Header set X-Content-Type-Options "nosniff"
+    
+    # جلوگیری از Clickjacking
+    Header set X-Frame-Options "DENY"
+    
+    # محافظت XSS
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # Referrer Policy
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Cache Control
+    Header set Cache-Control "public, max-age=31536000, immutable"
+</IfModule>
+
+# ===== ۴. جلوگیری از نمایش لیست پوشه‌ها =====
+Options -Indexes
+
+# ===== ۵. صفحات خطا =====
+ErrorDocument 404 /404.html
+ErrorDocument 403 /403.html
+ErrorDocument 500 /404.html
+
+# ===== ۶. ریدایرکت به HTTPS (فقط برای هاست آنلاین) =====
+# (برای لوکال فعال نکن)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# ===== ۷. ریدایرکت به صفحه اصلی =====
+DirectoryIndex index.html

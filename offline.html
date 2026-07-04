@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📡 حالت آفلاین</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 25px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .icon {
+            font-size: 100px;
+            display: block;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #1a202c;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .retry-btn {
+            margin-top: 10px;
+        }
+        
+        .offline-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .feature-item {
+            background: #f7fafc;
+            padding: 15px 10px;
+            border-radius: 12px;
+        }
+        
+        .feature-item .fi-icon {
+            font-size: 30px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .feature-item .fi-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .offline-features {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="icon">📡</span>
+        <h1>شما آفلاین هستید!</h1>
+        <p>
+            ارتباط شما با اینترنت قطع شده است. 
+            اما نگران نباشید! شما همچنان می‌توانید از اطلاعات ذخیره شده استفاده کنید.
+        </p>
+        
+        <div class="offline-features">
+            <div class="feature-item">
+                <span class="fi-icon">📚</span>
+                <span class="fi-label">دسترسی به منابع</span>
+            </div>
+            <div class="feature-item">
+                <span class="fi-icon">📝</span>
+                <span class="fi-label">مشاهده اهداف</span>
+            </div>
+            <div class="feature-item">
+                <span class="fi-icon">🏆</span>
+                <span class="fi-label">نشان‌ها</span>
+            </div>
+        </div>
+        
+        <button class="btn retry-btn" onclick="location.reload()">🔄 تلاش مجدد</button>
+        
+        <div style="margin-top: 15px;">
+            <a href="index.html" class="btn" style="background: #e2e8f0; color: #1a202c;">← بازگشت به صفحه اصلی</a>
+        </div>
+        
+        <p style="font-size: 12px; color: #999; margin-top: 20px;">
+            💡 برخی از قابلیت‌ها ممکن است در حالت آفلاین محدود باشند
+        </p>
+    </div>
+    
+    <script>
+        // Check online status
+        window.addEventListener('online', function() {
+            location.reload();
+        });
+        
+        console.log('📡 صفحه آفلاین بارگذاری شد!');
+    </script>
+</body>
+</html>

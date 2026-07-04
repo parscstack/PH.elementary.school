@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔔 پنل مدیریت نوتیفیکیشن</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="notification-system.js"></script>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1a202c;
+            --text: #2d3748;
+            --border: #e2e8f0;
+            --light: #f7fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        
+        .header p {
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: var(--light);
+            color: var(--dark);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--primary);
+            background: white;
+        }
+        
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* ===== CARD ===== */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+        
+        .card h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        /* ===== SETTINGS ===== */
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--border);
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-info .setting-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .setting-info .setting-desc {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: #ccc;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .toggle-switch.active {
+            background: var(--primary);
+        }
+        
+        .toggle-switch .toggle-slider {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            right: 25px;
+        }
+        
+        /* ===== NOTIFICATIONS LIST ===== */
+        .notif-item {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background: var(--light);
+            border-right: 4px solid var(--border);
+            transition: all 0.3s;
+        }
+        
+        .notif-item:hover {
+            transform: translateX(-5px);
+        }
+        
+        .notif-item.unread {
+            background: #f0f4ff;
+            border-right-color: var(--primary);
+        }
+        
+        .notif-item .notif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .notif-item .notif-title {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .notif-item .notif-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .notif-item .notif-message {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .notif-item .notif-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .notif-item .notif-actions button {
+            padding: 5px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .btn-read {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-read:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn-delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .btn-delete:hover {
+            background: #fecaca;
+        }
+        
+        /* ===== EMPTY ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .notif-item .notif-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔔 پنل مدیریت نوتیفیکیشن</h1>
+            <p>مدیریت اعلان‌ها و تنظیمات یادآوری</p>
+            <a href="index.html" class="back-btn">← بازگشت به صفحه اصلی</a>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalNotifs">0</div>
+                <div class="stat-label">کل اعلان‌ها</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="unreadNotifs">0</div>
+                <div class="stat-label">خوانده نشده</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="readNotifs">0</div>
+                <div class="stat-label">خوانده شده</div>
+            </div>
+        </div>
+        
+        <!-- Settings -->
+        <div class="card">
+            <h2>⚙️ تنظیمات یادآوری</h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-title">📝 یادآوری خودارزیابی ماهانه</div>
+                    <div class="setting-desc">هر ماه بعد از ۲۵ام، یادآوری برای ثبت خودارزیابی</div>
+                </div>
+                <div class="toggle-switch active" onclick="toggleSetting('evaluationReminder', this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-title">🎯 یادآوری بررسی اهداف</div>
+                    <div class="setting-desc">هر ۲ هفته یکبار یادآوری برای بررسی پیشرفت اهداف</div>
+                </div>
+                <div class="toggle-switch active" onclick="toggleSetting('goalReminder', this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-title">🏆 اعلان نشان‌های جدید</div>
+                    <div class="setting-desc">وقتی نشان جدید کسب می‌کنی، اعلان دریافت کن</div>
+                </div>
+                <div class="toggle-switch active" onclick="toggleSetting('badgeAlert', this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-title">👨‍🏫 اعلان یادداشت معلم</div>
+                    <div class="setting-desc">وقتی معلم برایت یادداشت جدید ثبت می‌کند</div>
+                </div>
+                <div class="toggle-switch active" onclick="toggleSetting('teacherNote', this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="card">
+            <h2>📋 مدیریت اعلان‌ها</h2>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="markAllRead()">✅ همه را خوانده شد</button>
+                <button class="btn btn-primary" onclick="addSampleNotification()">➕ اعلان نمونه</button>
+                <button class="btn btn-danger" onclick="deleteAll()">🗑️ حذف همه</button>
+            </div>
+        </div>
+        
+        <!-- Notifications List -->
+        <div class="card">
+            <h2>📋 لیست اعلان‌ها</h2>
+            <div id="notifList"></div>
+        </div>
+    </div>
+
+    <script>
+        const notifSystem = new NotificationSystem();
+        
+        // ============================================
+        // RENDER
+        // ============================================
+        function renderStats() {
+            const stats = notifSystem.getStats();
+            document.getElementById('totalNotifs').textContent = stats.total;
+            document.getElementById('unreadNotifs').textContent = stats.unread;
+            document.getElementById('readNotifs').textContent = stats.read;
+        }
+        
+        function renderNotifications() {
+            const list = document.getElementById('notifList');
+            const notifications = notifSystem.getAll();
+            
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">🔕</span>
+                        <p>هیچ اعلانی وجود ندارد</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = notifications.map(notif => {
+                const isUnread = !notif.read;
+                const timeAgo = notifSystem.getTimeAgo(notif.createdAt);
+                const icon = notifSystem.getTypeIcon(notif.type);
+                const typeLabel = notifSystem.getTypeLabel(notif.type);
+                
+                return `
+                    <div class="notif-item ${isUnread ? 'unread' : ''}">
+                        <div class="notif-header">
+                            <div class="notif-title">${icon} ${notif.title}</div>
+                            <div class="notif-time">${timeAgo}</div>
+                        </div>
+                        <div class="notif-message">${notif.message}</div>
+                        <div style="font-size: 12px; color: #999; margin-top: 5px;">
+                            نوع: ${typeLabel}
+                            ${isUnread ? ' | <span style="color: #667eea;">جدید</span>' : ''}
+                        </div>
+                        <div class="notif-actions">
+                            ${isUnread ? `<button class="btn-read" onclick="markRead('${notif.id}')">✅ خوانده شد</button>` : ''}
+                            <button class="btn-delete" onclick="deleteNotif('${notif.id}')">🗑️ حذف</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function refresh() {
+            renderStats();
+            renderNotifications();
+        }
+        
+        // ============================================
+        // ACTIONS
+        // ============================================
+        function markRead(id) {
+            notifSystem.markAsRead(id);
+            refresh();
+        }
+        
+        function markAllRead() {
+            notifSystem.markAllAsRead();
+            refresh();
+        }
+        
+        function deleteNotif(id) {
+            if (confirm('آیا از حذف این اعلان اطمینان دارید؟')) {
+                notifSystem.delete(id);
+                refresh();
+            }
+        }
+        
+        function deleteAll() {
+            if (confirm('⚠️ آیا از حذف همه اعلان‌ها اطمینان دارید؟')) {
+                notifSystem.deleteAll();
+                refresh();
+            }
+        }
+        
+        function addSampleNotification() {
+            const types = ['evaluation_reminder', 'goal_reminder', 'badge_alert', 'teacher_note', 'achievement'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            const titles = {
+                'evaluation_reminder': '📝 یادآوری خودارزیابی',
+                'goal_reminder': '🎯 یادآوری اهداف',
+                'badge_alert': '🏆 نشان جدید!',
+                'teacher_note': '👨‍🏫 یادداشت جدید از معلم',
+                'achievement': '🌟 دستاورد جدید!'
+            };
+            const messages = {
+                'evaluation_reminder': 'ماه تقریباً تموم شده! خودارزیابی این ماه رو ثبت کن.',
+                'goal_reminder': 'بهت یادآوری میکنیم که اهداف SMART خودت رو بررسی کنی!',
+                'badge_alert': 'تبریک! تو نشان جدیدی رو به دست آوردی!',
+                'teacher_note': 'معلم برایت یک یادداشت جدید ثبت کرده. برو و ببین!',
+                'achievement': 'تو به یک دستاورد جدید رسیدی! به ادامه راه ادامه بده!'
+            };
+            
+            notifSystem.add(type, titles[type], messages[type]);
+            refresh();
+        }
+        
+        // ============================================
+        // SETTINGS
+        // ============================================
+        function toggleSetting(key, element) {
+            const settings = notifSystem.notifications.settings;
+            settings[key] = !settings[key];
+            element.classList.toggle('active', settings[key]);
+            notifSystem.save();
+        }
+        
+        // ============================================
+        // LISTEN FOR UPDATES
+        // ============================================
+        document.addEventListener('notificationsUpdated', refresh);
+        
+        // ============================================
+        // INIT
+        // ============================================
+        refresh();
+        
+        console.log('🔔 پنل مدیریت نوتیفیکیشن بارگذاری شد!');
+    </script>
+</body>
+</html>

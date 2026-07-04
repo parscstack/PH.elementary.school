@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👨‍👩‍👧 پورتال والدین</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="student-auth.js"></script>
+    <script src="reward-system-v2.js"></script>
+    <script src="notification-system.js"></script>
+    <style>
+        :root {
+            --parent-color: #059669;
+            --parent-light: #ecfdf5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: #f7fafc;
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* ===== HEADER ===== */
+        .dashboard-header {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-right: 4px solid var(--parent-color);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: white;
+            background: var(--parent-color);
+        }
+        
+        .user-info .name {
+            font-size: 17px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        
+        .user-info .role {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(5, 150, 105, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1a202c;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .logout-btn {
+            padding: 8px 18px;
+            background: rgba(0, 0, 0, 0.05);
+            color: #1a202c;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        
+        /* ===== LOGIN ===== */
+        .login-screen {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            max-width: 480px;
+            margin: 40px auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .login-screen.hidden {
+            display: none;
+        }
+        
+        .login-screen .login-icon {
+            font-size: 60px;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .login-screen h2 {
+            text-align: center;
+            font-size: 24px;
+            color: #1a202c;
+            margin-bottom: 5px;
+        }
+        
+        .login-screen p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1a202c;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--parent-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+        
+        .form-group select {
+            cursor: pointer;
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        
+        .message.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+        
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border-top: 4px solid var(--parent-color);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* ===== CARDS ===== */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            color: #1a202c;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .reward-item {
+            background: #ecfdf5;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-right: 3px solid var(--parent-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .reward-item .ri-points {
+            font-weight: 800;
+            color: var(--parent-color);
+            font-size: 18px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+        
+        .feedback-section {
+            background: #ecfdf5;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed var(--parent-color);
+        }
+        
+        .feedback-section textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        .feedback-section textarea:focus {
+            outline: none;
+            border-color: var(--parent-color);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: #999;
+        }
+        
+        .empty-icon {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .goal-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-right: 3px solid #667eea;
+        }
+        
+        .goal-item .goal-title {
+            font-weight: 700;
+            color: #1a202c;
+        }
+        
+        .goal-item .goal-meta {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .eval-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-right: 3px solid var(--parent-color);
+        }
+        
+        .eval-item .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .eval-item .eval-header .eval-month {
+            font-weight: 700;
+            color: #1a202c;
+        }
+        
+        .eval-item .eval-header .eval-rating {
+            font-weight: 700;
+            color: var(--parent-color);
+        }
+        
+        .note-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-right: 3px solid #f59e0b;
+        }
+        
+        .note-item .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-right {
+                justify-content: center;
+                width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .login-screen {
+                padding: 30px 20px;
+                margin: 20px auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <div class="dashboard-header" id="appHeader" style="display: none;">
+            <div class="header-left">
+                <div class="avatar" id="userAvatar">و</div>
+                <div class="user-info">
+                    <div class="name" id="userName">والدین</div>
+                    <div class="role">👨‍👩‍👧 والدین</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary btn-sm" onclick="window.location.href='index.html'">🏠 صفحه اصلی</button>
+                <button class="logout-btn" onclick="handleLogout()">🚪 خروج</button>
+            </div>
+        </div>
+        
+        <!-- ===== LOGIN ===== -->
+        <div class="login-screen" id="loginScreen">
+            <span class="login-icon">👨‍👩‍👧</span>
+            <h2>ورود به پورتال والدین</h2>
+            <p>برای مشاهده اطلاعات فرزندتان وارد شوید</p>
+            
+            <div class="form-group">
+                <label>نام دانش‌آموز:</label>
+                <select id="studentSelect" class="student-select">
+                    <option value="">-- انتخاب کنید --</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>نام والدین:</label>
+                <input type="text" id="parentName" placeholder="نام خود را وارد کنید">
+            </div>
+            
+            <div class="form-group">
+                <label>رمز عبور دانش‌آموز:</label>
+                <input type="password" id="studentPassword" placeholder="رمز عبور دانش‌آموز">
+            </div>
+            
+            <button class="btn btn-primary btn-full" onclick="handleLogin()">🔓 ورود به پورتال</button>
+            
+            <div id="loginMessage"></div>
+        </div>
+        
+        <!-- ===== DASHBOARD ===== -->
+        <div id="dashboard" style="display: none;">
+            <!-- Stats -->
+            <div class="stats-grid" id="statsGrid"></div>
+            
+            <!-- Student Info & Rewards -->
+            <div class="grid-2">
+                <div class="card">
+                    <h2>👤 اطلاعات فرزند</h2>
+                    <div id="studentInfo"></div>
+                </div>
+                
+                <div class="card">
+                    <h2>🏆 امتیازات و پاداش‌ها</h2>
+                    <div id="rewardsInfo"></div>
+                </div>
+            </div>
+            
+            <!-- Goals -->
+            <div class="card">
+                <h2>🎯 اهداف SMART</h2>
+                <div id="goalsContent"></div>
+            </div>
+            
+            <!-- Evaluations & Chart -->
+            <div class="grid-2">
+                <div class="card">
+                    <h2>📝 خودارزیابی‌های ماهانه</h2>
+                    <div id="evaluationsContent"></div>
+                </div>
+                
+                <div class="card">
+                    <h2>📈 نمودار رشد ماهانه</h2>
+                    <div class="chart-container">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teacher Notes -->
+            <div class="card">
+                <h2>📋 یادداشت‌های معلم</h2>
+                <div id="notesContent"></div>
+            </div>
+            
+            <!-- Feedback -->
+            <div class="card">
+                <h2>💬 ارسال بازخورد به معلم</h2>
+                <div class="feedback-section">
+                    <textarea id="feedbackText" placeholder="نظر یا پیشنهاد خود را برای معلم بنویسید..."></textarea>
+                    <button class="btn btn-primary btn-full" onclick="sendFeedback()" style="margin-top: 10px;">
+                        📤 ارسال بازخورد
+                    </button>
+                    <div id="feedbackMessage"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // INIT
+        // ============================================
+        const studentAuth = new StudentAuth();
+        const rewardSystem = new RewardSystemV2();
+        const notifSystem = new NotificationSystem();
+        
+        let currentStudent = null;
+        let charts = {};
+        
+        // ============================================
+        // LOAD STUDENTS LIST (FIXED)
+        // ============================================
+        function loadStudentsList() {
+            try {
+                const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"students":[]}');
+                const students = data.students || [];
+                const select = document.getElementById('studentSelect');
+                
+                select.innerHTML = '<option value="">-- انتخاب کنید --</option>';
+                
+                if (students.length === 0) {
+                    select.innerHTML = '<option value="">-- هیچ دانش‌آموزی ثبت نشده --</option>';
+                    return;
+                }
+                
+                students.forEach(s => {
+                    const option = document.createElement('option');
+                    option.value = s.id;
+                    option.textContent = `${s.name} - پایه ${s.grade}`;
+                    select.appendChild(option);
+                });
+                
+                console.log('✅ لیست دانش‌آموزان بارگذاری شد:', students.length);
+                
+            } catch (error) {
+                console.error('❌ Error loading students:', error);
+            }
+        }
+        
+        // ============================================
+        // LOGIN (FIXED)
+        // ============================================
+        function handleLogin() {
+            const studentId = document.getElementById('studentSelect').value;
+            const parentName = document.getElementById('parentName').value.trim();
+            const password = document.getElementById('studentPassword').value;
+            
+            // Validation
+            if (!studentId) {
+                showMessage('loginMessage', '❌ لطفاً فرزند خود را انتخاب کنید.', 'error');
+                return;
+            }
+            
+            if (!parentName) {
+                showMessage('loginMessage', '❌ لطفاً نام خود را وارد کنید.', 'error');
+                return;
+            }
+            
+            if (!password) {
+                showMessage('loginMessage', '❌ لطفاً رمز عبور را وارد کنید.', 'error');
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"students":[], "studentPasswords":{}}');
+                const student = data.students.find(s => s.id === studentId);
+                
+                if (!student) {
+                    showMessage('loginMessage', '❌ دانش‌آموز یافت نشد.', 'error');
+                    return;
+                }
+                
+                // Check password
+                const key = `${student.name}_${student.grade}`;
+                const correctPassword = data.studentPasswords?.[key] || '123456';
+                
+                if (password !== correctPassword) {
+                    showMessage('loginMessage', '❌ رمز عبور اشتباه است.', 'error');
+                    return;
+                }
+                
+                // Save parent session
+                localStorage.setItem('parent_session', JSON.stringify({
+                    studentId: student.id,
+                    studentName: student.name,
+                    parentName: parentName,
+                    loginTime: new Date().toISOString()
+                }));
+                
+                currentStudent = student;
+                showMessage('loginMessage', '✅ ورود با موفقیت انجام شد!', 'success');
+                
+                setTimeout(() => {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('appHeader').style.display = 'flex';
+                    document.getElementById('dashboard').style.display = 'block';
+                    
+                    document.getElementById('userAvatar').textContent = parentName.charAt(0);
+                    document.getElementById('userName').textContent = parentName;
+                    
+                    loadDashboard();
+                }, 500);
+                
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                showMessage('loginMessage', '❌ خطا در ورود: ' + error.message, 'error');
+            }
+        }
+        
+        function handleLogout() {
+            if (confirm('آیا از خروج از سیستم اطمینان دارید؟')) {
+                localStorage.removeItem('parent_session');
+                location.reload();
+            }
+        }
+        
+        // ============================================
+        // LOAD DASHBOARD
+        // ============================================
+        function loadDashboard() {
+            if (!currentStudent) {
+                // Try to restore from session
+                const session = JSON.parse(localStorage.getItem('parent_session') || '{}');
+                if (session.studentId) {
+                    try {
+                        const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"students":[]}');
+                        currentStudent = data.students.find(s => s.id === session.studentId);
+                    } catch (e) {}
+                }
+                
+                if (!currentStudent) {
+                    alert('❌ اطلاعات دانش‌آموز یافت نشد. لطفاً دوباره وارد شوید.');
+                    location.reload();
+                    return;
+                }
+            }
+            
+            updateStats();
+            renderStudentInfo();
+            renderRewards();
+            renderGoals();
+            renderEvaluations();
+            renderGrowthChart();
+            renderNotes();
+        }
+        
+        // ============================================
+        // UPDATE STATS
+        // ============================================
+        function updateStats() {
+            const evals = getStudentEvaluations();
+            const goals = getStudentGoals();
+            const points = getStudentPoints();
+            const badges = getStudentBadges();
+            
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-value">${Object.keys(evals).length}</div>
+                    <div class="stat-label">خودارزیابی</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value">${goals.length}</div>
+                    <div class="stat-label">اهداف</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value">${points}</div>
+                    <div class="stat-label">امتیاز کل</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏅</div>
+                    <div class="stat-value">${badges.length}</div>
+                    <div class="stat-label">نشان‌ها</div>
+                </div>
+            `;
+        }
+        
+        // ============================================
+        // RENDER STUDENT INFO
+        // ============================================
+        function renderStudentInfo() {
+            const container = document.getElementById('studentInfo');
+            const student = currentStudent;
+            
+            container.innerHTML = `
+                <div style="display: grid; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #666;">👤 نام:</span>
+                        <span style="font-weight: 700; color: #1a202c;">${student.name}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #666;">📚 پایه:</span>
+                        <span style="font-weight: 700; color: #1a202c;">${student.grade}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #666;">🆔 کد:</span>
+                        <span style="font-weight: 700; color: #1a202c;">${student.code || '---'}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span style="color: #666;">📅 تاریخ ثبت:</span>
+                        <span style="font-weight: 700; color: #1a202c;">${new Date(student.createdAt).toLocaleDateString('fa-IR')}</span>
+                    </div>
+                </div>
+                ${student.data?.student_view?.interests ? `
+                    <div style="margin-top: 15px; padding: 12px; background: #f0f4ff; border-radius: 10px; border-right: 3px solid #667eea;">
+                        <div style="font-size: 13px; color: #666;">🎨 علایق:</div>
+                        <div style="font-weight: 700; color: #1a202c; margin-top: 5px;">${student.data.student_view.interests.join('، ')}</div>
+                    </div>
+                ` : ''}
+            `;
+        }
+        
+        // ============================================
+        // RENDER REWARDS
+        // ============================================
+        function renderRewards() {
+            const container = document.getElementById('rewardsInfo');
+            const studentId = currentStudent.id;
+            const history = rewardSystem.getStudentRewardHistory(studentId);
+            const badges = getStudentBadges();
+            
+            const levelNames = {
+                1: 'مبتدی', 2: 'شروع کننده', 3: 'تازه‌کار', 4: 'در حال رشد',
+                5: 'متوسط', 6: 'متوسط رو به بالا', 7: 'پیشرفته',
+                8: 'استاد', 9: 'قهرمان', 10: 'افسانه‌ای'
+            };
+            const levelName = levelNames[history.level] || 'مبتدی';
+            
+            container.innerHTML = `
+                <div style="display: grid; gap: 10px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #666;">⭐ امتیاز کل:</span>
+                        <span style="font-weight: 800; color: #059669; font-size: 20px;">${history.totalPoints}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #666;">📈 کل کسب شده:</span>
+                        <span style="font-weight: 700; color: #1a202c;">${history.totalEarned}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e2e8f0;">
+                        <span style="color: #666;">🎮 سطح:</span>
+                        <span style="font-weight: 700; color: #1a202c;">سطح ${history.level} - ${levelName}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                        <span style="color: #666;">🏅 نشان‌ها:</span>
+                        <span style="font-weight: 700; color: #1a202c;">${badges.length} نشان</span>
+                    </div>
+                </div>
+                ${badges.length > 0 ? `
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        ${badges.map(b => `
+                            <span style="background: #fef3c7; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; color: #92400e;">
+                                🏅 ${b}
+                            </span>
+                        `).join('')}
+                    </div>
+                ` : '<div style="text-align: center; color: #999; font-size: 13px;">هنوز نشان‌ای کسب نشده است</div>'}
+            `;
+        }
+        
+        // ============================================
+        // RENDER GOALS
+        // ============================================
+        function renderGoals() {
+            const container = document.getElementById('goalsContent');
+            const goals = getStudentGoals();
+            
+            if (goals.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">🎯</span>
+                        <p>هنوز هدفی ثبت نشده است</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = goals.map(goal => `
+                <div class="goal-item">
+                    <div class="goal-title">${goal.generalGoal || 'هدف بدون نام'}</div>
+                    <div style="font-size: 13px; color: #666; margin-top: 5px;">${goal.specificGoal || ''}</div>
+                    <div class="goal-meta">
+                        ${goal.startDate ? `<span>📅 شروع: ${new Date(goal.startDate).toLocaleDateString('fa-IR')}</span>` : ''}
+                        ${goal.endDate ? `<span>⏰ پایان: ${new Date(goal.endDate).toLocaleDateString('fa-IR')}</span>` : ''}
+                        ${goal.status ? `<span>📊 وضعیت: ${goal.status === 'completed' ? '✅ تکمیل شده' : goal.status === 'in-progress' ? '🔄 در حال انجام' : '⏳ شروع نشده'}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // ============================================
+        // RENDER EVALUATIONS
+        // ============================================
+        function renderEvaluations() {
+            const container = document.getElementById('evaluationsContent');
+            const evals = getStudentEvaluations();
+            const months = Object.keys(evals);
+            
+            if (months.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📝</span>
+                        <p>هنوز خودارزیابی ثبت نشده است</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const monthOrder = ['مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند', 'فروردین', 'اردیبهشت', 'خرداد'];
+            const sortedMonths = monthOrder.filter(m => evals[m]);
+            
+            container.innerHTML = sortedMonths.map(month => `
+                <div class="eval-item">
+                    <div class="eval-header">
+                        <span class="eval-month">📅 ${month}</span>
+                        <span class="eval-rating">${'⭐'.repeat(evals[month].rating || 0)} (${evals[month].rating || 0}/5)</span>
+                    </div>
+                    <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                        ${evals[month].mood?.emoji || '😊'} ${evals[month].mood?.label || 'خوب'}
+                    </div>
+                    ${evals[month].mainLearning ? `
+                        <div style="font-size: 13px; color: #666; margin-top: 5px; background: white; padding: 8px; border-radius: 8px;">
+                            💡 ${evals[month].mainLearning}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        
+        // ============================================
+        // RENDER GROWTH CHART
+        // ============================================
+        function renderGrowthChart() {
+            const evals = getStudentEvaluations();
+            const ctx = document.getElementById('growthChart');
+            
+            if (charts.growth) charts.growth.destroy();
+            
+            const monthOrder = ['مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند', 'فروردین', 'اردیبهشت', 'خرداد'];
+            const sortedMonths = monthOrder.filter(m => evals[m]);
+            
+            if (sortedMonths.length === 0) {
+                ctx.parentElement.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📊</span>
+                        <p>داده‌ای برای نمایش نمودار وجود ندارد</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            charts.growth = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [{
+                        label: 'امتیاز ماه',
+                        data: sortedMonths.map(m => evals[m].rating || 0),
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#059669',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { font: { family: 'Vazirmatn' } }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 5 }
+                    }
+                }
+            });
+        }
+        
+        // ============================================
+        // RENDER NOTES
+        // ============================================
+        function renderNotes() {
+            const container = document.getElementById('notesContent');
+            const notes = getStudentNotes();
+            
+            if (notes.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="empty-icon">📋</span>
+                        <p>هنوز یادداشتی ثبت نشده است</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(note => `
+                <div class="note-item">
+                    <div class="note-header">
+                        <span style="font-weight: 700; color: #1a202c;">${note.type || 'عمومی'}</span>
+                        <span style="font-size: 12px; color: #999;">${new Date(note.createdAt).toLocaleDateString('fa-IR')}</span>
+                    </div>
+                    <div style="font-size: 14px; color: #666; margin-top: 5px; line-height: 1.8;">${note.text}</div>
+                </div>
+            `).join('');
+        }
+        
+        // ============================================
+        // FEEDBACK
+        // ============================================
+        function sendFeedback() {
+            const text = document.getElementById('feedbackText').value.trim();
+            
+            if (!text) {
+                showMessage('feedbackMessage', '❌ لطفاً متن بازخورد را وارد کنید.', 'error');
+                return;
+            }
+            
+            // Save feedback
+            const feedbackKey = `feedback_${currentStudent.id}`;
+            let feedbacks = [];
+            try {
+                feedbacks = JSON.parse(localStorage.getItem(feedbackKey) || '[]');
+            } catch (e) {}
+            
+            feedbacks.push({
+                id: 'fb_' + Date.now(),
+                parentName: document.getElementById('parentName').value.trim() || 'والدین',
+                text: text,
+                createdAt: new Date().toISOString()
+            });
+            localStorage.setItem(feedbackKey, JSON.stringify(feedbacks));
+            
+            // Send notification to teacher
+            notifSystem.add(
+                'teacher_note',
+                `💬 بازخورد والدین ${currentStudent.name}`,
+                `${text}\n\n— والدین`,
+                { studentId: currentStudent.id, studentName: currentStudent.name }
+            );
+            
+            document.getElementById('feedbackText').value = '';
+            showMessage('feedbackMessage', '✅ بازخورد شما با موفقیت ارسال شد!', 'success');
+            
+            setTimeout(() => {
+                document.getElementById('feedbackMessage').innerHTML = '';
+            }, 3000);
+        }
+        
+        // ============================================
+        // HELPERS
+        // ============================================
+        function getStudentEvaluations() {
+            try {
+                const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"evaluations":{}}');
+                return data.evaluations?.[currentStudent.id] || {};
+            } catch (e) { return {}; }
+        }
+        
+        function getStudentGoals() {
+            try {
+                const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"goals":{}}');
+                return data.goals?.[currentStudent.id] || [];
+            } catch (e) { return []; }
+        }
+        
+        function getStudentPoints() {
+            const history = rewardSystem.getStudentRewardHistory(currentStudent.id);
+            return history.totalPoints || 0;
+        }
+        
+        function getStudentBadges() {
+            const history = rewardSystem.getStudentRewardHistory(currentStudent.id);
+            return history.badges || [];
+        }
+        
+        function getStudentNotes() {
+            try {
+                const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"teacherNotes":{}}');
+                return data.teacherNotes?.[currentStudent.id] || [];
+            } catch (e) { return []; }
+        }
+        
+        // ============================================
+        // SHOW MESSAGE
+        // ============================================
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            if (!container) {
+                const div = document.createElement('div');
+                div.className = `message show ${type}`;
+                div.textContent = text;
+                div.style.position = 'fixed';
+                div.style.top = '20px';
+                div.style.left = '50%';
+                div.style.transform = 'translateX(-50%)';
+                div.style.zIndex = '9999';
+                div.style.maxWidth = '500px';
+                div.style.width = '90%';
+                div.style.padding = '15px 20px';
+                div.style.borderRadius = '12px';
+                div.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
+                document.body.appendChild(div);
+                setTimeout(() => div.remove(), 4000);
+                return;
+            }
+            
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('👨‍👩‍👧 پورتال والدین در حال بارگذاری...');
+            
+            // Load students list first
+            loadStudentsList();
+            
+            // Check for existing session
+            try {
+                const session = JSON.parse(localStorage.getItem('parent_session') || '{}');
+                if (session.studentId) {
+                    const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"students":[]}');
+                    currentStudent = data.students.find(s => s.id === session.studentId);
+                    
+                    if (currentStudent) {
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('appHeader').style.display = 'flex';
+                        document.getElementById('dashboard').style.display = 'block';
+                        document.getElementById('userAvatar').textContent = (session.parentName || 'و').charAt(0);
+                        document.getElementById('userName').textContent = session.parentName || 'والدین';
+                        loadDashboard();
+                        console.log('✅ جلسه قبلی بازیابی شد:', currentStudent.name);
+                    }
+                }
+            } catch (e) {
+                console.log('ℹ️ جلسه قبلی یافت نشد');
+            }
+        });
+        
+        console.log('👨‍👩‍👧 پورتال والدین بارگذاری شد!');
+        console.log('🔑 رمز پیش‌فرض دانش‌آموزان: 123456');
+    </script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎒 سامانه پوشه کار تعاملی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1a202c;
+            --text: #2d3748;
+            --border: #e2e8f0;
+            --light: #f7fafc;
+            --harvard-crimson: #A51C30;
+            --harvard-dark: #1E3A5F;
+            --harvard-gold: #C9A961;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header .logo .logo-icon {
+            font-size: 45px;
+        }
+        
+        .header .logo .logo-text {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--harvard-dark);
+        }
+        
+        .header .logo .logo-text span {
+            background: linear-gradient(135deg, var(--harvard-crimson), var(--harvard-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header .logo .logo-sub {
+            font-size: 12px;
+            color: #666;
+            margin-top: -3px;
+        }
+        
+        .header .school-info {
+            text-align: left;
+        }
+        
+        .header .school-info .school-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--harvard-dark);
+        }
+        
+        .header .school-info .school-code {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* ===== STATS ROW ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+        
+        .stats-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 18px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .stats-item:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stats-item .stat-number {
+            font-size: 28px;
+            font-weight: 900;
+        }
+        
+        .stats-item .stat-label {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        /* ===== PORTAL GRID ===== */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .portal-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px 30px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-radius: 20px;
+        }
+        
+        .portal-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .portal-card:hover::before {
+            opacity: 0.05;
+        }
+        
+        .portal-card .pc-icon {
+            font-size: 55px;
+            display: block;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .portal-card .pc-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--dark);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .portal-card .pc-desc {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .portal-card .pc-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .portal-card .pc-badge.student {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .portal-card .pc-badge.teacher {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .portal-card .pc-badge.parent {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+        .portal-card .pc-badge.admin {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .portal-card .pc-badge.assistant {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+        .portal-card .pc-badge.tools {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+        
+        /* ===== CARD COLORS ===== */
+        .portal-card.student {
+            border-top: 5px solid var(--primary);
+        }
+        .portal-card.teacher {
+            border-top: 5px solid var(--success);
+        }
+        .portal-card.parent {
+            border-top: 5px solid #ec4899;
+        }
+        .portal-card.admin {
+            border-top: 5px solid var(--warning);
+        }
+        .portal-card.assistant {
+            border-top: 5px solid #8b5cf6;
+        }
+        .portal-card.tools {
+            border-top: 5px solid var(--secondary);
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            padding: 20px 0;
+        }
+        
+        .footer .version {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header .school-info {
+                text-align: center;
+            }
+            .header .logo .logo-text {
+                font-size: 18px;
+            }
+            .portal-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            .portal-card {
+                padding: 25px 20px;
+            }
+            .portal-card .pc-icon {
+                font-size: 40px;
+            }
+            .portal-card .pc-title {
+                font-size: 16px;
+            }
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .portal-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .stats-item .stat-number {
+                font-size: 22px;
+            }
+            .header .logo .logo-icon {
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">🎒</span>
+                <div>
+                    <div class="logo-text"><span>سامانه پوشه کار</span></div>
+                    <div class="logo-sub">سیستم مدیریت یادگیری</div>
+                </div>
+            </div>
+            <div class="school-info">
+                <div class="school-name" id="schoolName">مدرسه نمونه</div>
+                <div class="school-code" id="schoolCode">🆔 ۱۴۰۴-۰۰۱</div>
+            </div>
+        </div>
+        
+        <!-- ===== STATS ===== -->
+        <div class="stats-row" id="statsRow">
+            <div class="stats-item">
+                <div class="stat-number" id="studentCount">0</div>
+                <div class="stat-label">👦 دانش‌آموز</div>
+            </div>
+            <div class="stats-item">
+                <div class="stat-number" id="teacherCount">0</div>
+                <div class="stat-label">👨‍🏫 معلم</div>
+            </div>
+            <div class="stats-item">
+                <div class="stat-number" id="goalCount">0</div>
+                <div class="stat-label">🎯 هدف ثبت شده</div>
+            </div>
+            <div class="stats-item">
+                <div class="stat-number" id="evalCount">0</div>
+                <div class="stat-label">📝 خودارزیابی</div>
+            </div>
+        </div>
+        
+        <!-- ===== PORTAL GRID ===== -->
+        <div class="portal-grid">
+            <!-- Student Portal -->
+            <a href="student-login.html" class="portal-card student">
+                <span class="pc-icon">👦</span>
+                <div class="pc-title">پورتال دانش‌آموز</div>
+                <div class="pc-desc">
+                    پوشه کار، هدف‌گذاری، خودارزیابی و پاداش
+                </div>
+                <span class="pc-badge student">🚀 ورود دانش‌آموز</span>
+            </a>
+            
+            <!-- Teacher Portal -->
+            <a href="teacher-login.html" class="portal-card teacher">
+                <span class="pc-icon">👨‍🏫</span>
+                <div class="pc-title">پورتال معلم</div>
+                <div class="pc-desc">
+                    مدیریت دانش‌آموزان، پاداش و کتابخانه
+                </div>
+                <span class="pc-badge teacher">📊 ورود معلم</span>
+            </a>
+            
+            <!-- Parent Portal -->
+            <a href="parent-login.html" class="portal-card parent">
+                <span class="pc-icon">👨‍👩‍👧</span>
+                <div class="pc-title">پورتال والدین</div>
+                <div class="pc-desc">
+                    مشاهده پیشرفت تحصیلی و امتیازات فرزند
+                </div>
+                <span class="pc-badge parent">💖 ورود والدین</span>
+            </a>
+            
+            <!-- Admin Portal -->
+            <a href="admin-login.html" class="portal-card admin">
+                <span class="pc-icon">👑</span>
+                <div class="pc-title">پورتال مدیر</div>
+                <div class="pc-desc">
+                    مدیریت مدرسه، معاونین و گزارش‌ها
+                </div>
+                <span class="pc-badge admin">🔧 ورود مدیر</span>
+            </a>
+            
+            <!-- Assistant Portal -->
+            <a href="assistant-login.html" class="portal-card assistant">
+                <span class="pc-icon">👥</span>
+                <div class="pc-title">پورتال معاونین</div>
+                <div class="pc-desc">
+                    آموزشی، پرورشی و اجرایی
+                </div>
+                <span class="pc-badge assistant">📋 ورود معاون</span>
+            </a>
+            
+            <!-- Tools -->
+            <a href="tools.html" class="portal-card tools">
+                <span class="pc-icon">🔧</span>
+                <div class="pc-title">ابزارهای مدیریتی</div>
+                <div class="pc-desc">
+                    مرکز کنترل، گزارش‌ها، امنیت و انتقال
+                </div>
+                <span class="pc-badge tools">🛠️ ابزارها</span>
+            </a>
+        </div>
+        
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+            <p>✨ با ❤️ برای آینده‌سازان ایران</p>
+            <span class="version">نسخه ۳.۰ - یکپارچه</span>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================
+        // LOAD STATS
+        // ============================================
+        function loadStats() {
+            try {
+                const data = localStorage.getItem('portfolio_database_v1');
+                if (!data) {
+                    document.getElementById('studentCount').textContent = '0';
+                    document.getElementById('teacherCount').textContent = '0';
+                    document.getElementById('goalCount').textContent = '0';
+                    document.getElementById('evalCount').textContent = '0';
+                    return;
+                }
+                
+                const parsed = JSON.parse(data);
+                const students = parsed.students || [];
+                const goals = parsed.goals || {};
+                const evaluations = parsed.evaluations || {};
+                
+                let totalGoals = 0;
+                Object.values(goals).forEach(g => { totalGoals += g.length; });
+                
+                let totalEvals = 0;
+                Object.values(evaluations).forEach(e => { totalEvals += Object.keys(e).length; });
+                
+                // Teachers count (from teacherAuth)
+                let teacherCount = 0;
+                if (parsed.teacherAuth) teacherCount = 1;
+                
+                document.getElementById('studentCount').textContent = students.length;
+                document.getElementById('teacherCount').textContent = teacherCount;
+                document.getElementById('goalCount').textContent = totalGoals;
+                document.getElementById('evalCount').textContent = totalEvals;
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // ============================================
+        // LOAD SCHOOL INFO
+        // ============================================
+        function loadSchoolInfo() {
+            try {
+                const info = JSON.parse(localStorage.getItem('school_info') || '{"name":"مدرسه نمونه","code":"۱۴۰۴-۰۰۱"}');
+                document.getElementById('schoolName').textContent = info.name;
+                document.getElementById('schoolCode').textContent = `🆔 ${info.code}`;
+            } catch (e) {
+                // Use default
+            }
+        }
+        
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadSchoolInfo();
+        });
+        
+        console.log('🏠 صفحه اصلی بارگذاری شد!');
+    </script>
+</body>
+</html>

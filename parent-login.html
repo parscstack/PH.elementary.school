@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👨‍👩‍👧 ورود والدین</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --role-color: #ec4899;
+            --role-light: #fdf2f8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #831843, #9d174d, #be185d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 45px 40px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s ease;
+            border-top: 6px solid var(--role-color);
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-container .login-icon {
+            font-size: 70px;
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .login-container h1 {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a202c;
+        }
+        
+        .login-container .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .login-container .info-box {
+            background: var(--role-light);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-right: 4px solid var(--role-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .login-container .info-box .info-icon {
+            font-size: 30px;
+        }
+        
+        .login-container .info-box .info-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .login-container .info-box .info-text strong {
+            color: var(--role-color);
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1a202c;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--role-color);
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(236, 72, 153, 0.4);
+        }
+        
+        .message {
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        .message.show {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        .back-link a {
+            color: var(--role-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-container .login-icon {
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <span class="login-icon">👨‍👩‍👧</span>
+        <h1>ورود والدین</h1>
+        <p class="subtitle">مشاهده پیشرفت فرزندتان</p>
+        
+        <div class="info-box">
+            <span class="info-icon">💖</span>
+            <div class="info-text">
+                <strong>مشاهده پیشرفت تحصیلی و امتیازات</strong><br>
+                از وضعیت آموزشی فرزند خود مطلع شوید
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>نام دانش‌آموز:</label>
+            <select id="studentSelect">
+                <option value="">-- انتخاب کنید --</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>نام والدین:</label>
+            <input type="text" id="parentName" placeholder="نام خود را وارد کنید">
+        </div>
+        
+        <div class="form-group">
+            <label>رمز عبور دانش‌آموز:</label>
+            <input type="password" id="studentPassword" placeholder="رمز عبور دانش‌آموز">
+        </div>
+        
+        <button class="btn btn-primary" onclick="handleLogin()">🔓 ورود به پورتال</button>
+        
+        <div id="loginMessage"></div>
+        
+        <div class="back-link">
+            <a href="index.html">← بازگشت به صفحه اصلی</a>
+        </div>
+    </div>
+
+    <script>
+        function loadStudentsList() {
+            try {
+                const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"students":[]}');
+                const students = data.students || [];
+                const select = document.getElementById('studentSelect');
+                select.innerHTML = '<option value="">-- انتخاب کنید --</option>';
+                students.forEach(s => {
+                    const option = document.createElement('option');
+                    option.value = s.id;
+                    option.textContent = `${s.name} - پایه ${s.grade}`;
+                    select.appendChild(option);
+                });
+            } catch (e) {
+                console.error('Error loading students:', e);
+            }
+        }
+        
+        function handleLogin() {
+            const studentId = document.getElementById('studentSelect').value;
+            const parentName = document.getElementById('parentName').value.trim();
+            const password = document.getElementById('studentPassword').value;
+            
+            if (!studentId) {
+                showMessage('loginMessage', '❌ لطفاً فرزند خود را انتخاب کنید.', 'error');
+                return;
+            }
+            if (!parentName) {
+                showMessage('loginMessage', '❌ لطفاً نام خود را وارد کنید.', 'error');
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(localStorage.getItem('portfolio_database_v1') || '{"students":[], "studentPasswords":{}}');
+                const student = data.students.find(s => s.id === studentId);
+                if (!student) {
+                    showMessage('loginMessage', '❌ دانش‌آموز یافت نشد.', 'error');
+                    return;
+                }
+                
+                const key = `${student.name}_${student.grade}`;
+                const correctPassword = data.studentPasswords?.[key] || '123456';
+                
+                if (password !== correctPassword) {
+                    showMessage('loginMessage', '❌ رمز عبور اشتباه است.', 'error');
+                    return;
+                }
+                
+                localStorage.setItem('parent_session', JSON.stringify({
+                    studentId: student.id,
+                    studentName: student.name,
+                    parentName: parentName,
+                    loginTime: new Date().toISOString()
+                }));
+                
+                showMessage('loginMessage', '✅ ورود با موفقیت انجام شد!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'parent-portal.html';
+                }, 1000);
+                
+            } catch (e) {
+                showMessage('loginMessage', '❌ خطا در ورود: ' + e.message, 'error');
+            }
+        }
+        
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadStudentsList);
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        
+        console.log('👨‍👩‍👧 صفحه ورود والدین بارگذاری شد!');
+    </script>
+</body>
+</html>

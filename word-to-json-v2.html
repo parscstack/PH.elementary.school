@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 تبدیل Word به JSON - متصل به مرکز کنترل</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --harvard-crimson: #A51C30;
+            --harvard-dark: #1E3A5F;
+            --harvard-gold: #C9A961;
+            --harvard-cream: #F5F1E8;
+            --harvard-light: #FAF8F5;
+            --success: #2D6A4F;
+            --warning: #E9A820;
+            --danger: #A51C30;
+            --text-primary: #1E3A5F;
+            --text-secondary: #5A6B7C;
+            --border: #E0D5C5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Tahoma', sans-serif;
+        }
+        
+        body {
+            background: var(--harvard-light);
+            min-height: 100vh;
+            direction: rtl;
+            line-height: 1.8;
+            color: var(--text-primary);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--harvard-dark) 0%, var(--harvard-crimson) 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .connection-badge {
+            display: inline-block;
+            background: rgba(45, 106, 79, 0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .card h2 {
+            color: var(--harvard-dark);
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .upload-zone {
+            border: 3px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--harvard-light);
+            position: relative;
+        }
+        
+        .upload-zone:hover {
+            border-color: var(--harvard-crimson);
+            background: var(--harvard-cream);
+        }
+        
+        .upload-zone.dragover {
+            border-color: var(--harvard-gold);
+            background: var(--harvard-cream);
+            transform: scale(1.02);
+        }
+        
+        .upload-zone input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+        
+        .upload-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .upload-hint {
+            font-size: 13px;
+            color: #999;
+        }
+        
+        .type-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .type-btn {
+            padding: 12px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        
+        .type-btn:hover {
+            border-color: var(--harvard-crimson);
+        }
+        
+        .type-btn.active {
+            background: var(--harvard-crimson);
+            color: white;
+            border-color: var(--harvard-crimson);
+        }
+        
+        .type-btn-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .type-btn-label {
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--harvard-gold);
+            color: var(--harvard-dark);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: var(--text-primary);
+        }
+        
+        .btn-full {
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .student-selector {
+            background: var(--harvard-light);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .student-selector label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .student-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+        }
+        
+        .json-output {
+            background: var(--harvard-dark);
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            direction: ltr;
+            text-align: left;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .preview-section {
+            margin-top: 20px;
+        }
+        
+        .preview-item {
+            background: var(--harvard-light);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-right: 3px solid var(--harvard-crimson);
+        }
+        
+        .preview-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .preview-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .message {
+            display: none;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .message.show { display: block; animation: slideIn 0.4s ease; }
+        .message.success { background: #D4EDDA; color: var(--success); border: 2px solid var(--success); }
+        .message.error { background: #F8D7DA; color: var(--danger); border: 2px solid var(--danger); }
+        .message.warning { background: #FFF3CD; color: #856404; border: 2px solid var(--warning); }
+        .message.info { background: #D1ECF1; color: #0c5460; border: 2px solid #17a2b8; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .file-info {
+            background: var(--harvard-light);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .file-info.show { display: block; }
+        
+        .file-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .file-info-item:last-child { border-bottom: none; }
+        
+        .file-info-label { font-weight: 700; color: var(--text-primary); }
+        .file-info-value { color: var(--text-secondary); }
+        
+        .batch-upload {
+            background: var(--harvard-cream);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        
+        .batch-upload h3 {
+            color: var(--harvard-dark);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .batch-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        
+        .batch-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .batch-item-name { font-weight: 700; color: var(--text-primary); }
+        
+        .batch-item-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        
+        .status-pending { background: #FFF3CD; color: #856404; }
+        .status-done { background: #D4EDDA; color: var(--success); }
+        .status-error { background: #F8D7DA; color: var(--danger); }
+        
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .type-selector { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 تبدیل فایل Word به JSON</h1>
+            <p>فایل‌های Word را به داده‌های مرکز کنترل تبدیل و ذخیره کن</p>
+            <div class="connection-badge">🟢 متصل به مرکز کنترل</div>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Left Column: Upload -->
+            <div class="card">
+                <h2>📁 بارگذاری فایل Word</h2>
+                
+                <div class="upload-zone" id="uploadZone">
+                    <input type="file" id="fileInput" accept=".doc,.docx" onchange="handleFileSelect(event)">
+                    <div class="upload-icon">📄</div>
+                    <div class="upload-text">فایل Word را اینجا بکشید یا کلیک کنید</div>
+                    <div class="upload-hint">فرمت‌های پشتیبانی شده: .doc, .docx</div>
+                </div>
+                
+                <div class="file-info" id="fileInfo">
+                    <div class="file-info-item">
+                        <span class="file-info-label">نام فایل:</span>
+                        <span class="file-info-value" id="fileName">-</span>
+                    </div>
+                    <div class="file-info-item">
+                        <span class="file-info-label">حجم:</span>
+                        <span class="file-info-value" id="fileSize">-</span>
+                    </div>
+                    <div class="file-info-item">
+                        <span class="file-info-label">نوع تشخیص داده شده:</span>
+                        <span class="file-info-value" id="fileType">-</span>
+                    </div>
+                </div>
+                
+                <div class="type-selector">
+                    <div class="type-btn" onclick="selectType('student')" data-type="student">
+                        <div class="type-btn-icon">👦</div>
+                        <div class="type-btn-label">دانش‌آموز</div>
+                    </div>
+                    <div class="type-btn" onclick="selectType('parent')" data-type="parent">
+                        <div class="type-btn-icon">👨‍👩‍👧</div>
+                        <div class="type-btn-label">والدین</div>
+                    </div>
+                    <div class="type-btn" onclick="selectType('teacher')" data-type="teacher">
+                        <div class="type-btn-icon">👨‍</div>
+                        <div class="type-btn-label">معلم قبلی</div>
+                    </div>
+                </div>
+                
+                <div class="student-selector">
+                    <label> انتخاب دانش‌آموز مقصد:</label>
+                    <select id="targetStudent">
+                        <option value="">-- انتخاب کنید --</option>
+                    </select>
+                    <p style="font-size: 11px; color: #666; margin-top: 5px;">
+                        اگر دانش‌آموز در لیست نیست، با نام فایل یا نام استخراج شده، دانش‌آموز جدید ساخته می‌شود
+                    </p>
+                </div>
+                
+                <button class="btn btn-primary btn-full" onclick="convertToJSON()" id="convertBtn" disabled>
+                    🔄 تبدیل و ذخیره در مرکز کنترل
+                </button>
+                
+                <div class="batch-upload">
+                    <h3>📦 بارگذاری چند فایل (Batch)</h3>
+                    <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 15px;">
+                        می‌توانید چندین فایل Word را همزمان بارگذاری کنید
+                    </p>
+                    <input type="file" id="batchFileInput" accept=".doc,.docx" multiple onchange="handleBatchFiles(event)" style="display: none;">
+                    <button class="btn btn-primary" onclick="document.getElementById('batchFileInput').click()">
+                        📁 انتخاب چند فایل
+                    </button>
+                    <div class="batch-list" id="batchList"></div>
+                    <button class="btn btn-success" onclick="convertBatchFiles()" id="batchConvertBtn" style="display: none; margin-top: 15px; width: 100%;">
+                        🔄 تبدیل همه فایل‌ها
+                    </button>
+                </div>
+                
+                <div id="uploadMessage"></div>
+            </div>
+            
+            <!-- Right Column: Output -->
+            <div class="card">
+                <h2>📊 پیش‌نمایش و خروجی</h2>
+                
+                <div class="json-output" id="jsonOutput">// فایل Word را بارگذاری کنید و دکمه تبدیل را بزنید...</div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                    <button class="btn btn-success" onclick="downloadJSON()" id="downloadBtn" disabled>
+                        💾 دانلود JSON
+                    </button>
+                    <button class="btn btn-secondary" onclick="copyToClipboard()">
+                         کپی
+                    </button>
+                </div>
+                
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <h3 style="color: var(--harvard-dark); margin: 20px 0 15px; font-size: 16px;">👁️ پیش‌نمایش اطلاعات استخراج شده:</h3>
+                    <div id="previewContent"></div>
+                </div>
+                
+                <div id="outputMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // MINI PORTFOLIO CORE
+        // ============================================
+        
+        class MiniPortfolioCore {
+            constructor() {
+                this.STORAGE_KEY = 'portfolio_database_v1';
+                this.data = this.loadData();
+            }
+            
+            loadData() {
+                try {
+                    const saved = localStorage.getItem(this.STORAGE_KEY);
+                    if (saved) return JSON.parse(saved);
+                } catch (error) {
+                    console.error('Error loading data:', error);
+                }
+                return {
+                    students: [],
+                    evaluations: {},
+                    goals: {},
+                    parentData: {},
+                    teacherData: {},
+                    createdAt: new Date().toISOString(),
+                    lastModified: new Date().toISOString()
+                };
+            }
+            
+            saveData() {
+                try {
+                    this.data.lastModified = new Date().toISOString();
+                    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.data));
+                } catch (error) {
+                    console.error('Error saving data:', error);
+                    throw error;
+                }
+            }
+            
+            getAllStudents() {
+                return this.data.students;
+            }
+            
+            getStudent(studentId) {
+                return this.data.students.find(s => s.id === studentId);
+            }
+            
+            getStudentByName(name) {
+                return this.data.students.find(s => s.name === name);
+            }
+            
+            addStudent(name, grade, code = null) {
+                const studentId = 'student_' + Date.now();
+                const student = {
+                    id: studentId,
+                    name: name,
+                    grade: grade,
+                    code: code || studentId,
+                    createdAt: new Date().toISOString(),
+                    data: {
+                        student_view: null,
+                        parent_view: null,
+                        teacher_view: null,
+                        evaluations: [],
+                        goals: []
+                    }
+                };
+                
+                this.data.students.push(student);
+                this.saveData();
+                return student;
+            }
+            
+            saveParentData(studentId, parentData) {
+                this.data.parentData[studentId] = parentData;
+                const student = this.getStudent(studentId);
+                if (student) {
+                    student.data.parent_view = parentData;
+                }
+                this.saveData();
+            }
+            
+            saveTeacherData(studentId, teacherData) {
+                this.data.teacherData[studentId] = teacherData;
+                const student = this.getStudent(studentId);
+                if (student) {
+                    student.data.teacher_view = teacherData;
+                }
+                this.saveData();
+            }
+            
+            saveStudentView(studentId, studentData) {
+                const student = this.getStudent(studentId);
+                if (student) {
+                    student.data.student_view = studentData;
+                }
+                this.saveData();
+            }
+        }
+        
+        const portfolio = new MiniPortfolioCore();
+        let currentFile = null;
+        let currentType = null;
+        let extractedData = null;
+        let batchFiles = [];
+        
+        // Load students into selector
+        function loadStudentsSelector() {
+            const students = portfolio.getAllStudents();
+            const select = document.getElementById('targetStudent');
+            select.innerHTML = '<option value="">-- انتخاب کنید --</option>';
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} - پایه ${student.grade}`;
+                select.appendChild(option);
+            });
+        }
+        
+        // File handlers
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            currentFile = file;
+            displayFileInfo(file);
+            autoDetectType(file);
+        }
+        
+        function displayFileInfo(file) {
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            document.getElementById('fileInfo').classList.add('show');
+            document.getElementById('convertBtn').disabled = false;
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function autoDetectType(file) {
+            const name = file.name.toLowerCase();
+            if (name.includes('دانش‌آموز') || name.includes('student')) {
+                selectType('student');
+            } else if (name.includes('والدین') || name.includes('parent')) {
+                selectType('parent');
+            } else if (name.includes('معلم') || name.includes('teacher')) {
+                selectType('teacher');
+            }
+        }
+        
+        function selectType(type) {
+            currentType = type;
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
+                }
+            });
+            document.getElementById('fileType').textContent = type === 'student' ? 'دانش‌آموز' : type === 'parent' ? 'والدین' : 'معلم قبلی';
+        }
+        
+        // Drag and drop
+        const uploadZone = document.getElementById('uploadZone');
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && (file.name.endsWith('.doc') || file.name.endsWith('.docx'))) {
+                currentFile = file;
+                displayFileInfo(file);
+                autoDetectType(file);
+            }
+        });
+        
+        // Read Word file
+        async function readWordFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const text = e.target.result;
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        resolve(doc.body.innerText || doc.body.textContent);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.onerror = reject;
+                reader.readAsText(file);
+            });
+        }
+        
+        // Extract data
+        function extractField(text, regex) {
+            const match = text.match(regex);
+            if (match) {
+                return match[1].trim().replace(/\s+/g, ' ');
+            }
+            return null;
+        }
+        
+        function extractStudentData(text) {
+            return {
+                name: extractField(text, /پوشه کار:\s*(.+?)(?:\s*-|\s*بخش)/) || extractField(text, /نام و نام خانوادگی:\s*(.+)/) || 'نامشخص',
+                grade: extractField(text, /پایه تحصیلی:\s*(.+)/) || 'نامشخص',
+                age: extractField(text, /سن:\s*(\d+)/),
+                learningStyle: extractField(text, /سبک یادگیری:\s*(.+?)(?:\n|$)/),
+                interests: extractField(text, /علایق و سرگرمی‌ها:\s*(.+)/),
+                goals: extractField(text, /اهداف من برای امسال:\s*([\s\S]*?)(?:\n\n|$)/),
+                letter: extractField(text, /نامه‌ای به خودم در آینده:\s*([\s\S]*?)(?:\n\n|$)/) || extractField(text, /نامه‌ای به خانواده عزیزم:\s*([\s\S]*?)(?:\n\n|$)/),
+                strengths: extractField(text, /نقاط قوت:\s*(.+)/),
+                weaknesses: extractField(text, /نقاط ضعف:\s*(.+)/),
+            };
+        }
+        
+        function extractParentData(text) {
+            return {
+                parentName: extractField(text, /نام والد\/سرپرست:\s*(.+)/) || extractField(text, /نام و نام خانوادگی:\s*(.+)/),
+                parentRelation: extractField(text, /نسبت:\s*(.+)/) || extractField(text, /نسبت با دانش‌آموز:\s*(.+)/),
+                parentPhone: extractField(text, /شماره تماس:\s*(.+)/),
+                studentName: extractField(text, /نام دانش‌آموز:\s*(.+)/) || extractField(text, /پوشه کار والدین:\s*(.+)/),
+                grade: extractField(text, /پایه تحصیلی:\s*(.+)/),
+                studentAge: extractField(text, /سن:\s*(\d+)/),
+                interests: extractField(text, /علایق و سرگرمی‌های دانش‌آموز:\s*([\s\S]*?)(?:\n\n|$)/) || extractField(text, /علایق:\s*(.+)/),
+                strengths: extractField(text, /نقاط قوت فرزندم:\s*([\s\S]*?)(?:\n\n|$)/) || extractField(text, /نقاط قوت:\s*(.+)/),
+                challenges: extractField(text, /زمینه‌های نیاز به تقویت:\s*([\s\S]*?)(?:\n\n|$)/) || extractField(text, /چالش‌ها:\s*(.+)/),
+                letter: extractField(text, /نامه‌ای از من به فرزند عزیزم:\s*([\s\S]*?)(?:\n\n|$)/) || extractField(text, /نامه‌ای به فرزند:\s*([\s\S]*?)(?:\n\n|$)/),
+                teacherMsg: extractField(text, /پیام به معلم:\s*([\s\S]*?)(?:\n\n|$)/),
+                expectations: extractField(text, /انتظارات:\s*([\s\S]*?)(?:\n\n|$)/),
+                specialNotes: extractField(text, /شرایط خاص:\s*([\s\S]*?)(?:\n\n|$)/),
+            };
+        }
+        
+        function extractTeacherData(text) {
+            return {
+                studentName: extractField(text, /نام دانش‌آموز:\s*(.+)/) || extractField(text, /نام و نام خانوادگی:\s*(.+)/),
+                grade: extractField(text, /پایه تحصیلی:\s*(.+)/),
+                age: extractField(text, /سن:\s*(\d+)/),
+                specialStatus: extractField(text, /وضعیت خاص:\s*(.+)/) || 'عادی',
+                academicStrengths: extractField(text, /نقاط قوت تحصیلی:\s*(.+)/) || extractField(text, /نقاط قوت:\s*(.+)/),
+                academicWeaknesses: extractField(text, /نقاط ضعف تحصیلی:\s*(.+)/) || extractField(text, /نقاط ضعف:\s*(.+)/),
+                overallRating: extractField(text, /ارزیابی کلی:\s*(.+?)(?:\n|$)/),
+                effectiveStrategies: extractField(text, /استراتژی‌های آموزشی مؤثر:\s*(.+)/) || extractField(text, /استراتژی‌های مؤثر:\s*(.+)/),
+                learningStyle: extractField(text, /سبک یادگیری غالب:\s*(.+?)(?:\n|$)/) || extractField(text, /سبک یادگیری:\s*(.+)/),
+                challengeResponse: extractField(text, /واکنش به چالش:\s*(.+)/),
+                peerInteraction: extractField(text, /تعامل با همکلاسی:\s*(.+)/),
+                behavioralChallenges: extractField(text, /چالش‌های رفتاری:\s*(.+)/),
+                effectiveRewards: extractField(text, /مشوق‌های مؤثر:\s*(.+)/),
+                specialSupport: extractField(text, /پشتیبانی ویژه:\s*(.+)/),
+                specialNeedsDetails: extractField(text, /جزئیات:\s*(.+)/),
+                interventions: extractField(text, /مداخلات:\s*(.+)/),
+                nextYearGoals: extractField(text, /اهداف سال بعد:\s*(.+)/) || extractField(text, /اهداف یادگیری برای سال بعد:\s*(.+)/),
+                teacherRecommendations: extractField(text, /توصیه به معلم جدید:\s*([\s\S]*?)(?:\n\n|$)/) || extractField(text, /توصیه‌های کلیدی:\s*(.+)/),
+                positiveNotes: extractField(text, /نکات مثبت:\s*(.+)/),
+            };
+        }
+        
+        // Convert and save
+        async function convertToJSON() {
+            if (!currentFile) {
+                showMessage('uploadMessage', '❌ لطفاً ابتدا یک فایل Word بارگذاری کنید.', 'error');
+                return;
+            }
+            
+            if (!currentType) {
+                showMessage('uploadMessage', '❌ لطفاً نوع فایل را انتخاب کنید.', 'error');
+                return;
+            }
+            
+            try {
+                showMessage('uploadMessage', '⏳ در حال خواندن فایل...', 'warning');
+                
+                const text = await readWordFile(currentFile);
+                
+                let data;
+                if (currentType === 'student') {
+                    data = extractStudentData(text);
+                } else if (currentType === 'parent') {
+                    data = extractParentData(text);
+                } else if (currentType === 'teacher') {
+                    data = extractTeacherData(text);
+                }
+                
+                extractedData = data;
+                
+                // Display JSON
+                const jsonStr = JSON.stringify(data, null, 2);
+                document.getElementById('jsonOutput').textContent = jsonStr;
+                document.getElementById('downloadBtn').disabled = false;
+                
+                // Show preview
+                showPreview(data);
+                
+                // Auto-detect student name and try to match
+                const studentName = data.name || data.studentName;
+                if (studentName && studentName !== 'نامشخص') {
+                    const existingStudent = portfolio.getStudentByName(studentName);
+                    if (existingStudent) {
+                        document.getElementById('targetStudent').value = existingStudent.id;
+                        showMessage('uploadMessage', `✅ فایل خوانده شد. دانش‌آموز "${studentName}" پیدا شد.`, 'success');
+                    } else {
+                        showMessage('uploadMessage', `⚠️ فایل خوانده شد. دانش‌آموز "${studentName}" پیدا نشد. می‌توانید از لیست انتخاب کنید یا دانش‌آموز جدید ساخته می‌شود.`, 'warning');
+                    }
+                } else {
+                    showMessage('uploadMessage', '✅ فایل با موفقیت خوانده شد. لطفاً دانش‌آموز مقصد را انتخاب کنید.', 'info');
+                }
+                
+            } catch (error) {
+                showMessage('uploadMessage', '❌ خطا در خواندن فایل: ' + error.message, 'error');
+            }
+        }
+        
+        function showPreview(data) {
+            const previewSection = document.getElementById('previewSection');
+            const previewContent = document.getElementById('previewContent');
+            
+            let html = '';
+            Object.keys(data).forEach(key => {
+                if (data[key] && data[key] !== 'نامشخص') {
+                    html += `
+                        <div class="preview-item">
+                            <div class="preview-label">${key}:</div>
+                            <div class="preview-value">${typeof data[key] === 'object' ? JSON.stringify(data[key]) : data[key]}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            previewContent.innerHTML = html;
+            previewSection.style.display = 'block';
+        }
+        
+        // Save to central database
+        function saveToDatabase() {
+            if (!extractedData) {
+                showMessage('outputMessage', '❌ ابتدا فایل را تبدیل کنید.', 'error');
+                return;
+            }
+            
+            const targetStudentId = document.getElementById('targetStudent').value;
+            let studentId = targetStudentId;
+            
+            // If no student selected, try to find or create
+            if (!studentId) {
+                const studentName = extractedData.name || extractedData.studentName;
+                if (!studentName || studentName === 'نامشخص') {
+                    showMessage('outputMessage', '❌ نام دانش‌آموز در فایل یافت نشد. لطفاً از لیست انتخاب کنید.', 'error');
+                    return;
+                }
+                
+                const existing = portfolio.getStudentByName(studentName);
+                if (existing) {
+                    studentId = existing.id;
+                } else {
+                    const grade = extractedData.grade || 'نامشخص';
+                    const newStudent = portfolio.addStudent(studentName, grade);
+                    studentId = newStudent.id;
+                    showMessage('outputMessage', `✅ دانش‌آموز جدید "${studentName}" ساخته شد.`, 'success');
+                }
+            }
+            
+            // Save based on type
+            if (currentType === 'student') {
+                portfolio.saveStudentView(studentId, extractedData);
+                showMessage('outputMessage', '✅ اطلاعات دانش‌آموز در مرکز کنترل ذخیره شد!', 'success');
+            } else if (currentType === 'parent') {
+                portfolio.saveParentData(studentId, extractedData);
+                showMessage('outputMessage', '✅ اطلاعات والدین در مرکز کنترل ذخیره شد!', 'success');
+            } else if (currentType === 'teacher') {
+                portfolio.saveTeacherData(studentId, extractedData);
+                showMessage('outputMessage', '✅ اطلاعات معلم قبلی در مرکز کنترل ذخیره شد!', 'success');
+            }
+            
+            loadStudentsSelector();
+        }
+        
+        // Batch file handling
+        function handleBatchFiles(event) {
+            const files = Array.from(event.target.files);
+            batchFiles = files.map(file => ({
+                file: file,
+                status: 'pending',
+                data: null
+            }));
+            
+            renderBatchList();
+            document.getElementById('batchConvertBtn').style.display = 'block';
+        }
+        
+        function renderBatchList() {
+            const batchList = document.getElementById('batchList');
+            batchList.innerHTML = batchFiles.map((item, index) => `
+                <div class="batch-item">
+                    <div>
+                        <div class="batch-item-name">${item.file.name}</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">${formatFileSize(item.file.size)}</div>
+                    </div>
+                    <span class="batch-item-status status-${item.status}">
+                        ${item.status === 'pending' ? 'در انتظار' : item.status === 'done' ? 'تکمیل شده' : 'خطا'}
+                    </span>
+                </div>
+            `).join('');
+        }
+        
+        async function convertBatchFiles() {
+            const results = [];
+            
+            for (let i = 0; i < batchFiles.length; i++) {
+                const item = batchFiles[i];
+                try {
+                    const text = await readWordFile(item.file);
+                    const type = detectTypeFromFilename(item.file.name);
+                    let data;
+                    
+                    if (type === 'student') data = extractStudentData(text);
+                    else if (type === 'parent') data = extractParentData(text);
+                    else if (type === 'teacher') data = extractTeacherData(text);
+                    else {
+                        item.status = 'error';
+                        continue;
+                    }
+                    
+                    // Save to database
+                    const studentName = data.name || data.studentName;
+                    let studentId;
+                    
+                    if (studentName && studentName !== 'نامشخص') {
+                        const existing = portfolio.getStudentByName(studentName);
+                        if (existing) {
+                            studentId = existing.id;
+                        } else {
+                            const grade = data.grade || 'نامشخص';
+                            const newStudent = portfolio.addStudent(studentName, grade);
+                            studentId = newStudent.id;
+                        }
+                    } else {
+                        item.status = 'error';
+                        continue;
+                    }
+                    
+                    if (type === 'student') portfolio.saveStudentView(studentId, data);
+                    else if (type === 'parent') portfolio.saveParentData(studentId, data);
+                    else if (type === 'teacher') portfolio.saveTeacherData(studentId, data);
+                    
+                    item.data = data;
+                    item.status = 'done';
+                    results.push(data);
+                } catch (error) {
+                    item.status = 'error';
+                }
+                
+                renderBatchList();
+            }
+            
+            loadStudentsSelector();
+            showMessage('uploadMessage', `✅ ${results.length} فایل با موفقیت تبدیل و ذخیره شد!`, 'success');
+        }
+        
+        function detectTypeFromFilename(filename) {
+            const name = filename.toLowerCase();
+            if (name.includes('دانش‌آموز') || name.includes('student')) return 'student';
+            if (name.includes('والدین') || name.includes('parent')) return 'parent';
+            if (name.includes('معلم') || name.includes('teacher')) return 'teacher';
+            return null;
+        }
+        
+        // Download JSON
+        function downloadJSON() {
+            if (!extractedData) {
+                showMessage('outputMessage', '❌ هیچ داده‌ای برای دانلود وجود ندارد.', 'error');
+                return;
+            }
+            
+            const jsonStr = document.getElementById('jsonOutput').textContent;
+            const blob = new Blob(['\ufeff' + jsonStr], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `converted-data-${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+            
+            showMessage('outputMessage', '✅ فایل JSON دانلود شد!', 'success');
+        }
+        
+        // Copy to clipboard
+        function copyToClipboard() {
+            const jsonStr = document.getElementById('jsonOutput').textContent;
+            navigator.clipboard.writeText(jsonStr).then(() => {
+                showMessage('outputMessage', '✅ در کلیپ‌بورد کپی شد!', 'success');
+            });
+        }
+        
+        // Show message
+        function showMessage(containerId, text, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="message show ${type}">${text}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+        
+        // Initialize
+        loadStudentsSelector();
+    </script>
+</body>
+</html>
